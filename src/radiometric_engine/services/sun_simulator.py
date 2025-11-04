@@ -130,8 +130,8 @@ class SunSimulator:
         
         # Create sinusoidal variation with peak at noon (12:00)
         # Factor ranges from 0.8 (dawn/dusk) to 1.2 (noon)
-        angle = 2 * np.pi * (decimal_hour - 6) / 24  # Shift so peak is at noon
-        factor = 1.0 + 0.2 * np.cos(angle)
+        angle = 2 * np.pi * (decimal_hour - 12) / 24  # Shift so peak is at noon (12:00)
+        factor = 1.0 + 0.2 * np.cos(angle)  # cos(0) = 1.0 when decimal_hour = 12
         
         return factor
     

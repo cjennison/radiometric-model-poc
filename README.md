@@ -21,12 +21,14 @@ A proof-of-concept system for radiometric data simulation and abnormality detect
 ## Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone <repository-url>
    cd radiometric-model-poc
    ```
 
 2. **Install dependencies**:
+
    ```bash
    pip install -r requirements/base.txt
    ```
@@ -47,6 +49,7 @@ python demo.py
 ```
 
 This will show a live updating heatmap of the sun simulation with:
+
 - Real-time temperature data
 - Atmospheric effects and noise
 - Random solar anomalies (sunspots/flares)
@@ -63,6 +66,7 @@ python -m src.radiometric_engine.main --mode web
 Then open your browser to: `http://localhost:5000`
 
 The web dashboard provides:
+
 - Live radiometric visualization
 - Interactive controls for forcing anomalies
 - Real-time statistics and performance metrics
@@ -101,6 +105,7 @@ src/radiometric_engine/
 ## Key Components
 
 ### Sun Simulator (`services/sun_simulator.py`)
+
 - Generates realistic 150x150 radiometric data
 - Models solar disc with radial temperature gradients
 - Simulates atmospheric effects (turbulence, scintillation)
@@ -108,18 +113,21 @@ src/radiometric_engine/
 - Time-based temperature variations
 
 ### Data Stream Engine (`services/data_stream.py`)
+
 - Real-time frame generation at configurable FPS
 - Thread-safe consumer pattern for multiple visualizers
 - Automatic frame queuing with overflow handling
 - Performance monitoring and statistics
 
 ### Visualization (`services/visualization.py`)
+
 - Real-time matplotlib heatmap display
 - Anomaly highlighting with severity-based colors
 - Performance statistics overlay
 - Animated updates for smooth visualization
 
 ### Web Interface (`web/`)
+
 - Flask application with SocketIO for real-time updates
 - Interactive dashboard with live controls
 - Real-time statistics and performance metrics
@@ -195,17 +203,20 @@ mypy src/
 ## Simulation Details
 
 ### Sun Model
+
 - **Base Temperature**: 5778K (actual sun surface temperature)
 - **Size**: 60 pixel radius on 150x150 grid
 - **Temperature Gradient**: Radial falloff simulating solar limb darkening
 - **Time Variations**: Sinusoidal variation based on time of day (±20%)
 
 ### Atmospheric Effects
+
 - **Turbulence**: Slow-changing noise patterns
 - **Scintillation**: High-frequency random variations
 - **Amplitude**: Configurable noise levels
 
 ### Solar Phenomena
+
 - **Sunspots**: Cooler regions (500-1000K below surface)
 - **Solar Flares**: Hotter elongated regions (800-1500K above surface)
 - **Frequency**: Configurable probability per frame

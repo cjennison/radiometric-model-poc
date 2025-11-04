@@ -184,6 +184,9 @@ def _handle_new_frame(frame: RadiometricFrame) -> None:
             anomaly_stats = frame.metadata.get('active_anomalies', {}) if frame.metadata else {}
             frame_count = frame.metadata.get('frame_count', 0) if frame.metadata else 0
             
+            # Get temperature graph data
+            temperature_graph = data_stream.get_temperature_graph_data() if data_stream else {}
+            
             # Prepare frame data for web client
             frame_data = {
                 'timestamp': frame.timestamp.isoformat(),
@@ -196,7 +199,8 @@ def _handle_new_frame(frame: RadiometricFrame) -> None:
                     'simulated_time': simulated_time,
                     'frame_count': frame_count,
                 },
-                'anomalies': anomaly_stats
+                'anomalies': anomaly_stats,
+                'temperature_graph': temperature_graph
             }
             
             # Emit to all connected clients

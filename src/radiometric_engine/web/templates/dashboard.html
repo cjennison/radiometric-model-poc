@@ -1,676 +1,948 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Radiometric Engine - Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1a1a1a;
-            color: #ffffff;
-            overflow-x: hidden;
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1a1a1a;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        font-weight: 300;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .header p {
+        margin: 10px 0 0 0;
+        font-size: 1.1em;
+        opacity: 0.8;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .visualization-panel {
+        flex: 2;
+        min-width: 600px;
+        background: #2a2a2a;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .control-panel {
+        flex: 1;
+        min-width: 300px;
+        background: #2a2a2a;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        height: fit-content;
+      }
+
+      .panel-title {
+        font-size: 1.3em;
+        font-weight: 600;
+        margin: 0 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #3498db;
+        color: #3498db;
+      }
+
+      #heatmap-container {
+        text-align: center;
+        background: #1a1a1a;
+        border-radius: 8px;
+        padding: 15px;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #heatmap-image {
+        max-width: 100%;
+        max-height: 600px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      #heatmap-image.updating {
+        opacity: 0.7;
+      }
+
+      .loading {
+        font-size: 1.2em;
+        color: #3498db;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 0.5;
         }
-        
-        .header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        50% {
+          opacity: 1;
         }
-        
-        .header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 300;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        100% {
+          opacity: 0.5;
         }
-        
-        .header p {
-            margin: 10px 0 0 0;
-            font-size: 1.1em;
-            opacity: 0.8;
-        }
-        
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .stat-item {
+        background: #1a1a1a;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        border-left: 4px solid #e74c3c;
+      }
+
+      .stat-item.temp {
+        border-left-color: #e74c3c;
+      }
+      .stat-item.time {
+        border-left-color: #f39c12;
+      }
+      .stat-item.performance {
+        border-left-color: #27ae60;
+      }
+      .stat-item.system {
+        border-left-color: #9b59b6;
+      }
+
+      .stat-value {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 0.9em;
+        opacity: 0.7;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .controls {
+        margin-bottom: 25px;
+      }
+
+      .control-group {
+        margin-bottom: 20px;
+      }
+
+      .control-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #ecf0f1;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .btn:hover {
+        background: linear-gradient(135deg, #2980b9, #21618c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      .btn.danger {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+      }
+
+      .btn.danger:hover {
+        background: linear-gradient(135deg, #c0392b, #a93226);
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+      }
+
+      .slider {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #1a1a1a;
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3498db;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3498db;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      .help-text {
+        font-size: 0.8em;
+        color: #7f8c8d;
+        margin-top: 5px;
+        font-style: italic;
+      }
+
+      .connection-status {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9em;
+        z-index: 1000;
+      }
+
+      .connection-status.connected {
+        background: #27ae60;
+        color: white;
+      }
+
+      .connection-status.disconnected {
+        background: #e74c3c;
+        color: white;
+      }
+
+      .timestamp {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 0.9em;
+        opacity: 0.7;
+      }
+
+      .simulation-time {
+        text-align: center;
+        margin-top: 15px;
+        padding: 15px;
+        background: #1a1a1a;
+        border-radius: 8px;
+        border-left: 4px solid #f39c12;
+      }
+
+      .sim-time-label {
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.7;
+        margin-bottom: 5px;
+      }
+
+      .sim-time-value {
+        font-size: 2.2em;
+        font-weight: bold;
+        color: #f39c12;
+        margin-bottom: 5px;
+        font-family: "Courier New", monospace;
+      }
+
+      .sim-time-description {
+        font-size: 1.1em;
+        color: #3498db;
+        font-weight: 600;
+      }
+
+      .temperature-graph-panel {
+        flex: 1;
+        min-width: 400px;
+        background: #2a2a2a;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .temperature-chart-container {
+        position: relative;
+        height: 300px;
+        margin-top: 15px;
+      }
+
+      .temperature-chart-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+        color: #888;
+        font-style: italic;
+      }
+
+      @media (max-width: 768px) {
         .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
+          flex-direction: column;
+          padding: 10px;
         }
-        
-        .visualization-panel {
-            flex: 2;
-            min-width: 600px;
-            background: #2a2a2a;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        
+
+        .visualization-panel,
         .control-panel {
-            flex: 1;
-            min-width: 300px;
-            background: #2a2a2a;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            height: fit-content;
+          min-width: unset;
         }
-        
-        .panel-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            margin: 0 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
-            color: #3498db;
-        }
-        
-        #heatmap-container {
-            text-align: center;
-            background: #1a1a1a;
-            border-radius: 8px;
-            padding: 15px;
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        #heatmap-image {
-            max-width: 100%;
-            max-height: 600px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            transition: opacity 0.3s ease-in-out;
-        }
-        
-        #heatmap-image.updating {
-            opacity: 0.7;
-        }
-        
-        .loading {
-            font-size: 1.2em;
-            color: #3498db;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-        
+
         .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
+          grid-template-columns: 1fr;
         }
-        
-        .stat-item {
-            background: #1a1a1a;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border-left: 4px solid #e74c3c;
-        }
-        
-        .stat-item.temp { border-left-color: #e74c3c; }
-        .stat-item.time { border-left-color: #f39c12; }
-        .stat-item.performance { border-left-color: #27ae60; }
-        .stat-item.system { border-left-color: #9b59b6; }
-        
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .controls {
-            margin-bottom: 25px;
-        }
-        
-        .control-group {
-            margin-bottom: 20px;
-        }
-        
-        .control-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #ecf0f1;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        
-        .btn:hover {
-            background: linear-gradient(135deg, #2980b9, #21618c);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-        }
-        
-        .btn.danger {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-        }
-        
-        .btn.danger:hover {
-            background: linear-gradient(135deg, #c0392b, #a93226);
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-        }
-        
-        .slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #1a1a1a;
-            outline: none;
-            -webkit-appearance: none;
-        }
-        
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #3498db;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-        
-        .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #3498db;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-        
-        .help-text {
-            font-size: 0.8em;
-            color: #7f8c8d;
-            margin-top: 5px;
-            font-style: italic;
-        }
-        
-        .connection-status {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 0.9em;
-            z-index: 1000;
-        }
-        
-        .connection-status.connected {
-            background: #27ae60;
-            color: white;
-        }
-        
-        .connection-status.disconnected {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .timestamp {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 0.9em;
-            opacity: 0.7;
-        }
-        
-        .simulation-time {
-            text-align: center;
-            margin-top: 15px;
-            padding: 15px;
-            background: #1a1a1a;
-            border-radius: 8px;
-            border-left: 4px solid #f39c12;
-        }
-        
-        .sim-time-label {
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            margin-bottom: 5px;
-        }
-        
-        .sim-time-value {
-            font-size: 2.2em;
-            font-weight: bold;
-            color: #f39c12;
-            margin-bottom: 5px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .sim-time-description {
-            font-size: 1.1em;
-            color: #3498db;
-            font-weight: 600;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                padding: 10px;
-            }
-            
-            .visualization-panel,
-            .control-panel {
-                min-width: unset;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="connection-status" id="connection-status">Connecting...</div>
-    
+
     <div class="header">
-        <h1>🌞 Radiometric Engine</h1>
-        <p>Real-time Thermographic Sun Simulation & Anomaly Detection</p>
+      <h1>🌞 Radiometric Engine</h1>
+      <p>Real-time Thermographic Sun Simulation & Anomaly Detection</p>
     </div>
-    
+
     <div class="container">
-        <div class="visualization-panel">
-            <h2 class="panel-title">Live Radiometric Visualization</h2>
-            <div id="heatmap-container">
-                <div class="loading">Waiting for data stream...</div>
-            </div>
-            <div class="simulation-time" id="simulation-time">
-                <div class="sim-time-label">Simulated Time of Day</div>
-                <div class="sim-time-value" id="sim-time-display">--:--</div>
-                <div class="sim-time-description" id="sim-time-description">--</div>
-            </div>
-            <div class="timestamp" id="timestamp"></div>
+      <div class="visualization-panel">
+        <h2 class="panel-title">Live Radiometric Visualization</h2>
+        <div id="heatmap-container">
+          <div class="loading">Waiting for data stream...</div>
         </div>
-        
-        <div class="control-panel">
-            <h2 class="panel-title">System Statistics</h2>
-            <div class="stats-grid">
-                <div class="stat-item temp">
-                    <div class="stat-value" id="min-temp">--</div>
-                    <div class="stat-label">Min Temp (K)</div>
-                </div>
-                <div class="stat-item temp">
-                    <div class="stat-value" id="max-temp">--</div>
-                    <div class="stat-label">Max Temp (K)</div>
-                </div>
-                <div class="stat-item temp">
-                    <div class="stat-value" id="mean-temp">--</div>
-                    <div class="stat-label">Mean Temp (K)</div>
-                </div>
-                <div class="stat-item time">
-                    <div class="stat-value" id="time-factor">--</div>
-                    <div class="stat-label">Time Factor</div>
-                </div>
-                <div class="stat-item time">
-                    <div class="stat-value" id="simulated-time">--</div>
-                    <div class="stat-label">Simulated Time</div>
-                </div>
-                <div class="stat-item performance">
-                    <div class="stat-value" id="fps">--</div>
-                    <div class="stat-label">FPS</div>
-                </div>
-                <div class="stat-item system">
-                    <div class="stat-value" id="queue-size">--</div>
-                    <div class="stat-label">Queue Size</div>
-                </div>
-            </div>
-            
-            <h3 class="panel-title">Controls</h3>
-            <div class="controls">
-                <div class="control-group">
-                    <button class="btn danger" onclick="forceAnomaly()">
-                        🔥 Force Solar Anomaly
-                    </button>
-                </div>
-                
-                <div class="control-group">
-                    <label for="anomaly-rate">Anomaly Probability: <span id="rate-value">1%</span></label>
-                    <input type="range" id="anomaly-rate" class="slider" min="0" max="10" value="1" oninput="updateAnomalyRate(this.value)">
-                </div>
-                
-                <div class="control-group">
-                    <label for="time-speed">Time Speed: <span id="speed-value">1x</span></label>
-                    <input type="range" id="time-speed" class="slider" min="1" max="144" value="144" oninput="updateTimeSpeed(this.value)">
-                    <div class="help-text">144x = 1 day in 10 minutes</div>
-                </div>
-                
-                <div class="control-group">
-                    <button class="btn primary" onclick="resetTime()">
-                        🔄 Reset Time
-                    </button>
-                </div>
-                
-                <div class="control-group">
-                    <button class="btn" onclick="requestStats()">
-                        📊 Refresh Statistics
-                    </button>
-                </div>
-            </div>
-            
-            <h3 class="panel-title">Performance Metrics</h3>
-            <div class="stats-grid">
-                <div class="stat-item performance">
-                    <div class="stat-value" id="frames-generated">--</div>
-                    <div class="stat-label">Frames Generated</div>
-                </div>
-                <div class="stat-item system">
-                    <div class="stat-value" id="frames-dropped">--</div>
-                    <div class="stat-label">Frames Dropped</div>
-                </div>
-                <div class="stat-item system">
-                    <div class="stat-value" id="runtime">--</div>
-                    <div class="stat-label">Runtime (s)</div>
-                </div>
-                <div class="stat-item performance">
-                    <div class="stat-value" id="consumers">--</div>
-                    <div class="stat-label">Consumers</div>
-                </div>
-            </div>
-            
-            <h3 class="panel-title">Solar Anomalies</h3>
-            <div class="stats-grid">
-                <div class="stat-item temp">
-                    <div class="stat-value" id="total-anomalies">--</div>
-                    <div class="stat-label">Active Anomalies</div>
-                </div>
-                <div class="stat-item temp">
-                    <div class="stat-value" id="sunspots">--</div>
-                    <div class="stat-label">Sunspots</div>
-                </div>
-                <div class="stat-item temp">
-                    <div class="stat-value" id="flares">--</div>
-                    <div class="stat-label">Solar Flares</div>
-                </div>
-                <div class="stat-item temp">
-                    <div class="stat-value" id="prominences">--</div>
-                    <div class="stat-label">Prominences</div>
-                </div>
-            </div>
-            
-            <div id="anomaly-details" style="margin-top: 15px;">
-                <h4 style="color: #ecf0f1; margin-bottom: 10px;">Anomaly Details</h4>
-                <div id="anomaly-list" style="max-height: 200px; overflow-y: auto; background: #1a1a1a; padding: 10px; border-radius: 5px;">
-                    <div style="color: #7f8c8d; font-style: italic;">No active anomalies</div>
-                </div>
-            </div>
+        <div class="simulation-time" id="simulation-time">
+          <div class="sim-time-label">Simulated Time of Day</div>
+          <div class="sim-time-value" id="sim-time-display">--:--</div>
+          <div class="sim-time-description" id="sim-time-description">--</div>
         </div>
+        <div class="timestamp" id="timestamp"></div>
+      </div>
+
+      <div class="control-panel">
+        <h2 class="panel-title">System Statistics</h2>
+        <div class="stats-grid">
+          <div class="stat-item temp">
+            <div class="stat-value" id="min-temp">--</div>
+            <div class="stat-label">Min Temp (K)</div>
+          </div>
+          <div class="stat-item temp">
+            <div class="stat-value" id="max-temp">--</div>
+            <div class="stat-label">Max Temp (K)</div>
+          </div>
+          <div class="stat-item temp">
+            <div class="stat-value" id="mean-temp">--</div>
+            <div class="stat-label">Mean Temp (K)</div>
+          </div>
+          <div class="stat-item time">
+            <div class="stat-value" id="time-factor">--</div>
+            <div class="stat-label">Time Factor</div>
+          </div>
+          <div class="stat-item time">
+            <div class="stat-value" id="simulated-time">--</div>
+            <div class="stat-label">Simulated Time</div>
+          </div>
+          <div class="stat-item performance">
+            <div class="stat-value" id="fps">--</div>
+            <div class="stat-label">FPS</div>
+          </div>
+          <div class="stat-item system">
+            <div class="stat-value" id="queue-size">--</div>
+            <div class="stat-label">Queue Size</div>
+          </div>
+        </div>
+
+        <h3 class="panel-title">Controls</h3>
+        <div class="controls">
+          <div class="control-group">
+            <button class="btn danger" onclick="forceAnomaly()">
+              🔥 Force Solar Anomaly
+            </button>
+          </div>
+
+          <div class="control-group">
+            <label for="anomaly-rate"
+              >Anomaly Probability: <span id="rate-value">1%</span></label
+            >
+            <input
+              type="range"
+              id="anomaly-rate"
+              class="slider"
+              min="0"
+              max="10"
+              value="1"
+              oninput="updateAnomalyRate(this.value)"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="time-speed"
+              >Time Speed: <span id="speed-value">1x</span></label
+            >
+            <input
+              type="range"
+              id="time-speed"
+              class="slider"
+              min="1"
+              max="144"
+              value="144"
+              oninput="updateTimeSpeed(this.value)"
+            />
+            <div class="help-text">144x = 1 day in 10 minutes</div>
+          </div>
+
+          <div class="control-group">
+            <button class="btn primary" onclick="resetTime()">
+              🔄 Reset Time
+            </button>
+          </div>
+
+          <div class="control-group">
+            <button class="btn" onclick="requestStats()">
+              📊 Refresh Statistics
+            </button>
+          </div>
+        </div>
+
+        <h3 class="panel-title">Performance Metrics</h3>
+        <div class="stats-grid">
+          <div class="stat-item performance">
+            <div class="stat-value" id="frames-generated">--</div>
+            <div class="stat-label">Frames Generated</div>
+          </div>
+          <div class="stat-item system">
+            <div class="stat-value" id="frames-dropped">--</div>
+            <div class="stat-label">Frames Dropped</div>
+          </div>
+          <div class="stat-item system">
+            <div class="stat-value" id="runtime">--</div>
+            <div class="stat-label">Runtime (s)</div>
+          </div>
+          <div class="stat-item performance">
+            <div class="stat-value" id="consumers">--</div>
+            <div class="stat-label">Consumers</div>
+          </div>
+        </div>
+
+        <h3 class="panel-title">Solar Anomalies</h3>
+        <div class="stats-grid">
+          <div class="stat-item temp">
+            <div class="stat-value" id="total-anomalies">--</div>
+            <div class="stat-label">Active Anomalies</div>
+          </div>
+          <div class="stat-item temp">
+            <div class="stat-value" id="sunspots">--</div>
+            <div class="stat-label">Sunspots</div>
+          </div>
+          <div class="stat-item temp">
+            <div class="stat-value" id="flares">--</div>
+            <div class="stat-label">Solar Flares</div>
+          </div>
+          <div class="stat-item temp">
+            <div class="stat-value" id="prominences">--</div>
+            <div class="stat-label">Prominences</div>
+          </div>
+        </div>
+
+        <div id="anomaly-details" style="margin-top: 15px">
+          <h4 style="color: #ecf0f1; margin-bottom: 10px">Anomaly Details</h4>
+          <div
+            id="anomaly-list"
+            style="
+              max-height: 200px;
+              overflow-y: auto;
+              background: #1a1a1a;
+              padding: 10px;
+              border-radius: 5px;
+            "
+          >
+            <div style="color: #7f8c8d; font-style: italic">
+              No active anomalies
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="temperature-graph-panel">
+        <h2 class="panel-title">Daily Temperature Pattern</h2>
+        <div class="temperature-chart-container">
+          <div class="temperature-chart-loading" id="temp-chart-loading">
+            Waiting for temperature data...
+          </div>
+          <canvas id="temperature-chart" style="display: none"></canvas>
+        </div>
+      </div>
     </div>
-    
+
     <script>
-        // Initialize Socket.IO connection
-        const socket = io();
-        
-        // Connection status handling
-        socket.on('connect', function() {
-            updateConnectionStatus(true);
-            console.log('Connected to server');
-        });
-        
-        socket.on('disconnect', function() {
-            updateConnectionStatus(false);
-            console.log('Disconnected from server');
-        });
-        
-        // Handle new frame data
-        socket.on('new_frame', function(data) {
-            updateVisualization(data);
-            updateStats(data.stats);
-            updateTimestamp(data.timestamp);
-            updateAnomalies(data.anomalies);
-        });
-        
-        // Handle statistics updates
-        socket.on('stats_update', function(stats) {
-            updateSystemStats(stats);
-        });
-        
-        function updateConnectionStatus(connected) {
-            const statusElement = document.getElementById('connection-status');
-            if (connected) {
-                statusElement.textContent = '🟢 Connected';
-                statusElement.className = 'connection-status connected';
+      // Initialize Socket.IO connection
+      const socket = io();
+
+      // Connection status handling
+      socket.on("connect", function () {
+        updateConnectionStatus(true);
+        console.log("Connected to server");
+      });
+
+      socket.on("disconnect", function () {
+        updateConnectionStatus(false);
+        console.log("Disconnected from server");
+      });
+
+      // Handle new frame data
+      socket.on("new_frame", function (data) {
+        updateVisualization(data);
+        updateStats(data.stats);
+        updateTimestamp(data.timestamp);
+        updateAnomalies(data.anomalies);
+        updateTemperatureGraph(data.temperature_graph);
+      });
+
+      // Handle statistics updates
+      socket.on("stats_update", function (stats) {
+        updateSystemStats(stats);
+      });
+
+      function updateConnectionStatus(connected) {
+        const statusElement = document.getElementById("connection-status");
+        if (connected) {
+          statusElement.textContent = "🟢 Connected";
+          statusElement.className = "connection-status connected";
+        } else {
+          statusElement.textContent = "🔴 Disconnected";
+          statusElement.className = "connection-status disconnected";
+        }
+      }
+
+      function updateVisualization(data) {
+        const container = document.getElementById("heatmap-container");
+        const existingImage = document.getElementById("heatmap-image");
+
+        // Add smooth transition
+        if (existingImage) {
+          existingImage.classList.add("updating");
+          setTimeout(() => {
+            existingImage.src = data.image;
+            existingImage.classList.remove("updating");
+          }, 150);
+        } else {
+          container.innerHTML = `<img id="heatmap-image" src="${data.image}" alt="Radiometric Heatmap">`;
+        }
+      }
+
+      function updateStats(stats) {
+        document.getElementById("min-temp").textContent =
+          stats.min_temp.toFixed(1);
+        document.getElementById("max-temp").textContent =
+          stats.max_temp.toFixed(1);
+        document.getElementById("mean-temp").textContent =
+          stats.mean_temp.toFixed(1);
+        document.getElementById("time-factor").textContent =
+          stats.time_factor.toFixed(2);
+
+        // Update frame count if available
+        if (stats.frame_count !== undefined) {
+          document.getElementById("frames-generated").textContent =
+            stats.frame_count;
+        }
+
+        // Update simulated time display
+        if (stats.simulated_time) {
+          document.getElementById("simulated-time").textContent =
+            stats.simulated_time.time_string;
+          document.getElementById("sim-time-display").textContent =
+            stats.simulated_time.time_string;
+          document.getElementById("sim-time-description").textContent =
+            stats.simulated_time.description;
+        }
+      }
+
+      function updateSystemStats(stats) {
+        document.getElementById("fps").textContent = (
+          stats.average_fps || 0
+        ).toFixed(1);
+        document.getElementById("queue-size").textContent =
+          stats.queue_size || 0;
+        document.getElementById("frames-generated").textContent =
+          stats.frames_generated || 0;
+        document.getElementById("frames-dropped").textContent =
+          stats.frames_dropped || 0;
+        document.getElementById("runtime").textContent = (
+          stats.runtime_seconds || 0
+        ).toFixed(1);
+        document.getElementById("consumers").textContent =
+          stats.consumers_count || 0;
+      }
+
+      function updateTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        document.getElementById(
+          "timestamp"
+        ).textContent = `Last updated: ${date.toLocaleTimeString()}`;
+      }
+
+      function forceAnomaly() {
+        fetch("/api/force_anomaly", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              console.log("Anomaly forced successfully");
             } else {
-                statusElement.textContent = '🔴 Disconnected';
-                statusElement.className = 'connection-status disconnected';
+              console.error("Failed to force anomaly:", data.message);
             }
-        }
-        
-        function updateVisualization(data) {
-            const container = document.getElementById('heatmap-container');
-            const existingImage = document.getElementById('heatmap-image');
-            
-            // Add smooth transition
-            if (existingImage) {
-                existingImage.classList.add('updating');
-                setTimeout(() => {
-                    existingImage.src = data.image;
-                    existingImage.classList.remove('updating');
-                }, 150);
+          })
+          .catch((error) => {
+            console.error("Error forcing anomaly:", error);
+          });
+      }
+
+      function updateAnomalyRate(value) {
+        const rate = value / 100.0; // Convert to 0.0-0.1 range
+        document.getElementById("rate-value").textContent = value + "%";
+
+        fetch("/api/set_anomaly_rate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ rate: rate }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "error") {
+              console.error("Failed to set anomaly rate:", data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error setting anomaly rate:", error);
+          });
+      }
+
+      function updateTimeSpeed(value) {
+        const speed = parseInt(value);
+        document.getElementById("speed-value").textContent = speed + "x";
+
+        fetch("/api/set_time_speed", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ speed: speed }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "error") {
+              console.error("Failed to set time speed:", data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error setting time speed:", error);
+          });
+      }
+
+      function resetTime() {
+        fetch("/api/reset_time", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              console.log("Time reset successfully");
             } else {
-                container.innerHTML = `<img id="heatmap-image" src="${data.image}" alt="Radiometric Heatmap">`;
+              console.error("Failed to reset time:", data.message);
             }
+          })
+          .catch((error) => {
+            console.error("Error resetting time:", error);
+          });
+      }
+
+      function updateAnomalies(anomalies) {
+        // Update anomaly counts
+        const totalCount = anomalies?.total_count || 0;
+        const byType = anomalies?.by_type || {};
+
+        document.getElementById("total-anomalies").textContent = totalCount;
+        document.getElementById("sunspots").textContent = byType.sunspot || 0;
+        document.getElementById("flares").textContent = byType.flare || 0;
+        document.getElementById("prominences").textContent =
+          byType.prominence || 0;
+
+        // Update anomaly details list
+        const anomalyList = document.getElementById("anomaly-list");
+
+        if (
+          !anomalies ||
+          !anomalies.anomalies ||
+          anomalies.anomalies.length === 0
+        ) {
+          anomalyList.innerHTML =
+            '<div style="color: #7f8c8d; font-style: italic;">No active anomalies</div>';
+          return;
         }
-        
-        function updateStats(stats) {
-            document.getElementById('min-temp').textContent = stats.min_temp.toFixed(1);
-            document.getElementById('max-temp').textContent = stats.max_temp.toFixed(1);
-            document.getElementById('mean-temp').textContent = stats.mean_temp.toFixed(1);
-            document.getElementById('time-factor').textContent = stats.time_factor.toFixed(2);
-            
-            // Update frame count if available
-            if (stats.frame_count !== undefined) {
-                document.getElementById('frames-generated').textContent = stats.frame_count;
-            }
-            
-            // Update simulated time display
-            if (stats.simulated_time) {
-                document.getElementById('simulated-time').textContent = stats.simulated_time.time_string;
-                document.getElementById('sim-time-display').textContent = stats.simulated_time.time_string;
-                document.getElementById('sim-time-description').textContent = stats.simulated_time.description;
-            }
-        }
-        
-        function updateSystemStats(stats) {
-            document.getElementById('fps').textContent = (stats.average_fps || 0).toFixed(1);
-            document.getElementById('queue-size').textContent = stats.queue_size || 0;
-            document.getElementById('frames-generated').textContent = stats.frames_generated || 0;
-            document.getElementById('frames-dropped').textContent = stats.frames_dropped || 0;
-            document.getElementById('runtime').textContent = (stats.runtime_seconds || 0).toFixed(1);
-            document.getElementById('consumers').textContent = stats.consumers_count || 0;
-        }
-        
-        function updateTimestamp(timestamp) {
-            const date = new Date(timestamp);
-            document.getElementById('timestamp').textContent = 
-                `Last updated: ${date.toLocaleTimeString()}`;
-        }
-        
-        function forceAnomaly() {
-            fetch('/api/force_anomaly', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Anomaly forced successfully');
-                } else {
-                    console.error('Failed to force anomaly:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error forcing anomaly:', error);
-            });
-        }
-        
-        function updateAnomalyRate(value) {
-            const rate = value / 100.0;  // Convert to 0.0-0.1 range
-            document.getElementById('rate-value').textContent = value + '%';
-            
-            fetch('/api/set_anomaly_rate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ rate: rate })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'error') {
-                    console.error('Failed to set anomaly rate:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error setting anomaly rate:', error);
-            });
-        }
-        
-        function updateTimeSpeed(value) {
-            const speed = parseInt(value);
-            document.getElementById('speed-value').textContent = speed + 'x';
-            
-            fetch('/api/set_time_speed', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ speed: speed })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'error') {
-                    console.error('Failed to set time speed:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error setting time speed:', error);
-            });
-        }
-        
-        function resetTime() {
-            fetch('/api/reset_time', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Time reset successfully');
-                } else {
-                    console.error('Failed to reset time:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error resetting time:', error);
-            });
-        }
-        
-        function updateAnomalies(anomalies) {
-            // Update anomaly counts
-            const totalCount = anomalies?.total_count || 0;
-            const byType = anomalies?.by_type || {};
-            
-            document.getElementById('total-anomalies').textContent = totalCount;
-            document.getElementById('sunspots').textContent = byType.sunspot || 0;
-            document.getElementById('flares').textContent = byType.flare || 0;
-            document.getElementById('prominences').textContent = byType.prominence || 0;
-            
-            // Update anomaly details list
-            const anomalyList = document.getElementById('anomaly-list');
-            
-            if (!anomalies || !anomalies.anomalies || anomalies.anomalies.length === 0) {
-                anomalyList.innerHTML = '<div style="color: #7f8c8d; font-style: italic;">No active anomalies</div>';
-                return;
-            }
-            
-            let detailsHTML = '';
-            anomalies.anomalies.forEach((anomaly, index) => {
-                const typeIcon = {
-                    'sunspot': '⚫',
-                    'flare': '🔥',
-                    'prominence': '🌟'
-                };
-                
-                const progressPercent = Math.round(anomaly.age_progress * 100);
-                const intensity = anomaly.intensity.toFixed(2);
-                const remaining = anomaly.remaining_frames;
-                
-                detailsHTML += `
-                    <div style="margin-bottom: 8px; padding: 8px; background: #2c3e50; border-radius: 4px; border-left: 3px solid ${anomaly.type === 'sunspot' ? '#34495e' : anomaly.type === 'flare' ? '#e74c3c' : '#f39c12'};">
+
+        let detailsHTML = "";
+        anomalies.anomalies.forEach((anomaly, index) => {
+          const typeIcon = {
+            sunspot: "⚫",
+            flare: "🔥",
+            prominence: "🌟",
+          };
+
+          const progressPercent = Math.round(anomaly.age_progress * 100);
+          const intensity = anomaly.intensity.toFixed(2);
+          const remaining = anomaly.remaining_frames;
+
+          detailsHTML += `
+                    <div style="margin-bottom: 8px; padding: 8px; background: #2c3e50; border-radius: 4px; border-left: 3px solid ${
+                      anomaly.type === "sunspot"
+                        ? "#34495e"
+                        : anomaly.type === "flare"
+                        ? "#e74c3c"
+                        : "#f39c12"
+                    };">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-weight: bold; color: #ecf0f1;">
-                                ${typeIcon[anomaly.type] || '🌞'} ${anomaly.type.charAt(0).toUpperCase() + anomaly.type.slice(1)}
+                                ${typeIcon[anomaly.type] || "🌞"} ${
+            anomaly.type.charAt(0).toUpperCase() + anomaly.type.slice(1)
+          }
                             </span>
                             <span style="color: #95a5a6; font-size: 0.9em;">
                                 ${remaining} frames left
                             </span>
                         </div>
                         <div style="font-size: 0.85em; color: #bdc3c7; margin-top: 4px;">
-                            Position: (${anomaly.position[0]}, ${anomaly.position[1]}) | 
+                            Position: (${anomaly.position[0]}, ${
+            anomaly.position[1]
+          }) | 
                             Intensity: ${intensity} | 
                             Size: ${anomaly.size}px | 
                             Progress: ${progressPercent}%
                         </div>
                         <div style="background: #34495e; height: 4px; border-radius: 2px; margin-top: 6px; overflow: hidden;">
-                            <div style="background: ${anomaly.type === 'sunspot' ? '#95a5a6' : anomaly.type === 'flare' ? '#e74c3c' : '#f39c12'}; height: 100%; width: ${progressPercent}%; transition: width 0.5s ease;"></div>
+                            <div style="background: ${
+                              anomaly.type === "sunspot"
+                                ? "#95a5a6"
+                                : anomaly.type === "flare"
+                                ? "#e74c3c"
+                                : "#f39c12"
+                            }; height: 100%; width: ${progressPercent}%; transition: width 0.5s ease;"></div>
                         </div>
                     </div>
                 `;
-            });
-            
-            anomalyList.innerHTML = detailsHTML;
+        });
+
+        anomalyList.innerHTML = detailsHTML;
+      }
+
+      function requestStats() {
+        socket.emit("request_stats");
+      }
+
+      // Temperature Chart Management
+      let temperatureChart = null;
+
+      function initTemperatureChart() {
+        const ctx = document.getElementById("temperature-chart");
+        if (!ctx) return;
+
+        temperatureChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            datasets: [
+              {
+                label: "Mean Temperature",
+                data: [], // Will contain {x: time_of_day, y: temperature} objects
+                borderColor: "#e74c3c",
+                backgroundColor: "rgba(231, 76, 60, 0.1)",
+                borderWidth: 2,
+                tension: 0, // No curve smoothing
+                fill: false, // No fill under line
+                spanGaps: false, // Don't connect gaps in data
+                pointRadius: 4,
+                pointHoverRadius: 6,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: { color: "#ffffff" },
+              },
+              tooltip: {
+                mode: "index",
+                intersect: false,
+                titleColor: "#ffffff",
+                bodyColor: "#ffffff",
+                backgroundColor: "rgba(0,0,0,0.8)",
+              },
+            },
+            scales: {
+              x: {
+                type: "linear",
+                position: "bottom",
+                title: {
+                  display: true,
+                  text: "Time of Day",
+                  color: "#ffffff",
+                },
+                grid: { color: "rgba(255,255,255,0.1)" },
+                ticks: {
+                  color: "#ffffff",
+                  callback: function (value, index, values) {
+                    // Convert hour to HH:MM format
+                    const hour = Math.floor(value);
+                    const min = Math.round((value - hour) * 60);
+                    return `${hour.toString().padStart(2, "0")}:${min
+                      .toString()
+                      .padStart(2, "0")}`;
+                  },
+                  stepSize: 2, // Show ticks every 2 hours
+                },
+                min: 0, // Start at midnight (00:00)
+                max: 24, // End at midnight (24:00)
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: "Temperature (K)",
+                  color: "#ffffff",
+                },
+                grid: { color: "rgba(255,255,255,0.1)" },
+                ticks: { color: "#ffffff" },
+              },
+            },
+            elements: {
+              point: {
+                radius: 3,
+                hoverRadius: 6,
+              },
+            },
+          },
+        });
+
+        // Add current time marker line
+        temperatureChart.options.plugins.annotation = {
+          annotations: {
+            timeMarker: {
+              type: "line",
+              xMin: 0,
+              xMax: 0,
+              borderColor: "#3498db",
+              borderWidth: 2,
+              borderDash: [5, 5],
+              label: {
+                enabled: true,
+                content: "Current Time",
+                position: "start",
+                backgroundColor: "#3498db",
+                color: "#ffffff",
+              },
+            },
+          },
+        };
+      }
+
+      function updateTemperatureGraph(tempGraphData) {
+        if (!tempGraphData || !temperatureChart) return;
+
+        const dailyData = tempGraphData.daily_data || [];
+        const currentTimeMarker = tempGraphData.current_time_marker || 0;
+
+        // Hide loading message and show chart
+        const loading = document.getElementById("temp-chart-loading");
+        const canvas = document.getElementById("temperature-chart");
+        if (loading && canvas) {
+          loading.style.display = "none";
+          canvas.style.display = "block";
         }
-        
-        function requestStats() {
-            socket.emit('request_stats');
+
+        // Update chart data - use x,y coordinate format for sparse data
+        const dataPoints = dailyData.map((point) => ({
+          x: point.time_of_day,
+          y: point.temperature,
+        }));
+
+        temperatureChart.data.datasets[0].data = dataPoints;
+
+        // Update Y-axis range if we have temperature range data
+        if (tempGraphData.temperature_range) {
+          const [minTemp, maxTemp] = tempGraphData.temperature_range;
+          temperatureChart.options.scales.y.min = minTemp;
+          temperatureChart.options.scales.y.max = maxTemp;
         }
-        
-        // Request initial statistics
-        setTimeout(requestStats, 1000);
-        
-        // Auto-refresh statistics every 5 seconds
-        setInterval(requestStats, 5000);
+
+        // Update current time marker
+        if (temperatureChart.options.plugins.annotation) {
+          temperatureChart.options.plugins.annotation.annotations.timeMarker.xMin =
+            currentTimeMarker;
+          temperatureChart.options.plugins.annotation.annotations.timeMarker.xMax =
+            currentTimeMarker;
+        }
+
+        temperatureChart.update("none"); // Update without animation for real-time feel
+      }
+
+      // Initialize temperature chart when page loads
+      document.addEventListener("DOMContentLoaded", function () {
+        initTemperatureChart();
+      });
+
+      // Request initial statistics
+      setTimeout(requestStats, 1000);
+
+      // Auto-refresh statistics every 5 seconds
+      setInterval(requestStats, 5000);
     </script>
-</body>
+  </body>
 </html>

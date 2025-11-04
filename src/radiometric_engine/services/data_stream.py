@@ -16,6 +16,7 @@ from queue import Queue, Full
 from ..models import RadiometricFrame
 from ..config import settings
 from .sun_simulator import SunSimulator
+from .temperature_tracker import TemperatureTracker
 
 logger = logging.getLogger(__name__)
 
@@ -49,8 +50,15 @@ class DataStreamEngine:
         # Time simulation parameters
         self._time_speed = 144  # Default: 1 day in 10 minutes (24*60/10 = 144x)
         current_time = time.time()
-        self._simulation_start_time = datetime.fromtimestamp(current_time)
+        
+        # Start simulation at 6:00 AM of current date
+        from datetime import datetime, time as time_obj
+        current_date = datetime.fromtimestamp(current_time).date()
+        self._simulation_start_time = datetime.combine(current_date, time_obj(6, 0, 0))
         self._real_start_time = current_time
+        
+        # Temperature tracking for daily pattern visualization
+        self.temperature_tracker = TemperatureTracker(sample_interval_minutes=1.0)
         
         # Streaming state
         self._is_streaming = False
@@ -218,6 +226,11 @@ class DataStreamEngine:
                 )
                 self._stats["frames_generated"] += 1
                 
+                # Update temperature tracker with mean temperature
+                import numpy as np
+                mean_temp = float(np.mean(frame.data))
+                self.temperature_tracker.update(simulated_time, mean_temp)
+                
                 # Add to queue (non-blocking)
                 try:
                     self._frame_queue.put_nowait(frame)
@@ -295,6 +308,26 @@ class DataStreamEngine:
         
         simulated_datetime = self._simulation_start_time + timedelta(seconds=elapsed_simulated_time)
         return simulated_datetime
+
+    def get_temperature_graph_data(self) -> dict:
+        """
+        Get temperature graph data for visualization.
+        
+        Returns:
+            Dictionary containing temperature data and current time marker
+        """
+        current_time = self.get_simulated_time()
+        return {
+            'daily_data': self.temperature_tracker.get_daily_data(),
+            'current_time_marker': self.temperature_tracker.get_current_time_marker(current_time),
+            'temperature_range': self.temperature_tracker.get_temperature_range(),
+            'tracker_stats': self.temperature_tracker.get_stats()
+        }
+    
+    def reset_temperature_tracking(self) -> None:
+        """Reset the temperature tracking data (useful for testing)."""
+        self.temperature_tracker.force_reset()
+        logger.info("Temperature tracking data reset")
 
     def __enter__(self):
         """Context manager entry."""
