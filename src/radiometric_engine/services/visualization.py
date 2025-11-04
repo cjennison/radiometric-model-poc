@@ -560,19 +560,33 @@ class WebVisualizationManager(HeatmapVisualizer):
                                 (pixel_x - 0.5, pixel_y - 0.5), 1, 1,
                                 fill=True,
                                 facecolor=color,
-                                alpha=alpha * 0.3,
-                                edgecolor=None
+                                alpha=0.8,  # Even more visible
+                                edgecolor='white',  # Add white border for contrast
+                                linewidth=1.0,  # Thicker border
+                                zorder=10  # Ensure rectangles appear above heatmap
                             )
                         )
                 
-                # Draw center marker
+                # Draw center marker with enhanced visibility
+                # First draw a larger white 'x' for contrast
+                save_ax.scatter(
+                    center_x, center_y,
+                    s=300, 
+                    c='white', 
+                    marker='x', 
+                    linewidths=4,
+                    alpha=1.0,
+                    zorder=15  # Ensure center marker appears above rectangles
+                )
+                # Then draw the colored 'x' on top
                 save_ax.scatter(
                     center_x, center_y,
                     s=200, 
                     c=color, 
                     marker='x', 
                     linewidths=3,
-                    alpha=1.0
+                    alpha=1.0,
+                    zorder=16  # Ensure colored marker is on top
                 )
                 
                 # Add text annotation
@@ -584,7 +598,8 @@ class WebVisualizationManager(HeatmapVisualizer):
                     color=color,
                     fontsize=10,
                     fontweight='bold',
-                    bbox=dict(boxstyle='round,pad=0.3', facecolor='black', alpha=0.7, edgecolor=color)
+                    bbox=dict(boxstyle='round,pad=0.3', facecolor='black', alpha=0.7, edgecolor=color),
+                    zorder=20  # Ensure text appears above everything
                 )
             
             # Generate filename with timestamp and anomaly info

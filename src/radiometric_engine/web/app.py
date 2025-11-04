@@ -581,6 +581,14 @@ def _register_socketio_events() -> None:
                         'max_temp': float(np.max(latest_frame.data)),
                         'mean_temp': float(np.mean(latest_frame.data)),
                         'time_factor': latest_frame.metadata.get('time_factor', 1.0) if latest_frame.metadata else 1.0,
+                    },
+                    'anomaly_detection': {
+                        'summary': {'total_anomalies': 0, 'critical_count': 0},
+                        'recent_anomalies': []
+                    },
+                    'temperature_graph': {
+                        'timestamps': [],
+                        'temperatures': []
                     }
                 }
                 emit('new_frame', frame_data)

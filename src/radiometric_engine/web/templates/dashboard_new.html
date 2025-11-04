@@ -878,6 +878,7 @@
               />
             </div>
             <button
+              type="button"
               class="btn btn-secondary btn-small"
               onclick="resetIntensity()"
             >
@@ -900,13 +901,14 @@
                 step="1"
               />
             </div>
-            <button class="btn btn-secondary btn-small" onclick="resetSize()">
+            <button type="button" class="btn btn-secondary btn-small" onclick="resetSize()">
               Reset to Auto
             </button>
           </div>
 
           <div class="flex gap-2">
             <button
+              type="button"
               class="btn btn-danger btn-full"
               onclick="forceAnomalyAdvanced()"
             >
@@ -916,6 +918,7 @@
           </div>
 
           <button
+            type="button"
             class="btn btn-secondary btn-full mt-4"
             onclick="getAnomalyTypes()"
           >
@@ -974,6 +977,7 @@
           </div>
 
           <button
+            type="button"
             class="btn btn-secondary btn-full mt-4"
             onclick="clearAnomalies()"
           >
@@ -1021,7 +1025,7 @@
             />
           </div>
 
-          <button class="btn btn-primary btn-full" onclick="resetTime()">
+          <button type="button" class="btn btn-primary btn-full" onclick="resetTime()">
             <i class="fas fa-clock"></i>
             Reset Time
           </button>
@@ -1065,6 +1069,7 @@
           </div>
 
           <button
+            type="button"
             class="btn btn-success btn-full"
             onclick="startBaselineCollection()"
           >
@@ -1117,10 +1122,27 @@
           });
 
           this.socket.on("new_frame", (data) => {
-            this.updateVisualization(data);
-            this.updateStats(data.stats);
-            this.updateAnomalies(data.anomaly_detection);
-            this.updateTemperatureChart(data.temperature_graph);
+            try {
+              this.updateVisualization(data);
+              
+              // Only update stats if stats data exists
+              if (data.stats) {
+                this.updateStats(data.stats);
+              }
+              
+              // Only update anomalies if anomaly_detection exists
+              if (data.anomaly_detection) {
+                this.updateAnomalies(data.anomaly_detection);
+              }
+              
+              // Only update temperature chart if temperature_graph exists
+              if (data.temperature_graph) {
+                this.updateTemperatureChart(data.temperature_graph);
+              }
+            } catch (error) {
+              console.error("Error processing new frame data:", error);
+              this.showToast("Error updating dashboard", "error");
+            }
           });
         }
 
@@ -1189,6 +1211,12 @@
 
           // Clear existing alerts
           alertContainer.innerHTML = "";
+
+          // Check if anomalyData exists and has the expected structure
+          if (!anomalyData) {
+            console.log("No anomaly data provided");
+            return;
+          }
 
           // Show recent critical anomalies
           if (anomalyData.recent_anomalies) {
@@ -1581,17 +1609,30 @@
         document.getElementById("size-value").textContent = "Auto";
       }
 
-      // Expose functions
-      window.forceAnomalyAdvanced = () => dashboard.forceAnomalyAdvanced();
-      window.getAnomalyTypes = () => dashboard.getAnomalyTypes();
-      window.clearAnomalies = () => dashboard.clearAnomalies();
-      window.startBaselineCollection = () =>
-        dashboard.startBaselineCollection();
-
       // Initialize dashboard when page loads
       let dashboard;
       document.addEventListener("DOMContentLoaded", () => {
         dashboard = new RadiometricDashboard();
+        
+        // Expose functions after dashboard is created
+        window.forceAnomalyAdvanced = () => dashboard.forceAnomalyAdvanced();
+        window.getAnomalyTypes = () => dashboard.getAnomalyTypes();
+        window.clearAnomalies = () => dashboard.clearAnomalies();
+        window.startBaselineCollection = () => dashboard.startBaselineCollection();
+        window.resetSize = () => {
+          const slider = document.getElementById('anomaly-size');
+          slider.value = '';
+          document.getElementById('size-value').textContent = 'Auto';
+        };
+        window.resetIntensity = () => {
+          const slider = document.getElementById('anomaly-intensity');
+          slider.value = '';
+          document.getElementById('intensity-value').textContent = 'Auto';
+        };
+        window.resetTime = () => {
+          // Reset time functionality - implement as needed
+          console.log('Reset time clicked');
+        };
       });
     </script>
   </body>
