@@ -165,6 +165,9 @@ cython_debug/
 *.log
 radiometric_engine.log
 
+# Anomaly capture images
+anomaly_captures/
+
 # Temporary files
 *.tmp
 *.temp
