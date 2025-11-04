@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiometric Engine - Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .visualization-panel {
+            flex: 2;
+            min-width: 600px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .control-panel {
+            flex: 1;
+            min-width: 300px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            height: fit-content;
+        }
+        
+        .panel-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            color: #3498db;
+        }
+        
+        #heatmap-container {
+            text-align: center;
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #heatmap-image {
+            max-width: 100%;
+            max-height: 600px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        #heatmap-image.updating {
+            opacity: 0.7;
+        }
+        
+        .loading {
+            font-size: 1.2em;
+            color: #3498db;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-item {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .stat-item.temp { border-left-color: #e74c3c; }
+        .stat-item.time { border-left-color: #f39c12; }
+        .stat-item.performance { border-left-color: #27ae60; }
+        .stat-item.system { border-left-color: #9b59b6; }
+        
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .controls {
+            margin-bottom: 25px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #ecf0f1;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .btn.danger:hover {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #1a1a1a;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9em;
+            z-index: 1000;
+        }
+        
+        .connection-status.connected {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .connection-status.disconnected {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .timestamp {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .visualization-panel,
+            .control-panel {
+                min-width: unset;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status" id="connection-status">Connecting...</div>
+    
+    <div class="header">
+        <h1>🌞 Radiometric Engine</h1>
+        <p>Real-time Thermographic Sun Simulation & Anomaly Detection</p>
+    </div>
+    
+    <div class="container">
+        <div class="visualization-panel">
+            <h2 class="panel-title">Live Radiometric Visualization</h2>
+            <div id="heatmap-container">
+                <div class="loading">Waiting for data stream...</div>
+            </div>
+            <div class="timestamp" id="timestamp"></div>
+        </div>
+        
+        <div class="control-panel">
+            <h2 class="panel-title">System Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item temp">
+                    <div class="stat-value" id="min-temp">--</div>
+                    <div class="stat-label">Min Temp (K)</div>
+                </div>
+                <div class="stat-item temp">
+                    <div class="stat-value" id="max-temp">--</div>
+                    <div class="stat-label">Max Temp (K)</div>
+                </div>
+                <div class="stat-item temp">
+                    <div class="stat-value" id="mean-temp">--</div>
+                    <div class="stat-label">Mean Temp (K)</div>
+                </div>
+                <div class="stat-item time">
+                    <div class="stat-value" id="time-factor">--</div>
+                    <div class="stat-label">Time Factor</div>
+                </div>
+                <div class="stat-item performance">
+                    <div class="stat-value" id="fps">--</div>
+                    <div class="stat-label">FPS</div>
+                </div>
+                <div class="stat-item system">
+                    <div class="stat-value" id="queue-size">--</div>
+                    <div class="stat-label">Queue Size</div>
+                </div>
+            </div>
+            
+            <h3 class="panel-title">Controls</h3>
+            <div class="controls">
+                <div class="control-group">
+                    <button class="btn danger" onclick="forceAnomaly()">
+                        🔥 Force Solar Anomaly
+                    </button>
+                </div>
+                
+                <div class="control-group">
+                    <label for="anomaly-rate">Anomaly Probability: <span id="rate-value">1%</span></label>
+                    <input type="range" id="anomaly-rate" class="slider" min="0" max="10" value="1" oninput="updateAnomalyRate(this.value)">
+                </div>
+                
+                <div class="control-group">
+                    <button class="btn" onclick="requestStats()">
+                        📊 Refresh Statistics
+                    </button>
+                </div>
+            </div>
+            
+            <h3 class="panel-title">Performance Metrics</h3>
+            <div class="stats-grid">
+                <div class="stat-item performance">
+                    <div class="stat-value" id="frames-generated">--</div>
+                    <div class="stat-label">Frames Generated</div>
+                </div>
+                <div class="stat-item system">
+                    <div class="stat-value" id="frames-dropped">--</div>
+                    <div class="stat-label">Frames Dropped</div>
+                </div>
+                <div class="stat-item system">
+                    <div class="stat-value" id="runtime">--</div>
+                    <div class="stat-label">Runtime (s)</div>
+                </div>
+                <div class="stat-item performance">
+                    <div class="stat-value" id="consumers">--</div>
+                    <div class="stat-label">Consumers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Socket.IO connection
+        const socket = io();
+        
+        // Connection status handling
+        socket.on('connect', function() {
+            updateConnectionStatus(true);
+            console.log('Connected to server');
+        });
+        
+        socket.on('disconnect', function() {
+            updateConnectionStatus(false);
+            console.log('Disconnected from server');
+        });
+        
+        // Handle new frame data
+        socket.on('new_frame', function(data) {
+            updateVisualization(data);
+            updateStats(data.stats);
+            updateTimestamp(data.timestamp);
+        });
+        
+        // Handle statistics updates
+        socket.on('stats_update', function(stats) {
+            updateSystemStats(stats);
+        });
+        
+        function updateConnectionStatus(connected) {
+            const statusElement = document.getElementById('connection-status');
+            if (connected) {
+                statusElement.textContent = '🟢 Connected';
+                statusElement.className = 'connection-status connected';
+            } else {
+                statusElement.textContent = '🔴 Disconnected';
+                statusElement.className = 'connection-status disconnected';
+            }
+        }
+        
+        function updateVisualization(data) {
+            const container = document.getElementById('heatmap-container');
+            const existingImage = document.getElementById('heatmap-image');
+            
+            // Add smooth transition
+            if (existingImage) {
+                existingImage.classList.add('updating');
+                setTimeout(() => {
+                    existingImage.src = data.image;
+                    existingImage.classList.remove('updating');
+                }, 150);
+            } else {
+                container.innerHTML = `<img id="heatmap-image" src="${data.image}" alt="Radiometric Heatmap">`;
+            }
+        }
+        
+        function updateStats(stats) {
+            document.getElementById('min-temp').textContent = stats.min_temp.toFixed(1);
+            document.getElementById('max-temp').textContent = stats.max_temp.toFixed(1);
+            document.getElementById('mean-temp').textContent = stats.mean_temp.toFixed(1);
+            document.getElementById('time-factor').textContent = stats.time_factor.toFixed(2);
+        }
+        
+        function updateSystemStats(stats) {
+            document.getElementById('fps').textContent = (stats.average_fps || 0).toFixed(1);
+            document.getElementById('queue-size').textContent = stats.queue_size || 0;
+            document.getElementById('frames-generated').textContent = stats.frames_generated || 0;
+            document.getElementById('frames-dropped').textContent = stats.frames_dropped || 0;
+            document.getElementById('runtime').textContent = (stats.runtime_seconds || 0).toFixed(1);
+            document.getElementById('consumers').textContent = stats.consumers_count || 0;
+        }
+        
+        function updateTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            document.getElementById('timestamp').textContent = 
+                `Last updated: ${date.toLocaleTimeString()}`;
+        }
+        
+        function forceAnomaly() {
+            fetch('/api/force_anomaly', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Anomaly forced successfully');
+                } else {
+                    console.error('Failed to force anomaly:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error forcing anomaly:', error);
+            });
+        }
+        
+        function updateAnomalyRate(value) {
+            const rate = value / 100.0;  // Convert to 0.0-0.1 range
+            document.getElementById('rate-value').textContent = value + '%';
+            
+            fetch('/api/set_anomaly_rate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rate: rate })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'error') {
+                    console.error('Failed to set anomaly rate:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error setting anomaly rate:', error);
+            });
+        }
+        
+        function requestStats() {
+            socket.emit('request_stats');
+        }
+        
+        // Request initial statistics
+        setTimeout(requestStats, 1000);
+        
+        // Auto-refresh statistics every 5 seconds
+        setInterval(requestStats, 5000);
+    </script>
+</body>
+</html>

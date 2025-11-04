@@ -1,11 +1,20 @@
 # GitHub Copilot Instructions for Python Projects
 
+## Agent Instructions
+
+- Follow the project structure and organization as outlined in the Project Overview.
+- Adhere to the coding standards and best practices specified in the Code Style & Formatting section.
+- Implement error handling and logging as described in the Error Handling and Logging Standards sections.
+- Provide education during the implementation of this project by adding comments and docstrings to explain complex logic particularly around any mathematical concepts and algorithms to educate the user.
+
 ## Project Overview
+
 This is a modern Python application following industry best practices for maintainable, scalable, and robust software development.
 
 ## Code Style & Formatting
 
 ### Python Standards
+
 - Follow PEP 8 style guidelines strictly
 - Use `black` for code formatting with line length of 88 characters
 - Use `isort` for import sorting
@@ -14,6 +23,7 @@ This is a modern Python application following industry best practices for mainta
 - Use `mypy` for static type checking
 
 ### Code Organization
+
 ```python
 # Import order (using isort):
 # 1. Standard library imports
@@ -33,6 +43,7 @@ from .utils import helper_function
 ## Architecture Patterns
 
 ### Project Structure
+
 ```
 project/
 ├── src/
@@ -55,6 +66,7 @@ project/
 ```
 
 ### Design Principles
+
 - **Single Responsibility Principle**: Each class/function should have one reason to change
 - **Dependency Injection**: Use dependency injection for testability
 - **Configuration Management**: Use environment variables and configuration files
@@ -64,6 +76,7 @@ project/
 ## Code Quality Standards
 
 ### Function Design
+
 ```python
 from typing import Optional, List, Dict
 import logging
@@ -71,19 +84,19 @@ import logging
 logger = logging.getLogger(__name__)
 
 def process_data(
-    data: List[Dict[str, Any]], 
+    data: List[Dict[str, Any]],
     filter_criteria: Optional[Dict[str, Any]] = None
 ) -> List[Dict[str, Any]]:
     """
     Process and filter data according to specified criteria.
-    
+
     Args:
         data: List of data dictionaries to process
         filter_criteria: Optional filtering parameters
-        
+
     Returns:
         Filtered and processed data
-        
+
     Raises:
         ValidationError: If data format is invalid
         ProcessingError: If processing fails
@@ -91,7 +104,7 @@ def process_data(
     if not data:
         logger.warning("Empty data provided for processing")
         return []
-    
+
     try:
         # Implementation here
         result = []
@@ -105,6 +118,7 @@ def process_data(
 ```
 
 ### Class Design
+
 ```python
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -116,24 +130,24 @@ class UserModel:
     id: int
     name: str
     email: str
-    
+
     def __post_init__(self) -> None:
         if not self.email or "@" not in self.email:
             raise ValueError("Invalid email format")
 
 class DataProcessor(Protocol):
     """Protocol for data processing implementations."""
-    
+
     def process(self, data: Any) -> Any:
         """Process the given data."""
         ...
 
 class BaseService(ABC):
     """Abstract base class for services."""
-    
+
     def __init__(self, logger: logging.Logger) -> None:
         self.logger = logger
-    
+
     @abstractmethod
     def execute(self) -> Any:
         """Execute the service logic."""
@@ -143,6 +157,7 @@ class BaseService(ABC):
 ## Testing Standards
 
 ### Test Structure
+
 - Use `pytest` as the testing framework
 - Maintain >90% code coverage
 - Write unit tests, integration tests, and end-to-end tests
@@ -150,6 +165,7 @@ class BaseService(ABC):
 - Use `pytest-cov` for coverage reporting
 
 ### Test Examples
+
 ```python
 import pytest
 from unittest.mock import Mock, patch
@@ -158,32 +174,32 @@ from src.models.user import User
 
 class TestUserService:
     """Test suite for UserService."""
-    
+
     @pytest.fixture
     def mock_repository(self):
         return Mock()
-    
+
     @pytest.fixture
     def user_service(self, mock_repository):
         return UserService(repository=mock_repository)
-    
+
     def test_create_user_success(self, user_service, mock_repository):
         # Arrange
         user_data = {"name": "John Doe", "email": "john@example.com"}
         expected_user = User(id=1, **user_data)
         mock_repository.save.return_value = expected_user
-        
+
         # Act
         result = user_service.create_user(user_data)
-        
+
         # Assert
         assert result == expected_user
         mock_repository.save.assert_called_once()
-    
+
     def test_create_user_invalid_email_raises_error(self, user_service):
         # Arrange
         user_data = {"name": "John Doe", "email": "invalid-email"}
-        
+
         # Act & Assert
         with pytest.raises(ValueError, match="Invalid email format"):
             user_service.create_user(user_data)
@@ -192,6 +208,7 @@ class TestUserService:
 ## Error Handling
 
 ### Custom Exceptions
+
 ```python
 class ProjectBaseException(Exception):
     """Base exception for project-specific errors."""
@@ -211,6 +228,7 @@ class ConfigurationError(ProjectBaseException):
 ```
 
 ### Error Handling Patterns
+
 ```python
 import logging
 from typing import Optional
@@ -223,12 +241,12 @@ def safe_operation(data: Any) -> Optional[Any]:
         # Validate input
         if not _validate_data(data):
             raise ValidationError("Invalid input data")
-        
+
         # Process data
         result = _process_data(data)
         logger.info("Operation completed successfully")
         return result
-        
+
     except ValidationError as e:
         logger.error(f"Validation failed: {e}")
         raise  # Re-raise validation errors
@@ -243,6 +261,7 @@ def safe_operation(data: Any) -> Optional[Any]:
 ## Configuration Management
 
 ### Environment-based Configuration
+
 ```python
 import os
 from dataclasses import dataclass
@@ -251,21 +270,21 @@ from typing import Optional
 @dataclass
 class Settings:
     """Application settings loaded from environment variables."""
-    
+
     # Database
     database_url: str = os.getenv("DATABASE_URL", "sqlite:///app.db")
     database_pool_size: int = int(os.getenv("DATABASE_POOL_SIZE", "10"))
-    
+
     # API
     api_host: str = os.getenv("API_HOST", "localhost")
     api_port: int = int(os.getenv("API_PORT", "8000"))
-    
+
     # Logging
     log_level: str = os.getenv("LOG_LEVEL", "INFO")
-    
+
     # External Services
     external_api_key: Optional[str] = os.getenv("EXTERNAL_API_KEY")
-    
+
     def __post_init__(self) -> None:
         """Validate configuration after initialization."""
         if not self.external_api_key:
@@ -278,6 +297,7 @@ settings = Settings()
 ## Logging Standards
 
 ### Structured Logging Setup
+
 ```python
 import logging
 import json
@@ -285,7 +305,7 @@ from typing import Any, Dict
 
 class JSONFormatter(logging.Formatter):
     """Custom JSON formatter for structured logging."""
-    
+
     def format(self, record: logging.LogRecord) -> str:
         log_entry = {
             "timestamp": self.formatTime(record),
@@ -296,10 +316,10 @@ class JSONFormatter(logging.Formatter):
             "function": record.funcName,
             "line": record.lineno,
         }
-        
+
         if record.exc_info:
             log_entry["exception"] = self.formatException(record.exc_info)
-            
+
         return json.dumps(log_entry)
 
 def setup_logging(log_level: str = "INFO") -> None:
@@ -311,7 +331,7 @@ def setup_logging(log_level: str = "INFO") -> None:
             logging.FileHandler("app.log"),
         ]
     )
-    
+
     # Apply JSON formatter to all handlers
     formatter = JSONFormatter()
     for handler in logging.root.handlers:
@@ -321,6 +341,7 @@ def setup_logging(log_level: str = "INFO") -> None:
 ## Performance & Security
 
 ### Performance Guidelines
+
 - Use `asyncio` for I/O-bound operations
 - Implement caching strategies (Redis, in-memory)
 - Use database connection pooling
@@ -328,6 +349,7 @@ def setup_logging(log_level: str = "INFO") -> None:
 - Use lazy loading and pagination for large datasets
 
 ### Security Best Practices
+
 ```python
 import secrets
 import hashlib
@@ -335,17 +357,17 @@ from cryptography.fernet import Fernet
 
 class SecurityUtils:
     """Security utility functions."""
-    
+
     @staticmethod
     def generate_secure_token(length: int = 32) -> str:
         """Generate a cryptographically secure random token."""
         return secrets.token_urlsafe(length)
-    
+
     @staticmethod
     def hash_password(password: str, salt: bytes) -> str:
         """Hash password with salt using SHA-256."""
         return hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000).hex()
-    
+
     @staticmethod
     def encrypt_sensitive_data(data: str, key: bytes) -> str:
         """Encrypt sensitive data using Fernet encryption."""
@@ -356,6 +378,7 @@ class SecurityUtils:
 ## Development Workflow
 
 ### Pre-commit Hooks
+
 ```yaml
 # .pre-commit-config.yaml
 repos:
@@ -382,6 +405,7 @@ repos:
 ```
 
 ### Documentation Standards
+
 - Use docstrings for all public functions, classes, and modules
 - Follow Google or NumPy docstring conventions
 - Include type hints in docstrings
@@ -391,6 +415,7 @@ repos:
 ## Dependencies Management
 
 ### Requirements Structure
+
 ```
 # requirements/base.txt
 requests>=2.31.0
@@ -414,6 +439,7 @@ gunicorn>=21.2.0
 ## Copilot-Specific Instructions
 
 When generating code:
+
 1. Always include proper type hints
 2. Add comprehensive docstrings
 3. Implement error handling with custom exceptions
@@ -426,6 +452,7 @@ When generating code:
 10. Consider security implications
 
 When refactoring existing code:
+
 1. Maintain backward compatibility when possible
 2. Update tests to reflect changes
 3. Update documentation
@@ -435,6 +462,7 @@ When refactoring existing code:
 ## Additional Tools & Libraries
 
 ### Recommended Libraries
+
 - **Web Frameworks**: FastAPI, Flask
 - **Database**: SQLAlchemy, Alembic
 - **Validation**: Pydantic
@@ -445,6 +473,7 @@ When refactoring existing code:
 - **Monitoring**: structlog, sentry-sdk
 
 ### Development Tools
+
 - **Code Quality**: ruff, black, isort, mypy
 - **Documentation**: Sphinx, mkdocs
 - **Containerization**: Docker, docker-compose
