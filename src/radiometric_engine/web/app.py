@@ -166,9 +166,19 @@ def _handle_new_frame(frame: RadiometricFrame) -> None:
         
         # Only emit if we have a new image (not throttled)
         if image_data:
-            # Calculate simulated time of day from time factor
+            # Get actual simulated time from the engine
             time_factor = frame.metadata.get('time_factor', 1.0) if frame.metadata else 1.0
-            simulated_time = _calculate_simulated_time(time_factor)
+            sim_datetime = data_stream.get_simulated_time() if data_stream else None
+            
+            # Format simulated time for web client
+            if sim_datetime:
+                simulated_time = {
+                    'time_string': sim_datetime.strftime('%H:%M:%S'),
+                    'description': f"Simulated time at {sim_datetime.strftime('%H:%M')}"
+                }
+            else:
+                # Fallback to old method if engine not available
+                simulated_time = _calculate_simulated_time(time_factor)
             
             # Get anomaly statistics from metadata
             anomaly_stats = frame.metadata.get('active_anomalies', {}) if frame.metadata else {}
@@ -252,6 +262,38 @@ def _register_routes(app: Flask) -> None:
             
         except (ValueError, TypeError) as e:
             return jsonify({'status': 'error', 'message': f'Invalid frequency value: {e}'})
+    
+    @app.route('/api/set_time_speed', methods=['POST'])
+    def set_time_speed():
+        """Set the time speed multiplier."""
+        try:
+            data = request.get_json()
+            speed = int(data.get('speed', 1))
+            
+            if not (1 <= speed <= 1000):
+                return jsonify({'status': 'error', 'message': 'Speed must be between 1 and 1000'})
+            
+            if data_stream:
+                data_stream.set_time_speed(speed)
+                return jsonify({'status': 'success', 'message': f'Time speed set to {speed}x'})
+            
+            return jsonify({'status': 'error', 'message': 'Data stream not available'})
+            
+        except (ValueError, TypeError) as e:
+            return jsonify({'status': 'error', 'message': f'Invalid speed value: {e}'})
+    
+    @app.route('/api/reset_time', methods=['POST'])
+    def reset_time():
+        """Reset the simulation time to current real time."""
+        try:
+            if data_stream:
+                data_stream.reset_time()
+                return jsonify({'status': 'success', 'message': 'Time reset successfully'})
+            
+            return jsonify({'status': 'error', 'message': 'Data stream not available'})
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Error resetting time: {e}'})
     
     @app.route('/api/current_frame')
     def get_current_frame():

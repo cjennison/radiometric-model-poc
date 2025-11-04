@@ -214,6 +214,13 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
         
+        .help-text {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
         .connection-status {
             position: fixed;
             top: 20px;
@@ -356,6 +363,18 @@
                 <div class="control-group">
                     <label for="anomaly-rate">Anomaly Probability: <span id="rate-value">1%</span></label>
                     <input type="range" id="anomaly-rate" class="slider" min="0" max="10" value="1" oninput="updateAnomalyRate(this.value)">
+                </div>
+                
+                <div class="control-group">
+                    <label for="time-speed">Time Speed: <span id="speed-value">1x</span></label>
+                    <input type="range" id="time-speed" class="slider" min="1" max="144" value="144" oninput="updateTimeSpeed(this.value)">
+                    <div class="help-text">144x = 1 day in 10 minutes</div>
+                </div>
+                
+                <div class="control-group">
+                    <button class="btn primary" onclick="resetTime()">
+                        🔄 Reset Time
+                    </button>
                 </div>
                 
                 <div class="control-group">
@@ -542,6 +561,48 @@
             })
             .catch(error => {
                 console.error('Error setting anomaly rate:', error);
+            });
+        }
+        
+        function updateTimeSpeed(value) {
+            const speed = parseInt(value);
+            document.getElementById('speed-value').textContent = speed + 'x';
+            
+            fetch('/api/set_time_speed', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ speed: speed })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'error') {
+                    console.error('Failed to set time speed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error setting time speed:', error);
+            });
+        }
+        
+        function resetTime() {
+            fetch('/api/reset_time', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Time reset successfully');
+                } else {
+                    console.error('Failed to reset time:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error resetting time:', error);
             });
         }
         

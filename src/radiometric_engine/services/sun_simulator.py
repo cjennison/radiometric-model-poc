@@ -374,17 +374,19 @@ class SunSimulator:
             "anomalies": anomaly_details
         }
 
-    def generate_frame(self, anomaly_chance: float = 0.01) -> RadiometricFrame:
+    def generate_frame(self, anomaly_chance: float = 0.01, current_time: Optional[datetime] = None) -> RadiometricFrame:
         """
         Generate a single frame of radiometric data.
         
         Args:
             anomaly_chance: Probability of generating solar phenomena
+            current_time: Optional custom time for simulation (uses real time if None)
             
         Returns:
             RadiometricFrame containing the simulated temperature data
         """
-        current_time = datetime.now()
+        if current_time is None:
+            current_time = datetime.now()
         
         # Calculate time-based temperature variations
         time_factor = self._calculate_time_factor(current_time)

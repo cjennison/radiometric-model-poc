@@ -9,7 +9,7 @@ import asyncio
 import logging
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Callable, List, Optional, Any
 from queue import Queue, Full
 
@@ -45,6 +45,12 @@ class DataStreamEngine:
         self.update_frequency_hz = update_frequency_hz or settings.update_frequency_hz
         self.max_queue_size = max_queue_size
         self.simulator = simulator or SunSimulator()
+        
+        # Time simulation parameters
+        self._time_speed = 144  # Default: 1 day in 10 minutes (24*60/10 = 144x)
+        current_time = time.time()
+        self._simulation_start_time = datetime.fromtimestamp(current_time)
+        self._real_start_time = current_time
         
         # Streaming state
         self._is_streaming = False
@@ -168,6 +174,8 @@ class DataStreamEngine:
         
         stats["queue_size"] = self._frame_queue.qsize()
         stats["is_streaming"] = self._is_streaming
+        stats["time_speed"] = self._time_speed
+        stats["simulated_time"] = self.get_simulated_time()
         
         return stats
     
@@ -202,8 +210,12 @@ class DataStreamEngine:
                     anomaly_chance = 1.0
                     self._force_next_anomaly = False
                 
-                # Generate frame
-                frame = self.simulator.generate_frame(anomaly_chance=anomaly_chance)
+                # Generate frame with simulated time
+                simulated_time = self.get_simulated_time()
+                frame = self.simulator.generate_frame(
+                    anomaly_chance=anomaly_chance,
+                    current_time=simulated_time
+                )
                 self._stats["frames_generated"] += 1
                 
                 # Add to queue (non-blocking)
@@ -253,6 +265,37 @@ class DataStreamEngine:
             except Exception as e:
                 logger.error(f"Error in frame consumer {consumer}: {e}", exc_info=True)
     
+    def set_time_speed(self, speed: int) -> None:
+        """
+        Set the time speed multiplier for simulation.
+        
+        Args:
+            speed: Time speed multiplier (1 = real time, 144 = 1 day in 10 minutes)
+        """
+        self._time_speed = max(1, speed)
+        logger.info(f"Time speed set to {self._time_speed}x")
+    
+    def reset_time(self) -> None:
+        """Reset simulation time to current real time."""
+        current_time = time.time()
+        self._simulation_start_time = datetime.fromtimestamp(current_time)
+        self._real_start_time = current_time
+        logger.info("Simulation time reset to current time")
+    
+    def get_simulated_time(self) -> datetime:
+        """
+        Get the current simulated time based on speed multiplier.
+        
+        Returns:
+            Current simulated datetime
+        """
+        current_real_time = time.time()
+        elapsed_real_time = current_real_time - self._real_start_time
+        elapsed_simulated_time = elapsed_real_time * self._time_speed
+        
+        simulated_datetime = self._simulation_start_time + timedelta(seconds=elapsed_simulated_time)
+        return simulated_datetime
+
     def __enter__(self):
         """Context manager entry."""
         self.start_streaming()
