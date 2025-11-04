@@ -901,7 +901,11 @@
                 step="1"
               />
             </div>
-            <button type="button" class="btn btn-secondary btn-small" onclick="resetSize()">
+            <button
+              type="button"
+              class="btn btn-secondary btn-small"
+              onclick="resetSize()"
+            >
               Reset to Auto
             </button>
           </div>
@@ -1025,7 +1029,11 @@
             />
           </div>
 
-          <button type="button" class="btn btn-primary btn-full" onclick="resetTime()">
+          <button
+            type="button"
+            class="btn btn-primary btn-full"
+            onclick="resetTime()"
+          >
             <i class="fas fa-clock"></i>
             Reset Time
           </button>
@@ -1124,17 +1132,17 @@
           this.socket.on("new_frame", (data) => {
             try {
               this.updateVisualization(data);
-              
+
               // Only update stats if stats data exists
               if (data.stats) {
                 this.updateStats(data.stats);
               }
-              
+
               // Only update anomalies if anomaly_detection exists
               if (data.anomaly_detection) {
                 this.updateAnomalies(data.anomaly_detection);
               }
-              
+
               // Only update temperature chart if temperature_graph exists
               if (data.temperature_graph) {
                 this.updateTemperatureChart(data.temperature_graph);
@@ -1366,7 +1374,7 @@
             }
 
             // Force chart update with animation
-            this.temperatureChart.update('active');
+            this.temperatureChart.update("active");
           }
           // Fallback for simple times/temperatures arrays
           else if (data.times && data.temperatures) {
@@ -1376,7 +1384,7 @@
             }));
 
             this.temperatureChart.data.datasets[0].data = dataPoints;
-            this.temperatureChart.update('active');
+            this.temperatureChart.update("active");
           }
         }
 
@@ -1613,25 +1621,26 @@
       let dashboard;
       document.addEventListener("DOMContentLoaded", () => {
         dashboard = new RadiometricDashboard();
-        
+
         // Expose functions after dashboard is created
         window.forceAnomalyAdvanced = () => dashboard.forceAnomalyAdvanced();
         window.getAnomalyTypes = () => dashboard.getAnomalyTypes();
         window.clearAnomalies = () => dashboard.clearAnomalies();
-        window.startBaselineCollection = () => dashboard.startBaselineCollection();
+        window.startBaselineCollection = () =>
+          dashboard.startBaselineCollection();
         window.resetSize = () => {
-          const slider = document.getElementById('anomaly-size');
-          slider.value = '';
-          document.getElementById('size-value').textContent = 'Auto';
+          const slider = document.getElementById("anomaly-size");
+          slider.value = "";
+          document.getElementById("size-value").textContent = "Auto";
         };
         window.resetIntensity = () => {
-          const slider = document.getElementById('anomaly-intensity');
-          slider.value = '';
-          document.getElementById('intensity-value').textContent = 'Auto';
+          const slider = document.getElementById("anomaly-intensity");
+          slider.value = "";
+          document.getElementById("intensity-value").textContent = "Auto";
         };
         window.resetTime = () => {
           // Reset time functionality - implement as needed
-          console.log('Reset time clicked');
+          console.log("Reset time clicked");
         };
       });
     </script>

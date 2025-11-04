@@ -77,6 +77,10 @@ class DataStreamEngine:
         self._recent_anomalies: List[DetectedAnomaly] = []
         self._max_anomaly_history = 100  # Keep last 100 anomalies
         
+        # Anomaly image saving cooldown
+        self._last_image_save_time = 0
+        self._image_save_cooldown_seconds = 1  # Configurable cooldown period
+        
         # Streaming state
         self._is_streaming = False
         self._stream_thread: Optional[threading.Thread] = None
@@ -280,14 +284,21 @@ class DataStreamEngine:
                     if len(self._recent_anomalies) > self._max_anomaly_history:
                         self._recent_anomalies = self._recent_anomalies[-self._max_anomaly_history:]
                     
-                    # Save anomaly image if web visualizer is available
+                    # Save anomaly image if web visualizer is available and cooldown has passed
                     if self._web_visualizer:
-                        try:
-                            saved_path = self._web_visualizer.save_anomaly_image(frame, detected_anomalies)
-                            if saved_path:
-                                logger.info(f"Anomaly image saved: {saved_path}")
-                        except Exception as e:
-                            logger.error(f"Failed to save anomaly image: {e}")
+                        current_time = time.time()
+                        time_since_last_save = current_time - self._last_image_save_time
+                        
+                        if time_since_last_save >= self._image_save_cooldown_seconds:
+                            try:
+                                saved_path = self._web_visualizer.save_anomaly_image(frame, detected_anomalies)
+                                if saved_path:
+                                    self._last_image_save_time = current_time
+                                    logger.info(f"Anomaly image saved: {saved_path} (cooldown: {time_since_last_save:.1f}s)")
+                            except Exception as e:
+                                logger.error(f"Failed to save anomaly image: {e}")
+                        else:
+                            logger.debug(f"Anomaly image save skipped (cooldown: {time_since_last_save:.1f}s < {self._image_save_cooldown_seconds}s)")
                     
                     # Log critical anomalies
                     for anomaly in detected_anomalies:
@@ -530,6 +541,28 @@ class DataStreamEngine:
         """Clear the history of detected anomalies."""
         self._recent_anomalies.clear()
         logger.info("Anomaly history cleared")
+    
+    def set_image_save_cooldown(self, cooldown_seconds: float) -> None:
+        """
+        Set the cooldown period between anomaly image saves.
+        
+        This prevents multiple images from being saved for the same anomaly
+        as it develops/spreads over multiple frames.
+        
+        Args:
+            cooldown_seconds: Minimum time between image saves in seconds
+        """
+        self._image_save_cooldown_seconds = max(0.0, cooldown_seconds)
+        logger.info(f"Anomaly image save cooldown set to {self._image_save_cooldown_seconds:.1f} seconds")
+    
+    def get_image_save_cooldown(self) -> float:
+        """
+        Get the current image save cooldown period.
+        
+        Returns:
+            Current cooldown period in seconds
+        """
+        return self._image_save_cooldown_seconds
 
     def __enter__(self):
         """Context manager entry."""
