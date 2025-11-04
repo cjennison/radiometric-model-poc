@@ -70,6 +70,9 @@ class DataStreamEngine:
             baseline_db_path="baseline_data.db"
         )
         
+        # Optional web visualizer for saving anomaly images
+        self._web_visualizer = None
+        
         # Storage for detected anomalies
         self._recent_anomalies: List[DetectedAnomaly] = []
         self._max_anomaly_history = 100  # Keep last 100 anomalies
@@ -94,6 +97,16 @@ class DataStreamEngine:
             f"Data stream engine initialized: {self.update_frequency_hz}Hz, "
             f"queue size={max_queue_size}"
         )
+    
+    def set_web_visualizer(self, web_visualizer) -> None:
+        """
+        Set the web visualizer for saving anomaly images.
+        
+        Args:
+            web_visualizer: WebVisualizationManager instance
+        """
+        self._web_visualizer = web_visualizer
+        logger.info("Web visualizer set for anomaly image saving")
     
     def add_consumer(self, consumer: Callable[[RadiometricFrame], None]) -> None:
         """
@@ -260,13 +273,22 @@ class DataStreamEngine:
                     if len(self._recent_anomalies) > self._max_anomaly_history:
                         self._recent_anomalies = self._recent_anomalies[-self._max_anomaly_history:]
                     
+                    # Save anomaly image if web visualizer is available
+                    if self._web_visualizer:
+                        try:
+                            saved_path = self._web_visualizer.save_anomaly_image(frame, detected_anomalies)
+                            if saved_path:
+                                logger.info(f"Anomaly image saved: {saved_path}")
+                        except Exception as e:
+                            logger.error(f"Failed to save anomaly image: {e}")
+                    
                     # Log critical anomalies
                     for anomaly in detected_anomalies:
                         if anomaly.severity.name in ['HIGH', 'CRITICAL']:
                             logger.warning(
                                 f"Detected {anomaly.severity.name} anomaly: "
                                 f"{anomaly.anomaly_type.name} at position "
-                                f"({anomaly.x}, {anomaly.y}) with confidence {anomaly.confidence:.2f}"
+                                f"({anomaly.region_center[0]}, {anomaly.region_center[1]}) with confidence {anomaly.confidence_score:.2f}"
                             )
                 
                 # Add to queue (non-blocking)

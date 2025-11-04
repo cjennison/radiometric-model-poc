@@ -139,6 +139,9 @@ def create_app(stream_engine: DataStreamEngine) -> Flask:
     # Initialize web-optimized visualizer
     web_visualizer = WebVisualizationManager(figsize=(8, 8))
     
+    # Connect web visualizer to data stream for anomaly image saving
+    data_stream.set_web_visualizer(web_visualizer)
+    
     # Register frame consumer for web updates
     data_stream.add_consumer(_handle_new_frame)
     

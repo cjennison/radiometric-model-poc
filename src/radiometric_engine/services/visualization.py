@@ -7,8 +7,12 @@ with customizable color maps and interactive features.
 
 import logging
 import threading
+import os
+import io
+import base64
+import glob
 from datetime import datetime
-from typing import Optional, Tuple, Any
+from typing import Optional, Tuple, Any, List
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -16,6 +20,7 @@ from matplotlib.colors import Normalize
 import matplotlib.patches as patches
 
 from ..models import RadiometricFrame, ThermalAnomaly
+from ..services.anomaly_detection import DetectedAnomaly
 from ..config import settings
 
 logger = logging.getLogger(__name__)
@@ -468,3 +473,179 @@ class WebVisualizationManager(HeatmapVisualizer):
             return None
         
         return None
+    
+    def save_anomaly_image(self, frame: RadiometricFrame, detected_anomalies: List, save_dir: str = "anomaly_captures", max_images: int = 50) -> Optional[str]:
+        """
+        Save a complete heatmap image with anomaly overlays when anomalies are detected.
+        Automatically manages folder size by deleting oldest images when limit is exceeded.
+        
+        Args:
+            frame: Radiometric frame containing the data
+            detected_anomalies: List of DetectedAnomaly objects
+            save_dir: Directory to save anomaly images
+            max_images: Maximum number of images to keep (default: 50)
+            
+        Returns:
+            Path to saved image file, or None if failed
+        """
+        if not detected_anomalies:
+            return None
+            
+        try:
+            # Create save directory if it doesn't exist
+            os.makedirs(save_dir, exist_ok=True)
+            
+            # Clean up old images if we're at the limit
+            self._cleanup_old_images(save_dir, max_images)
+            
+            # Create a copy of the current figure for saving
+            save_fig, save_ax = plt.subplots(figsize=self.figsize, facecolor='black')
+            
+            # Generate the heatmap
+            if self.temperature_range:
+                vmin, vmax = self.temperature_range
+            else:
+                vmin, vmax = np.min(frame.data), np.max(frame.data)
+            
+            # Create the base heatmap
+            im = save_ax.imshow(
+                frame.data,
+                cmap=self.colormap,
+                vmin=vmin,
+                vmax=vmax,
+                aspect='equal',
+                interpolation='bilinear'
+            )
+            
+            # Add colorbar
+            cbar = save_fig.colorbar(im, ax=save_ax, label='Temperature (K)')
+            cbar.ax.tick_params(colors='white')
+            cbar.set_label('Temperature (K)', color='white')
+            
+            # Style the plot
+            save_ax.set_title(
+                f'ANOMALY DETECTED - {frame.timestamp.strftime("%Y-%m-%d %H:%M:%S")}',
+                color='red', 
+                fontsize=14, 
+                fontweight='bold'
+            )
+            save_ax.set_xlabel('X Position', color='white')
+            save_ax.set_ylabel('Y Position', color='white')
+            save_ax.tick_params(colors='white')
+            
+            # Add grid
+            save_ax.grid(True, alpha=0.3, color='white', linewidth=0.5)
+            
+            # Overlay anomaly markers
+            for anomaly in detected_anomalies:
+                center_x, center_y = anomaly.region_center
+                
+                # Determine color based on severity
+                severity_colors = {
+                    'LOW': '#ffd700',     # Gold
+                    'MEDIUM': '#ff8c00',  # Dark orange
+                    'HIGH': '#ff4500',    # Orange red
+                    'CRITICAL': '#ff0000' # Red
+                }
+                color = severity_colors.get(anomaly.severity.name, '#ffffff')
+                
+                # Calculate opacity based on confidence
+                alpha = 0.4 + 0.4 * anomaly.confidence_score
+                
+                # Draw affected area if we have pixel data
+                if anomaly.affected_pixels:
+                    for pixel_x, pixel_y in anomaly.affected_pixels:
+                        save_ax.add_patch(
+                            plt.Rectangle(
+                                (pixel_x - 0.5, pixel_y - 0.5), 1, 1,
+                                fill=True,
+                                facecolor=color,
+                                alpha=alpha * 0.3,
+                                edgecolor=None
+                            )
+                        )
+                
+                # Draw center marker
+                save_ax.scatter(
+                    center_x, center_y,
+                    s=200, 
+                    c=color, 
+                    marker='x', 
+                    linewidths=3,
+                    alpha=1.0
+                )
+                
+                # Add text annotation
+                save_ax.annotate(
+                    f'{anomaly.severity.name}\n{anomaly.anomaly_type.name}',
+                    (center_x, center_y),
+                    xytext=(10, 10), 
+                    textcoords='offset points',
+                    color=color,
+                    fontsize=10,
+                    fontweight='bold',
+                    bbox=dict(boxstyle='round,pad=0.3', facecolor='black', alpha=0.7, edgecolor=color)
+                )
+            
+            # Generate filename with timestamp and anomaly info
+            timestamp_str = frame.timestamp.strftime("%Y%m%d_%H%M%S")
+            severity_levels = [a.severity.name for a in detected_anomalies]
+            max_severity = max(severity_levels, key=['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'].index)
+            filename = f"anomaly_{timestamp_str}_{max_severity}_{len(detected_anomalies)}anomalies.png"
+            filepath = os.path.join(save_dir, filename)
+            
+            # Save the image
+            save_fig.savefig(
+                filepath,
+                format='png',
+                bbox_inches='tight',
+                facecolor='black',
+                edgecolor='none',
+                dpi=150,  # Higher DPI for saved images
+                pad_inches=0.2
+            )
+            
+            # Close the figure to free memory
+            plt.close(save_fig)
+            
+            logger.info(f"Saved anomaly image: {filepath}")
+            return filepath
+            
+        except Exception as e:
+            logger.error(f"Error saving anomaly image: {e}")
+            if 'save_fig' in locals():
+                plt.close(save_fig)
+            return None
+    
+    def _cleanup_old_images(self, save_dir: str, max_images: int) -> None:
+        """
+        Remove oldest anomaly images if the folder exceeds max_images limit.
+        
+        Args:
+            save_dir: Directory containing anomaly images
+            max_images: Maximum number of images to keep
+        """
+        try:
+            # Get all PNG files in the directory
+            image_pattern = os.path.join(save_dir, "anomaly_*.png")
+            image_files = glob.glob(image_pattern)
+            
+            # If we're at or above the limit, remove oldest files
+            if len(image_files) >= max_images:
+                # Sort by modification time (oldest first)
+                image_files.sort(key=lambda x: os.path.getmtime(x))
+                
+                # Calculate how many to remove (keep one slot for the new image)
+                files_to_remove = len(image_files) - max_images + 1
+                
+                for i in range(files_to_remove):
+                    if i < len(image_files):
+                        file_to_remove = image_files[i]
+                        try:
+                            os.remove(file_to_remove)
+                            logger.info(f"Removed old anomaly image: {os.path.basename(file_to_remove)}")
+                        except OSError as e:
+                            logger.warning(f"Failed to remove old image {file_to_remove}: {e}")
+                            
+        except Exception as e:
+            logger.error(f"Error during anomaly image cleanup: {e}")
