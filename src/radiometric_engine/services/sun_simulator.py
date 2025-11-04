@@ -241,21 +241,47 @@ class SunSimulator:
         if removed_count > 0:
             logger.info(f"Removed {removed_count} expired solar anomalies")
     
-    def _create_new_anomaly(self) -> None:
-        """Create a new persistent solar anomaly."""
-        # Determine anomaly type based on weighted probabilities
-        if np.random.random() < 0.6:  # 60% chance of sunspot
+    def _create_new_anomaly(self, forced_type: str = None, forced_intensity: float = None, forced_size: float = None) -> None:
+        """
+        Create a new persistent solar anomaly.
+        
+        Args:
+            forced_type: Force a specific anomaly type ('sunspot', 'flare', 'prominence')
+            forced_intensity: Force a specific intensity value
+            forced_size: Force a specific size value
+        """
+        # Determine anomaly type
+        if forced_type:
+            if forced_type not in ['sunspot', 'flare', 'prominence']:
+                logger.warning(f"Invalid anomaly type '{forced_type}', using random")
+                forced_type = None
+        
+        if forced_type == 'sunspot':
             anomaly_type = "sunspot"
-            intensity = np.random.uniform(0.3, 0.7)  # Cooler (reduction factor)
-            size = np.random.uniform(8, 20)
-        elif np.random.random() < 0.8:  # 20% chance of solar flare
+            intensity = forced_intensity or np.random.uniform(0.3, 0.7)  # Cooler (reduction factor)
+            size = forced_size or np.random.uniform(8, 20)
+        elif forced_type == 'flare':
             anomaly_type = "flare"
-            intensity = np.random.uniform(1.3, 1.8)  # Hotter (multiplication factor)
-            size = np.random.uniform(5, 15)
-        else:  # 20% chance of prominence
+            intensity = forced_intensity or np.random.uniform(1.3, 1.8)  # Hotter (multiplication factor)
+            size = forced_size or np.random.uniform(5, 15)
+        elif forced_type == 'prominence':
             anomaly_type = "prominence"
-            intensity = np.random.uniform(1.1, 1.4)  # Moderately hotter
-            size = np.random.uniform(10, 25)
+            intensity = forced_intensity or np.random.uniform(1.1, 1.4)  # Moderately hotter
+            size = forced_size or np.random.uniform(10, 25)
+        else:
+            # Original random logic
+            if np.random.random() < 0.6:  # 60% chance of sunspot
+                anomaly_type = "sunspot"
+                intensity = forced_intensity or np.random.uniform(0.3, 0.7)  # Cooler (reduction factor)
+                size = forced_size or np.random.uniform(8, 20)
+            elif np.random.random() < 0.8:  # 20% chance of solar flare
+                anomaly_type = "flare"
+                intensity = forced_intensity or np.random.uniform(1.3, 1.8)  # Hotter (multiplication factor)
+                size = forced_size or np.random.uniform(5, 15)
+            else:  # 20% chance of prominence
+                anomaly_type = "prominence"
+                intensity = forced_intensity or np.random.uniform(1.1, 1.4)  # Moderately hotter
+                size = forced_size or np.random.uniform(10, 25)
         
         # Random position within sun disc (80% of radius to avoid edge effects)
         angle = np.random.uniform(0, 2 * np.pi)
@@ -320,10 +346,17 @@ class SunSimulator:
             spatial_variation = np.random.normal(1.0, 0.1, temperatures[anomaly_mask].shape)
             temperatures[anomaly_mask] += temperature_change * spatial_variation
     
-    def force_anomaly_creation(self) -> None:
-        """Force the creation of a new anomaly immediately."""
-        self._create_new_anomaly()
-        logger.info("Forced creation of new solar anomaly")
+    def force_anomaly_creation(self, anomaly_type: str = None, intensity: float = None, size: float = None) -> None:
+        """
+        Force the creation of a new anomaly immediately.
+        
+        Args:
+            anomaly_type: Type of anomaly ('sunspot', 'flare', 'prominence', or None for random)
+            intensity: Intensity of the anomaly (None for random within type's range)
+            size: Size of the anomaly (None for random within type's range)
+        """
+        self._create_new_anomaly(forced_type=anomaly_type, forced_intensity=intensity, forced_size=size)
+        logger.info(f"Forced creation of new solar anomaly: {anomaly_type or 'random'}")
     
     def get_anomaly_statistics(self) -> dict:
         """

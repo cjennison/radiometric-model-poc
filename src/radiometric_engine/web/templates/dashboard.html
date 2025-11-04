@@ -198,6 +198,46 @@
         box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
       }
 
+      .btn-small {
+        background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8em;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-left: 10px;
+      }
+
+      .btn-small:hover {
+        background: linear-gradient(135deg, #7f8c8d, #6c7b7d);
+        transform: translateY(-1px);
+      }
+
+      .select-input {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        color: white;
+        padding: 10px;
+        font-size: 1em;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .select-input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+      }
+
+      .select-input option {
+        background: #2c3e50;
+        color: white;
+      }
+
       .slider {
         width: 100%;
         height: 6px;
@@ -494,15 +534,64 @@
           </div>
         </div>
 
-        <h3 class="panel-title">Controls</h3>
+        <h3 class="panel-title">Solar Anomaly Controls</h3>
         <div class="controls">
           <div class="control-group">
-            <button class="btn danger" onclick="forceAnomaly()">
-              🔥 Force Solar Anomaly
-            </button>
+            <label for="anomaly-type">Anomaly Type:</label>
+            <select id="anomaly-type" class="select-input">
+              <option value="">Random</option>
+              <option value="sunspot">🌑 Sunspot (Temperature Drop)</option>
+              <option value="flare">☀️ Solar Flare (Temperature Rise)</option>
+              <option value="prominence">🔥 Solar Prominence (Temperature Rise)</option>
+            </select>
           </div>
 
           <div class="control-group">
+            <label for="anomaly-intensity">
+              Intensity: <span id="intensity-value">Auto</span>
+            </label>
+            <input
+              type="range"
+              id="anomaly-intensity"
+              class="slider"
+              min="0.1"
+              max="2.0"
+              step="0.1"
+              value=""
+              oninput="updateIntensityDisplay(this.value)"
+            />
+            <button class="btn-small" onclick="resetIntensity()">Auto</button>
+          </div>
+
+          <div class="control-group">
+            <label for="anomaly-size">
+              Size: <span id="size-value">Auto</span>
+            </label>
+            <input
+              type="range"
+              id="anomaly-size"
+              class="slider"
+              min="1"
+              max="30"
+              step="1"
+              value=""
+              oninput="updateSizeDisplay(this.value)"
+            />
+            <button class="btn-small" onclick="resetSize()">Auto</button>
+          </div>
+
+          <div class="control-group">
+            <button class="btn danger" onclick="forceAnomalyAdvanced()">
+              🔥 Force Solar Anomaly
+            </button>
+            <button class="btn" onclick="getAnomalyTypes()">
+              📋 Show Anomaly Info
+            </button>
+          </div>
+        </div>
+
+        <h3 class="panel-title">General Controls</h3>
+        <div class="controls">
             <label for="anomaly-rate"
               >Anomaly Probability: <span id="rate-value">1%</span></label
             >
@@ -839,6 +928,129 @@
           .catch((error) => {
             console.error("Error forcing anomaly:", error);
           });
+      }
+
+      function forceAnomalyAdvanced() {
+        const anomalyType = document.getElementById("anomaly-type").value || null;
+        const intensitySlider = document.getElementById("anomaly-intensity");
+        const sizeSlider = document.getElementById("anomaly-size");
+        
+        const intensity = intensitySlider.value ? parseFloat(intensitySlider.value) : null;
+        const size = sizeSlider.value ? parseFloat(sizeSlider.value) : null;
+
+        const payload = {};
+        if (anomalyType) payload.type = anomalyType;
+        if (intensity !== null) payload.intensity = intensity;
+        if (size !== null) payload.size = size;
+
+        fetch("/api/force_anomaly", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              console.log("Advanced anomaly forced successfully:", data.message);
+              showNotification("Anomaly Forced: " + (data.anomaly_type || "random"), "success");
+            } else {
+              console.error("Failed to force anomaly:", data.message);
+              showNotification("Error: " + data.message, "error");
+            }
+          })
+          .catch((error) => {
+            console.error("Error forcing anomaly:", error);
+            showNotification("Error forcing anomaly", "error");
+          });
+      }
+
+      function updateIntensityDisplay(value) {
+        document.getElementById("intensity-value").textContent = value;
+      }
+
+      function updateSizeDisplay(value) {
+        document.getElementById("size-value").textContent = value;
+      }
+
+      function resetIntensity() {
+        const slider = document.getElementById("anomaly-intensity");
+        slider.value = "";
+        document.getElementById("intensity-value").textContent = "Auto";
+      }
+
+      function resetSize() {
+        const slider = document.getElementById("anomaly-size");
+        slider.value = "";
+        document.getElementById("size-value").textContent = "Auto";
+      }
+
+      function getAnomalyTypes() {
+        fetch("/api/anomaly_types")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              showAnomalyInfo(data.anomaly_types);
+            } else {
+              console.error("Failed to get anomaly types:", data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error getting anomaly types:", error);
+          });
+      }
+
+      function showAnomalyInfo(anomalyTypes) {
+        let info = "Available Solar Anomaly Types:\\n\\n";
+        anomalyTypes.forEach((type) => {
+          info += `${type.name} (${type.type}):\\n`;
+          info += `  • ${type.description}\\n`;
+          info += `  • ${type.effect}\\n`;
+          info += `  • Probability: ${type.probability}\\n`;
+          info += `  • Intensity Range: ${type.default_intensity_range[0]} - ${type.default_intensity_range[1]}\\n`;
+          info += `  • Size Range: ${type.default_size_range[0]} - ${type.default_size_range[1]}\\n\\n`;
+        });
+        alert(info);
+      }
+
+      function showNotification(message, type = "info") {
+        // Create notification element
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        
+        // Style the notification
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 15px 20px;
+          border-radius: 6px;
+          color: white;
+          font-weight: 600;
+          z-index: 10000;
+          max-width: 300px;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+          transition: all 0.3s ease;
+        `;
+        
+        if (type === "success") {
+          notification.style.background = "linear-gradient(135deg, #27ae60, #229954)";
+        } else if (type === "error") {
+          notification.style.background = "linear-gradient(135deg, #e74c3c, #c0392b)";
+        } else {
+          notification.style.background = "linear-gradient(135deg, #3498db, #2980b9)";
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+          notification.style.opacity = "0";
+          notification.style.transform = "translateX(100%)";
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
       }
 
       function updateAnomalyRate(value) {

@@ -131,11 +131,18 @@ class DataStreamEngine:
             self._stats["consumers_count"] = len(self._frame_consumers)
             logger.info(f"Removed frame consumer. Total consumers: {len(self._frame_consumers)}")
     
-    def force_anomaly(self) -> None:
-        """Force the immediate creation of a solar anomaly."""
+    def force_anomaly(self, anomaly_type: str = None, intensity: float = None, size: float = None) -> None:
+        """
+        Force the immediate creation of a solar anomaly.
+        
+        Args:
+            anomaly_type: Type of anomaly ('sunspot', 'flare', 'prominence', or None for random)
+            intensity: Intensity of the anomaly (None for random within type's range)
+            size: Size of the anomaly (None for random within type's range)
+        """
         if hasattr(self.simulator, 'force_anomaly_creation'):
-            self.simulator.force_anomaly_creation()
-            logger.info("Forced creation of solar anomaly")
+            self.simulator.force_anomaly_creation(anomaly_type, intensity, size)
+            logger.info(f"Forced creation of solar anomaly: {anomaly_type or 'random'}")
         else:
             # Fallback for older simulator versions
             self._force_next_anomaly = True

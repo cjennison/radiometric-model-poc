@@ -248,11 +248,111 @@ def _register_routes(app: Flask) -> None:
     
     @app.route('/api/force_anomaly', methods=['POST'])
     def force_anomaly():
-        """Force the next frame to contain an anomaly."""
-        if data_stream:
-            data_stream.force_anomaly()
-            return jsonify({'status': 'success', 'message': 'Anomaly forced'})
-        return jsonify({'status': 'error', 'message': 'Data stream not available'})
+        """Force the next frame to contain a specific type of anomaly."""
+        try:
+            data = request.get_json() or {}
+            anomaly_type = data.get('type')  # 'sunspot', 'flare', 'prominence', or None
+            intensity = data.get('intensity')  # float or None
+            size = data.get('size')  # float or None
+            
+            # Validate anomaly type if provided
+            valid_types = ['sunspot', 'flare', 'prominence']
+            if anomaly_type and anomaly_type not in valid_types:
+                return jsonify({
+                    'status': 'error', 
+                    'message': f'Invalid anomaly type. Must be one of: {valid_types}'
+                })
+            
+            # Validate intensity if provided
+            if intensity is not None:
+                try:
+                    intensity = float(intensity)
+                    if intensity <= 0:
+                        return jsonify({
+                            'status': 'error',
+                            'message': 'Intensity must be greater than 0'
+                        })
+                except (ValueError, TypeError):
+                    return jsonify({
+                        'status': 'error',
+                        'message': 'Intensity must be a valid number'
+                    })
+            
+            # Validate size if provided
+            if size is not None:
+                try:
+                    size = float(size)
+                    if size <= 0:
+                        return jsonify({
+                            'status': 'error',
+                            'message': 'Size must be greater than 0'
+                        })
+                except (ValueError, TypeError):
+                    return jsonify({
+                        'status': 'error',
+                        'message': 'Size must be a valid number'
+                    })
+            
+            if data_stream:
+                data_stream.force_anomaly(anomaly_type, intensity, size)
+                
+                # Build response message
+                msg_parts = ['Anomaly forced']
+                if anomaly_type:
+                    msg_parts.append(f"type: {anomaly_type}")
+                if intensity is not None:
+                    msg_parts.append(f"intensity: {intensity}")
+                if size is not None:
+                    msg_parts.append(f"size: {size}")
+                
+                return jsonify({
+                    'status': 'success', 
+                    'message': ' - '.join(msg_parts),
+                    'anomaly_type': anomaly_type or 'random',
+                    'intensity': intensity,
+                    'size': size
+                })
+            
+            return jsonify({'status': 'error', 'message': 'Data stream not available'})
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Error forcing anomaly: {e}'})
+    
+    @app.route('/api/anomaly_types')
+    def get_anomaly_types():
+        """Get available anomaly types with their descriptions."""
+        return jsonify({
+            'status': 'success',
+            'anomaly_types': [
+                {
+                    'type': 'sunspot',
+                    'name': 'Sunspot',
+                    'description': 'Cool dark regions on the sun\'s surface',
+                    'effect': 'Temperature drops by 800-1200K',
+                    'default_intensity_range': [0.3, 0.7],
+                    'default_size_range': [8, 20],
+                    'probability': '60%'
+                },
+                {
+                    'type': 'flare',
+                    'name': 'Solar Flare',
+                    'description': 'Explosive bursts of radiation from the sun',
+                    'effect': 'Temperature rises by 1000-1800K',
+                    'default_intensity_range': [1.3, 1.8],
+                    'default_size_range': [5, 15],
+                    'probability': '20%'
+                },
+                {
+                    'type': 'prominence',
+                    'name': 'Solar Prominence',
+                    'description': 'Large loops of plasma extending from the sun',
+                    'effect': 'Temperature rises by 600-1200K',
+                    'default_intensity_range': [1.1, 1.4],
+                    'default_size_range': [10, 25],
+                    'probability': '20%'
+                }
+            ]
+        })
     
     @app.route('/api/set_anomaly_rate', methods=['POST'])
     def set_anomaly_rate():
