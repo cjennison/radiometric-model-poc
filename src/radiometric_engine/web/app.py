@@ -136,8 +136,12 @@ def create_app(stream_engine: DataStreamEngine) -> Flask:
     # Store reference to data stream
     data_stream = stream_engine
     
-    # Initialize web-optimized visualizer
-    web_visualizer = WebVisualizationManager(figsize=(8, 8))
+    # Initialize web-optimized visualizer with static temperature range
+    # Using 0-10,000K to provide consistent color scaling regardless of anomalies
+    web_visualizer = WebVisualizationManager(
+        figsize=(8, 8),
+        temperature_range=(0, 10000)  # Static scale from 0 to 10,000 Kelvin
+    )
     
     # Connect web visualizer to data stream for anomaly image saving
     data_stream.set_web_visualizer(web_visualizer)
@@ -336,11 +340,12 @@ def _register_routes(app: Flask) -> None:
                 {
                     'type': 'flare',
                     'name': 'Solar Flare',
-                    'description': 'Explosive bursts of radiation from the sun',
-                    'effect': 'Temperature rises by 1000-1800K',
+                    'description': 'Explosive magnetic reconnection events with buildup -> peak -> decay phases',
+                    'effect': 'Pre-dimming (90-95%), explosive peak (8-25x intensity), gradual decay',
                     'default_intensity_range': [1.3, 1.8],
                     'default_size_range': [5, 15],
-                    'probability': '20%'
+                    'probability': '20%',
+                    'phases': 'Buildup (10%) -> Explosive Peak (5%) -> Decay (85%)'
                 },
                 {
                     'type': 'prominence',

@@ -292,8 +292,16 @@ class SunSimulator:
             int(self.sun_center_x + distance * np.cos(angle))
         )
         
-        # Random duration between 5-50 frames as requested
-        duration = np.random.randint(5, 51)
+        # Duration varies by anomaly type for realistic behavior
+        if anomaly_type == "flare":
+            # Solar flares need longer duration for buildup -> peak -> decay phases
+            duration = np.random.randint(20, 80)  # 20-80 frames for proper phase development
+        elif anomaly_type == "sunspot":
+            # Sunspots are more persistent, longer duration
+            duration = np.random.randint(30, 100)  # 30-100 frames
+        else:  # prominence
+            # Prominences have medium duration
+            duration = np.random.randint(15, 60)  # 15-60 frames
         
         # Create the persistent anomaly
         anomaly = PersistentAnomaly(
@@ -321,7 +329,6 @@ class SunSimulator:
     def _apply_single_anomaly(self, temperatures: np.ndarray, anomaly: PersistentAnomaly) -> None:
         """Apply a single anomaly to the temperature grid."""
         row, col = anomaly.position
-        current_intensity = anomaly.current_intensity
         
         # Create circular mask for the anomaly
         anomaly_mask = (
@@ -330,17 +337,53 @@ class SunSimulator:
         
         # Apply temperature modification based on anomaly type
         if anomaly.anomaly_type == "sunspot":
-            # Sunspots are cooler - subtract temperature
+            # Sunspots use the age factor for natural lifecycle
+            current_intensity = anomaly.current_intensity
             temperature_change = current_intensity * np.random.uniform(800, 1200)
             temperatures[anomaly_mask] -= temperature_change
         
         elif anomaly.anomaly_type == "flare":
-            # Solar flares are hotter - add temperature
-            temperature_change = (current_intensity - 1.0) * np.random.uniform(1000, 1800)
-            temperatures[anomaly_mask] += temperature_change
+            # Solar flares have realistic phases: buildup -> explosive peak -> decay
+            # Use base intensity, not age-modified intensity
+            base_intensity = anomaly.intensity
+            age = anomaly.total_duration - anomaly.remaining_frames
+            total_duration = anomaly.total_duration
+            
+            # Phase timing (realistic solar flare progression)
+            buildup_phase_duration = max(2, int(total_duration * 0.1))  # 10% buildup
+            peak_phase_duration = max(1, int(total_duration * 0.05))     # 5% explosive peak
+            decay_phase_duration = total_duration - buildup_phase_duration - peak_phase_duration  # 85% decay
+            
+            if age < buildup_phase_duration:
+                # Pre-flare phase: slight dimming as magnetic field builds tension
+                buildup_progress = age / buildup_phase_duration
+                # Start at 95% normal, gradually dim to 90% as energy builds
+                temperature_factor = 0.95 - (0.05 * buildup_progress)
+                temperature_change = (1.0 - temperature_factor) * np.random.uniform(200, 400)
+                temperatures[anomaly_mask] -= temperature_change
+                
+            elif age < buildup_phase_duration + peak_phase_duration:
+                # Explosive peak phase: dramatic temperature surge (solar flare blast)
+                peak_progress = (age - buildup_phase_duration) / peak_phase_duration
+                # Explosive surge: can reach 10-50x normal brightness
+                max_surge_factor = np.random.uniform(8, 25)  # 8x to 25x intensity
+                current_surge = max_surge_factor * (1.0 - abs(2 * peak_progress - 1))  # Peak in middle
+                temperature_change = current_surge * np.random.uniform(1500, 3000)
+                temperatures[anomaly_mask] += temperature_change
+                
+            else:
+                # Gradual decay phase: slowly return to normal
+                decay_age = age - buildup_phase_duration - peak_phase_duration
+                decay_progress = decay_age / decay_phase_duration
+                # Exponential decay from peak intensity back to normal
+                decay_factor = np.exp(-3 * decay_progress)  # Exponential decay
+                residual_intensity = 1.0 + (base_intensity - 1.0) * decay_factor
+                temperature_change = (residual_intensity - 1.0) * np.random.uniform(800, 1400)
+                temperatures[anomaly_mask] += temperature_change
         
         elif anomaly.anomaly_type == "prominence":
-            # Prominences are moderately hotter with some variability
+            # Prominences use the age factor for natural lifecycle
+            current_intensity = anomaly.current_intensity
             temperature_change = (current_intensity - 1.0) * np.random.uniform(600, 1200)
             # Add some spatial variation for more realistic appearance
             spatial_variation = np.random.normal(1.0, 0.1, temperatures[anomaly_mask].shape)

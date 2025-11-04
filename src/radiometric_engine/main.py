@@ -72,10 +72,12 @@ class RadiometricEngine:
         """Start standalone matplotlib visualization."""
         logger.info("Starting standalone visualization")
         
-        # Create and setup visualizer
+        # Create and setup visualizer with static temperature range
+        # Using 0-10,000K to provide consistent color scaling regardless of anomalies
         self.visualizer = AnimatedHeatmapVisualizer(
             figsize=(14, 10),
             colormap='hot',
+            temperature_range=(0, 10000),  # Static scale from 0 to 10,000 Kelvin
             update_interval_ms=100
         )
         
