@@ -187,6 +187,24 @@ def _handle_new_frame(frame: RadiometricFrame) -> None:
             # Get temperature graph data
             temperature_graph = data_stream.get_temperature_graph_data() if data_stream else {}
             
+            # Get anomaly data
+            anomaly_summary = data_stream.get_anomaly_summary() if data_stream else {}
+            recent_anomalies = data_stream.get_recent_anomalies(max_count=10) if data_stream else []
+            
+            # Convert anomalies to JSON-serializable format
+            anomaly_data = []
+            for anomaly in recent_anomalies:
+                anomaly_data.append({
+                    'type': anomaly.anomaly_type.name,
+                    'severity': anomaly.severity.name,
+                    'position': [anomaly.region_center[0], anomaly.region_center[1]],
+                    'confidence': anomaly.confidence_score,
+                    'timestamp': anomaly.timestamp.isoformat(),
+                    'description': anomaly.description,
+                    'affected_area': len(anomaly.affected_pixels),
+                    'deviation_magnitude': anomaly.temperature_deviation
+                })
+            
             # Prepare frame data for web client
             frame_data = {
                 'timestamp': frame.timestamp.isoformat(),
@@ -200,6 +218,10 @@ def _handle_new_frame(frame: RadiometricFrame) -> None:
                     'frame_count': frame_count,
                 },
                 'anomalies': anomaly_stats,
+                'anomaly_detection': {
+                    'summary': anomaly_summary,
+                    'recent_anomalies': anomaly_data
+                },
                 'temperature_graph': temperature_graph
             }
             
@@ -359,6 +381,52 @@ def _register_routes(app: Flask) -> None:
             
         except Exception as e:
             return jsonify({'status': 'error', 'message': f'Error getting baseline stats: {e}'})
+    
+    @app.route('/api/anomalies')
+    def get_anomalies():
+        """Get recent anomaly detection results."""
+        try:
+            if data_stream:
+                anomalies = data_stream.get_recent_anomalies(max_count=50)  # Last 50 anomalies
+                anomaly_summary = data_stream.get_anomaly_summary()
+                
+                # Convert anomalies to JSON-serializable format
+                anomaly_data = []
+                for anomaly in anomalies:
+                    anomaly_data.append({
+                        'type': anomaly.anomaly_type.name,
+                        'severity': anomaly.severity.name,
+                        'position': [anomaly.region_center[0], anomaly.region_center[1]],
+                        'confidence': anomaly.confidence_score,
+                        'timestamp': anomaly.timestamp.isoformat(),
+                        'description': anomaly.description,
+                        'affected_area': len(anomaly.affected_pixels),
+                        'deviation_magnitude': anomaly.temperature_deviation
+                    })
+                
+                return jsonify({
+                    'status': 'success',
+                    'anomalies': anomaly_data,
+                    'summary': anomaly_summary
+                })
+            
+            return jsonify({'status': 'error', 'message': 'Data stream not available'})
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Error getting anomalies: {e}'})
+    
+    @app.route('/api/anomalies/clear', methods=['POST'])
+    def clear_anomalies():
+        """Clear anomaly detection history."""
+        try:
+            if data_stream:
+                data_stream.clear_anomaly_history()
+                return jsonify({'status': 'success', 'message': 'Anomaly history cleared'})
+            
+            return jsonify({'status': 'error', 'message': 'Data stream not available'})
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Error clearing anomalies: {e}'})
     
     @app.route('/api/current_frame')
     def get_current_frame():

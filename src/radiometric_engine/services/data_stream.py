@@ -18,6 +18,7 @@ from ..config import settings
 from .sun_simulator import SunSimulator
 from .temperature_tracker import TemperatureTracker
 from .baseline_manager import BaselineDataManager
+from .anomaly_detection import AnomalyDetectionEngine, DetectedAnomaly
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +64,15 @@ class DataStreamEngine:
         
         # Baseline data management for anomaly detection
         self.baseline_manager = BaselineDataManager(bucket_minutes=5)
+        
+        # Anomaly detection engine - initialized after baseline_manager
+        self.anomaly_detector = AnomalyDetectionEngine(
+            baseline_db_path="baseline_data.db"
+        )
+        
+        # Storage for detected anomalies
+        self._recent_anomalies: List[DetectedAnomaly] = []
+        self._max_anomaly_history = 100  # Keep last 100 anomalies
         
         # Streaming state
         self._is_streaming = False
@@ -238,6 +248,27 @@ class DataStreamEngine:
                 # Collect baseline data if enabled
                 self.baseline_manager.collect_frame_data(simulated_time, frame.data)
                 
+                # Perform anomaly detection
+                detected_anomalies = self.anomaly_detector.detect_anomalies(
+                    frame.data, simulated_time
+                )
+                
+                # Store detected anomalies
+                if detected_anomalies:
+                    self._recent_anomalies.extend(detected_anomalies)
+                    # Keep only recent anomalies
+                    if len(self._recent_anomalies) > self._max_anomaly_history:
+                        self._recent_anomalies = self._recent_anomalies[-self._max_anomaly_history:]
+                    
+                    # Log critical anomalies
+                    for anomaly in detected_anomalies:
+                        if anomaly.severity.name in ['HIGH', 'CRITICAL']:
+                            logger.warning(
+                                f"Detected {anomaly.severity.name} anomaly: "
+                                f"{anomaly.anomaly_type.name} at position "
+                                f"({anomaly.x}, {anomaly.y}) with confidence {anomaly.confidence:.2f}"
+                            )
+                
                 # Add to queue (non-blocking)
                 try:
                     self._frame_queue.put_nowait(frame)
@@ -404,6 +435,72 @@ class DataStreamEngine:
                 'data': baseline_data
             }
         return None
+
+    def get_recent_anomalies(self, max_count: int = None) -> List[DetectedAnomaly]:
+        """
+        Get recently detected anomalies.
+        
+        Args:
+            max_count: Maximum number of anomalies to return (None for all)
+            
+        Returns:
+            List of recent DetectedAnomaly objects
+        """
+        if max_count is None:
+            return self._recent_anomalies.copy()
+        return self._recent_anomalies[-max_count:]
+    
+    def get_anomaly_summary(self) -> dict:
+        """
+        Get summary statistics for detected anomalies.
+        
+        Returns:
+            Dictionary with anomaly statistics
+        """
+        if not self._recent_anomalies:
+            return {
+                'total_anomalies': 0,
+                'by_severity': {},
+                'by_type': {},
+                'latest_anomaly': None
+            }
+        
+        # Count by severity
+        severity_counts = {}
+        for anomaly in self._recent_anomalies:
+            severity = anomaly.severity.name
+            severity_counts[severity] = severity_counts.get(severity, 0) + 1
+        
+        # Count by type
+        type_counts = {}
+        for anomaly in self._recent_anomalies:
+            anomaly_type = anomaly.anomaly_type.name
+            type_counts[anomaly_type] = type_counts.get(anomaly_type, 0) + 1
+        
+        # Get latest anomaly
+        latest_anomaly = None
+        if self._recent_anomalies:
+            latest = self._recent_anomalies[-1]
+            latest_anomaly = {
+                'type': latest.anomaly_type.name,
+                'severity': latest.severity.name,
+                'position': [latest.region_center[0], latest.region_center[1]],
+                'confidence': latest.confidence_score,
+                'timestamp': latest.timestamp.isoformat(),
+                'description': latest.description
+            }
+        
+        return {
+            'total_anomalies': len(self._recent_anomalies),
+            'by_severity': severity_counts,
+            'by_type': type_counts,
+            'latest_anomaly': latest_anomaly
+        }
+    
+    def clear_anomaly_history(self) -> None:
+        """Clear the history of detected anomalies."""
+        self._recent_anomalies.clear()
+        logger.info("Anomaly history cleared")
 
     def __enter__(self):
         """Context manager entry."""

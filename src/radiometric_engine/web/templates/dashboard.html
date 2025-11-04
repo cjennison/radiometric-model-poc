@@ -366,6 +366,53 @@
         margin-top: 10px;
       }
 
+      /* Anomaly Detection Styles */
+      .anomaly-alert {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 10px;
+        border: 2px solid #e74c3c;
+        animation: pulse-glow 2s infinite;
+      }
+
+      .anomaly-alert.critical {
+        animation: critical-flash 1s infinite;
+        border-color: #ff0000;
+        background: linear-gradient(135deg, #ff0000, #e74c3c);
+      }
+
+      .alert-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .alert-icon {
+        font-size: 1.5em;
+        margin-right: 10px;
+      }
+
+      .alert-title {
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+
+      .alert-details {
+        font-size: 0.9em;
+        opacity: 0.9;
+      }
+
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 10px rgba(231, 76, 60, 0.5); }
+        50% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.8); }
+      }
+
+      @keyframes critical-flash {
+        0%, 100% { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        50% { background: linear-gradient(135deg, #ff0000, #e74c3c); }
+      }
+
       .stat-row {
         display: flex;
         justify-content: space-between;
@@ -541,6 +588,44 @@
           </div>
         </div>
 
+        <h3 class="panel-title">🚨 Anomaly Detection</h3>
+        <div class="controls">
+          <div class="control-group">
+            <div class="baseline-stats" id="anomaly-summary">
+              <div class="stat-row">
+                <span class="stat-label">Total Anomalies:</span>
+                <span class="stat-value" id="total-anomalies">0</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">High/Critical:</span>
+                <span class="stat-value" id="critical-anomalies">0</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Last Detection:</span>
+                <span class="stat-value" id="last-anomaly">None</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <button class="btn danger" onclick="clearAnomalies()">
+              🗑️ Clear Anomaly History
+            </button>
+          </div>
+          
+          <div class="control-group">
+            <div class="anomaly-alert" id="anomaly-alert" style="display: none;">
+              <div class="alert-header">
+                <span class="alert-icon">⚠️</span>
+                <span class="alert-title" id="alert-title">Anomaly Detected</span>
+              </div>
+              <div class="alert-details" id="alert-details">
+                <!-- Anomaly details will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
         <h3 class="panel-title">Performance Metrics</h3>
         <div class="stats-grid">
           <div class="stat-item performance">
@@ -633,6 +718,24 @@
         updateTimestamp(data.timestamp);
         updateAnomalies(data.anomalies);
         updateTemperatureGraph(data.temperature_graph);
+        
+        // Update anomaly detection display
+        if (data.anomaly_detection) {
+          updateAnomalyDisplay(data.anomaly_detection.summary);
+          
+          // Check for new high/critical anomalies
+          if (data.anomaly_detection.recent_anomalies && data.anomaly_detection.recent_anomalies.length > 0) {
+            const latestAnomaly = data.anomaly_detection.recent_anomalies[data.anomaly_detection.recent_anomalies.length - 1];
+            if (['HIGH', 'CRITICAL'].includes(latestAnomaly.severity)) {
+              // Only show alert if this is a new anomaly (within last 2 seconds)
+              const anomalyTime = new Date(latestAnomaly.timestamp);
+              const now = new Date();
+              if ((now - anomalyTime) < 2000) {
+                showAnomalyAlert(latestAnomaly);
+              }
+            }
+          }
+        }
       });
 
       // Handle statistics updates
@@ -1178,6 +1281,113 @@
 
       // Auto-refresh baseline stats every 10 seconds
       setInterval(requestBaselineStats, 10000);
+
+      // Anomaly Detection Functions
+      function clearAnomalies() {
+        fetch('/api/anomalies/clear', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            console.log('Anomaly history cleared');
+            updateAnomalyDisplay({
+              total_anomalies: 0,
+              by_severity: {},
+              by_type: {},
+              latest_anomaly: null
+            });
+            hideAnomalyAlert();
+          } else {
+            console.error('Failed to clear anomalies:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error clearing anomalies:', error);
+        });
+      }
+
+      function requestAnomalyData() {
+        fetch('/api/anomalies')
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            updateAnomalyDisplay(data.summary);
+            // Show alert for latest high/critical anomaly
+            if (data.summary.latest_anomaly && 
+                ['HIGH', 'CRITICAL'].includes(data.summary.latest_anomaly.severity)) {
+              showAnomalyAlert(data.summary.latest_anomaly);
+            }
+          } else {
+            console.error('Failed to get anomaly data:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error getting anomaly data:', error);
+        });
+      }
+
+      function updateAnomalyDisplay(summary) {
+        document.getElementById('total-anomalies').textContent = summary.total_anomalies || 0;
+        
+        const highCount = (summary.by_severity?.HIGH || 0) + (summary.by_severity?.CRITICAL || 0);
+        document.getElementById('critical-anomalies').textContent = highCount;
+        
+        if (summary.latest_anomaly) {
+          const timestamp = new Date(summary.latest_anomaly.timestamp);
+          const timeStr = timestamp.toLocaleTimeString();
+          document.getElementById('last-anomaly').textContent = 
+            `${summary.latest_anomaly.type} at ${timeStr}`;
+        } else {
+          document.getElementById('last-anomaly').textContent = 'None';
+        }
+      }
+
+      function showAnomalyAlert(anomaly) {
+        const alertElement = document.getElementById('anomaly-alert');
+        const titleElement = document.getElementById('alert-title');
+        const detailsElement = document.getElementById('alert-details');
+
+        titleElement.textContent = `${anomaly.severity} ${anomaly.type} Detected`;
+        
+        detailsElement.innerHTML = `
+          <div>Position: (${anomaly.position[0]}, ${anomaly.position[1]})</div>
+          <div>Confidence: ${(anomaly.confidence * 100).toFixed(1)}%</div>
+          <div>Time: ${new Date(anomaly.timestamp).toLocaleTimeString()}</div>
+          <div>Description: ${anomaly.description}</div>
+        `;
+
+        // Add critical class for high severity anomalies
+        if (anomaly.severity === 'CRITICAL') {
+          alertElement.classList.add('critical');
+        } else {
+          alertElement.classList.remove('critical');
+        }
+
+        alertElement.style.display = 'block';
+
+        // Auto-hide after 10 seconds for non-critical anomalies
+        if (anomaly.severity !== 'CRITICAL') {
+          setTimeout(() => {
+            hideAnomalyAlert();
+          }, 10000);
+        }
+      }
+
+      function hideAnomalyAlert() {
+        const alertElement = document.getElementById('anomaly-alert');
+        alertElement.style.display = 'none';
+        alertElement.classList.remove('critical');
+      }
+
+      // Initialize anomaly data on page load and refresh every 5 seconds
+      document.addEventListener('DOMContentLoaded', function() {
+        requestAnomalyData();
+      });
+      setInterval(requestAnomalyData, 5000);
     </script>
   </body>
 </html>
