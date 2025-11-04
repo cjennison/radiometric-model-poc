@@ -5,6 +5,7 @@ from .data_stream import DataStreamEngine
 from .visualization import HeatmapVisualizer, AnimatedHeatmapVisualizer
 from .web_visualization import WebVisualizationManager
 from .temperature_tracker import TemperatureTracker
+from .baseline_manager import BaselineDataManager
 
 __all__ = [
     "SunSimulator",
@@ -13,4 +14,5 @@ __all__ = [
     "AnimatedHeatmapVisualizer",
     "WebVisualizationManager",
     "TemperatureTracker",
+    "BaselineDataManager",
 ]

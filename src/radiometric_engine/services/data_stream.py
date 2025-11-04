@@ -17,6 +17,7 @@ from ..models import RadiometricFrame
 from ..config import settings
 from .sun_simulator import SunSimulator
 from .temperature_tracker import TemperatureTracker
+from .baseline_manager import BaselineDataManager
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +60,9 @@ class DataStreamEngine:
         
         # Temperature tracking for daily pattern visualization
         self.temperature_tracker = TemperatureTracker(sample_interval_minutes=1.0)
+        
+        # Baseline data management for anomaly detection
+        self.baseline_manager = BaselineDataManager(bucket_minutes=5)
         
         # Streaming state
         self._is_streaming = False
@@ -231,6 +235,9 @@ class DataStreamEngine:
                 mean_temp = float(np.mean(frame.data))
                 self.temperature_tracker.update(simulated_time, mean_temp)
                 
+                # Collect baseline data if enabled
+                self.baseline_manager.collect_frame_data(simulated_time, frame.data)
+                
                 # Add to queue (non-blocking)
                 try:
                     self._frame_queue.put_nowait(frame)
@@ -328,6 +335,75 @@ class DataStreamEngine:
         """Reset the temperature tracking data (useful for testing)."""
         self.temperature_tracker.force_reset()
         logger.info("Temperature tracking data reset")
+    
+    # Baseline Data Management Methods
+    
+    def start_baseline_collection(self, description: str = "Baseline data collection") -> int:
+        """
+        Start collecting baseline data for anomaly detection.
+        
+        Args:
+            description: Description of the collection session
+            
+        Returns:
+            Session ID for this collection session
+        """
+        session_id = self.baseline_manager.start_collection(description)
+        logger.info(f"Started baseline collection session: {session_id}")
+        return session_id
+    
+    def stop_baseline_collection(self, session_id: int = None) -> dict:
+        """
+        Stop baseline data collection.
+        
+        Args:
+            session_id: Session ID to stop (if None, stops any active collection)
+            
+        Returns:
+            Collection statistics
+        """
+        if session_id is None:
+            # Stop any active collection
+            stats = self.baseline_manager.stop_all_collections()
+        else:
+            stats = self.baseline_manager.stop_collection(session_id)
+        logger.info(f"Stopped baseline collection session: {session_id}")
+        return stats
+    
+    def get_baseline_stats(self) -> dict:
+        """
+        Get baseline data collection statistics.
+        
+        Returns:
+            Dictionary with baseline statistics
+        """
+        return self.baseline_manager.get_baseline_stats()
+    
+    def is_collecting_baseline(self) -> bool:
+        """Check if baseline data collection is currently active."""
+        return self.baseline_manager.is_collecting()
+    
+    def get_baseline_for_time(self, target_time: datetime) -> Optional[dict]:
+        """
+        Get baseline data for a specific time.
+        
+        Args:
+            target_time: Time to get baseline for
+            
+        Returns:
+            Baseline data dictionary or None if no data available
+        """
+        bucket_id = self.baseline_manager.get_time_bucket_id(target_time)
+        baseline_data = self.baseline_manager.get_baseline_data(bucket_id)
+        
+        if baseline_data:
+            return {
+                'bucket_id': bucket_id,
+                'time_bucket': f"{target_time.hour:02d}:{target_time.minute//5*5:02d}-{target_time.hour:02d}:{(target_time.minute//5*5+5)%60:02d}",
+                'grid_points': len(baseline_data),
+                'data': baseline_data
+            }
+        return None
 
     def __enter__(self):
         """Context manager entry."""

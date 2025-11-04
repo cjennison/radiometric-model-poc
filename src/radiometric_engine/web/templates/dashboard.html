@@ -320,6 +320,68 @@
         font-style: italic;
       }
 
+      /* Baseline Data Collection Styles */
+      .baseline-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px;
+        background: #1a1a1a;
+        border-radius: 5px;
+        border-left: 4px solid #666;
+      }
+
+      .baseline-status.collecting {
+        border-left-color: #4CAF50;
+        background: rgba(76, 175, 80, 0.1);
+      }
+
+      .status-indicator {
+        font-size: 14px;
+        line-height: 1;
+      }
+
+      .baseline-start {
+        background: linear-gradient(135deg, #4CAF50, #45a049);
+        border: none;
+      }
+
+      .baseline-start:hover {
+        background: linear-gradient(135deg, #45a049, #3d8b40);
+      }
+
+      .baseline-stop {
+        background: linear-gradient(135deg, #f44336, #da190b);
+        border: none;
+      }
+
+      .baseline-stop:hover {
+        background: linear-gradient(135deg, #da190b, #c7170a);
+      }
+
+      .baseline-stats {
+        background: #1a1a1a;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 10px;
+      }
+
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .stat-label {
+        color: #ccc;
+      }
+
+      .stat-value {
+        color: #4CAF50;
+        font-weight: bold;
+      }
+
       @media (max-width: 768px) {
         .container {
           flex-direction: column;
@@ -435,6 +497,41 @@
             <button class="btn primary" onclick="resetTime()">
               🔄 Reset Time
             </button>
+          </div>
+
+          <h3 class="panel-title">Baseline Data Collection</h3>
+          
+          <div class="control-group">
+            <div class="baseline-status" id="baseline-status">
+              <span class="status-indicator" id="baseline-indicator">⚪</span>
+              <span id="baseline-status-text">Not collecting</span>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <button class="btn baseline-start" id="baseline-start-btn" onclick="startBaseline()">
+              📊 Start Baseline Collection
+            </button>
+            <button class="btn baseline-stop" id="baseline-stop-btn" onclick="stopBaseline()" style="display: none;">
+              ⏹️ Stop Collection
+            </button>
+          </div>
+          
+          <div class="control-group">
+            <div class="baseline-stats" id="baseline-stats">
+              <div class="stat-row">
+                <span class="stat-label">Buckets Populated:</span>
+                <span class="stat-value" id="baseline-buckets">0/288</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Completion:</span>
+                <span class="stat-value" id="baseline-completion">0%</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Total Samples:</span>
+                <span class="stat-value" id="baseline-samples">0</span>
+              </div>
+            </div>
           </div>
 
           <div class="control-group">
@@ -941,8 +1038,146 @@
       // Request initial statistics
       setTimeout(requestStats, 1000);
 
+      // Baseline Data Collection Functions
+      let currentBaselineSessionId = null;
+
+      function startBaseline() {
+        fetch('/api/baseline/start', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            description: 'Web interface baseline collection'
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'started') {
+            currentBaselineSessionId = data.session_id;
+            updateBaselineUI(true);
+            console.log('Baseline collection started, session ID:', data.session_id);
+          } else {
+            console.error('Failed to start baseline collection:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error starting baseline collection:', error);
+        });
+      }
+
+      function stopBaseline() {
+        const requestBody = {};
+        if (currentBaselineSessionId) {
+          requestBody.session_id = currentBaselineSessionId;
+        }
+
+        fetch('/api/baseline/stop', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'stopped') {
+            currentBaselineSessionId = null;
+            updateBaselineUI(false);
+            console.log('Baseline collection stopped');
+            // Refresh baseline stats
+            requestBaselineStats();
+          } else {
+            console.error('Failed to stop baseline collection:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error stopping baseline collection:', error);
+        });
+      }
+
+      function updateBaselineUI(isCollecting) {
+        const statusElement = document.getElementById('baseline-status');
+        const indicatorElement = document.getElementById('baseline-indicator');
+        const statusTextElement = document.getElementById('baseline-status-text');
+        const startBtn = document.getElementById('baseline-start-btn');
+        const stopBtn = document.getElementById('baseline-stop-btn');
+
+        if (isCollecting) {
+          statusElement.classList.add('collecting');
+          indicatorElement.textContent = '🟢';
+          statusTextElement.textContent = 'Collecting baseline data...';
+          startBtn.style.display = 'none';
+          stopBtn.style.display = 'inline-block';
+        } else {
+          statusElement.classList.remove('collecting');
+          indicatorElement.textContent = '⚪';
+          statusTextElement.textContent = 'Not collecting';
+          startBtn.style.display = 'inline-block';
+          stopBtn.style.display = 'none';
+        }
+      }
+
+      function requestBaselineStats() {
+        fetch('/api/baseline/stats')
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              updateBaselineStats(data.stats);
+              // Update collection status if provided
+              if (data.is_collecting !== undefined) {
+                updateBaselineUI(data.is_collecting);
+              }
+            } else {
+              console.error('Error fetching baseline stats:', data.message);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching baseline stats:', error);
+          });
+      }
+
+      function updateBaselineStats(stats) {
+        const statsContainer = document.getElementById('baseline-stats');
+        
+        // Calculate some derived metrics
+        const totalDays = Math.floor(stats.populated_buckets / 288); // 288 buckets per day
+        const coveragePercent = stats.completion_percentage || 0;
+        
+        statsContainer.innerHTML = `
+          <div class="stat-row">
+            <span class="stat-label">Total Days:</span>
+            <span class="stat-value">${totalDays}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Data Points:</span>
+            <span class="stat-value">${stats.total_frames || 0}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Time Buckets:</span>
+            <span class="stat-value">${stats.populated_buckets || 0}/${stats.total_buckets || 0}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Coverage:</span>
+            <span class="stat-value">${coveragePercent.toFixed(1)}%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Grid Points:</span>
+            <span class="stat-value">${stats.total_grid_points || 0}</span>
+          </div>
+        `;
+      }
+
+      // Initialize baseline stats on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        requestBaselineStats();
+      });
+
       // Auto-refresh statistics every 5 seconds
       setInterval(requestStats, 5000);
+
+      // Auto-refresh baseline stats every 10 seconds
+      setInterval(requestBaselineStats, 10000);
     </script>
   </body>
 </html>

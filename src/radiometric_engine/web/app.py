@@ -19,9 +19,9 @@ import numpy as np
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO, emit
 
-from ..services import DataStreamEngine
-from ..services.visualization import WebVisualizationManager
-from ..models import RadiometricFrame
+from src.radiometric_engine.services import DataStreamEngine
+from src.radiometric_engine.services.visualization import WebVisualizationManager
+from src.radiometric_engine.models import RadiometricFrame
 
 # Global variables for web app state
 data_stream: Optional[DataStreamEngine] = None
@@ -298,6 +298,67 @@ def _register_routes(app: Flask) -> None:
             
         except Exception as e:
             return jsonify({'status': 'error', 'message': f'Error resetting time: {e}'})
+    
+    # Baseline Data Management API Routes
+    
+    @app.route('/api/baseline/start', methods=['POST'])
+    def start_baseline_collection():
+        """Start baseline data collection."""
+        try:
+            data = request.get_json() or {}
+            description = data.get('description', 'Web interface baseline collection')
+            
+            if data_stream:
+                session_id = data_stream.start_baseline_collection(description)
+                return jsonify({
+                    'status': 'started', 
+                    'message': 'Baseline collection started',
+                    'session_id': session_id
+                })
+            
+            return jsonify({'status': 'error', 'message': 'Data stream not available'})
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Error starting baseline collection: {e}'})
+    
+    @app.route('/api/baseline/stop', methods=['POST'])
+    def stop_baseline_collection():
+        """Stop baseline data collection."""
+        try:
+            data = request.get_json() or {}
+            session_id = data.get('session_id')
+            
+            if data_stream:
+                # Pass session_id if provided, otherwise stop all collections
+                stats = data_stream.stop_baseline_collection(session_id)
+                return jsonify({
+                    'status': 'stopped',
+                    'message': 'Baseline collection stopped',
+                    'stats': stats
+                })
+            
+            return jsonify({'status': 'error', 'message': 'Data stream not available'})
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Error stopping baseline collection: {e}'})
+    
+    @app.route('/api/baseline/stats')
+    def get_baseline_stats():
+        """Get baseline data statistics."""
+        try:
+            if data_stream:
+                stats = data_stream.get_baseline_stats()
+                is_collecting = data_stream.is_collecting_baseline()
+                return jsonify({
+                    'status': 'success',
+                    'stats': stats,
+                    'is_collecting': is_collecting
+                })
+            
+            return jsonify({'status': 'error', 'message': 'Data stream not available'})
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': f'Error getting baseline stats: {e}'})
     
     @app.route('/api/current_frame')
     def get_current_frame():

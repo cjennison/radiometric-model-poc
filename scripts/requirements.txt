@@ -1,0 +1,3 @@
+# Additional requirements for baseline verification script
+pandas>=1.5.0
+matplotlib>=3.5.0

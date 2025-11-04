@@ -168,3 +168,5 @@ radiometric_engine.log
 # Temporary files
 *.tmp
 *.temp
+
+baseline_data.db
