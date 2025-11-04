@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radiometric Engine - Professional Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script> -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Modern Color Palette */
+        --primary-color: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-light: #3b82f6;
+        --secondary-color: #0f172a;
+        --background: #0f172a;
+        --surface: #1e293b;
+        --surface-light: #334155;
+        --surface-hover: #475569;
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #64748b;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #06b6d4;
+
+        /* Spacing */
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-2xl: 3rem;
+
+        /* Border Radius */
+        --radius-sm: 0.375rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+        --radius-xl: 1rem;
+
+        /* Shadows */
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+          0 8px 10px -6px rgb(0 0 0 / 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: var(--background);
+        color: var(--text-primary);
+        line-height: 1.6;
+        font-size: 14px;
+      }
+
+      /* Typography */
+      .text-xs {
+        font-size: 0.75rem;
+      }
+      .text-sm {
+        font-size: 0.875rem;
+      }
+      .text-base {
+        font-size: 1rem;
+      }
+      .text-lg {
+        font-size: 1.125rem;
+      }
+      .text-xl {
+        font-size: 1.25rem;
+      }
+      .text-2xl {
+        font-size: 1.5rem;
+      }
+      .text-3xl {
+        font-size: 1.875rem;
+      }
+
+      .font-light {
+        font-weight: 300;
+      }
+      .font-normal {
+        font-weight: 400;
+      }
+      .font-medium {
+        font-weight: 500;
+      }
+      .font-semibold {
+        font-weight: 600;
+      }
+      .font-bold {
+        font-weight: 700;
+      }
+
+      /* Header */
+      .header {
+        background: linear-gradient(
+          135deg,
+          var(--surface) 0%,
+          var(--surface-light) 100%
+        );
+        border-bottom: 1px solid var(--surface-light);
+        padding: var(--spacing-lg) var(--spacing-xl);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
+      }
+
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: between;
+      }
+
+      .header-title {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .header-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--primary-light)
+        );
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+      }
+
+      .header h1 {
+        font-size: var(--spacing-xl);
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .header-subtitle {
+        color: var(--text-secondary);
+        font-size: var(--text-sm);
+        margin-top: var(--spacing-xs);
+      }
+
+      /* Status Indicator */
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-left: auto;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--success);
+        animation: pulse-dot 2s infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Main Layout */
+      .main-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: var(--spacing-xl);
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: var(--spacing-xl);
+      }
+
+      /* Cards */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--surface-light);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-xl);
+        box-shadow: var(--shadow-lg);
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: between;
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-md);
+        border-bottom: 1px solid var(--surface-light);
+      }
+
+      .card-title {
+        font-size: var(--text-lg);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      .card-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+      }
+
+      /* Visualization Panel */
+      .visualization-panel {
+        grid-column: 1;
+      }
+
+      .heatmap-container {
+        background: var(--secondary-color);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        text-align: center;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .heatmap-image {
+        max-width: 100%;
+        max-height: 600px;
+        border-radius: var(--radius-md);
+        transition: opacity 0.3s ease;
+      }
+
+      .heatmap-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--surface-light);
+        border-top: 3px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Time Display */
+      .time-display {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--primary-dark)
+        );
+        color: white;
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-lg);
+        text-align: center;
+        margin-top: var(--spacing-lg);
+      }
+
+      .time-display h3 {
+        font-size: var(--text-sm);
+        font-weight: 500;
+        opacity: 0.9;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .time-value {
+        font-size: var(--text-3xl);
+        font-weight: 700;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        grid-column: 2;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xl);
+      }
+
+      /* Stats Grid */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+      }
+
+      .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--surface-light);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        background: var(--surface-hover);
+        transform: translateY(-1px);
+      }
+
+      .stat-value {
+        font-size: var(--text-2xl);
+        font-weight: 700;
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .stat-label {
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .stat-temp {
+        color: var(--danger);
+      }
+      .stat-temp-high {
+        color: var(--warning);
+      }
+      .stat-temp-avg {
+        color: var(--info);
+      }
+      .stat-factor {
+        color: var(--success);
+      }
+
+      /* Form Controls */
+      .form-group {
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .form-label {
+        display: block;
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .form-select,
+      .form-input {
+        width: 100%;
+        background: var(--secondary-color);
+        border: 1px solid var(--surface-light);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        color: var(--text-primary);
+        font-size: var(--text-sm);
+        transition: all 0.3s ease;
+      }
+
+      .form-select:focus,
+      .form-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .form-select option {
+        background: var(--surface);
+        color: var(--text-primary);
+      }
+
+      /* Range Slider */
+      .range-container {
+        position: relative;
+        margin: var(--spacing-md) 0;
+      }
+
+      .range-slider {
+        width: 100%;
+        height: 6px;
+        background: var(--surface-light);
+        border-radius: 3px;
+        outline: none;
+        appearance: none;
+      }
+
+      .range-slider::-webkit-slider-thumb {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .range-slider::-webkit-slider-thumb:hover {
+        background: var(--primary-light);
+        transform: scale(1.1);
+      }
+
+      .range-value {
+        position: absolute;
+        right: 0;
+        top: -30px;
+        background: var(--primary-color);
+        color: white;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--radius-sm);
+        font-size: var(--text-xs);
+        font-weight: 500;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md) var(--spacing-lg);
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        justify-content: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--primary-dark)
+        );
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(
+          135deg,
+          var(--primary-light),
+          var(--primary-color)
+        );
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .btn-secondary {
+        background: var(--surface-light);
+        color: var(--text-primary);
+        border: 1px solid var(--surface-hover);
+      }
+
+      .btn-secondary:hover {
+        background: var(--surface-hover);
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, var(--danger), #dc2626);
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: linear-gradient(135deg, #f87171, var(--danger));
+        transform: translateY(-1px);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: linear-gradient(135deg, #34d399, var(--success));
+        transform: translateY(-1px);
+      }
+
+      .btn-full {
+        width: 100%;
+      }
+
+      .btn-small {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--text-xs);
+      }
+
+      /* Alerts */
+      .alert {
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--spacing-lg);
+        border-left: 4px solid;
+      }
+
+      .alert-danger {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: var(--danger);
+        color: #fca5a5;
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: var(--success);
+        color: #6ee7b7;
+      }
+
+      .alert-info {
+        background: rgba(6, 182, 212, 0.1);
+        border-color: var(--info);
+        color: #67e8f9;
+      }
+
+      /* Anomaly Status */
+      .anomaly-status {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-md);
+        margin: var(--spacing-lg) 0;
+      }
+
+      .anomaly-type {
+        text-align: center;
+        padding: var(--spacing-md);
+        background: var(--secondary-color);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--surface-light);
+      }
+
+      .anomaly-count {
+        font-size: var(--text-xl);
+        font-weight: 700;
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .anomaly-label {
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      /* Chart Container */
+      .chart-container {
+        height: 200px;
+        margin-top: var(--spacing-lg);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .main-container {
+          grid-template-columns: 1fr;
+          gap: var(--spacing-lg);
+        }
+
+        .sidebar {
+          order: -1;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-container {
+          padding: var(--spacing-lg);
+        }
+
+        .header {
+          padding: var(--spacing-md) var(--spacing-lg);
+        }
+
+        .header h1 {
+          font-size: var(--text-xl);
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .card {
+          padding: var(--spacing-lg);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .main-container {
+          padding: var(--spacing-md);
+          gap: var(--spacing-md);
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .anomaly-status {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Loading States */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+      }
+
+      .loading-content {
+        text-align: center;
+      }
+
+      /* Notification Toast */
+      .toast {
+        position: fixed;
+        top: var(--spacing-xl);
+        right: var(--spacing-xl);
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-lg);
+        color: white;
+        font-weight: 500;
+        box-shadow: var(--shadow-xl);
+        z-index: 1000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      .toast-success {
+        background: var(--success);
+      }
+      .toast-error {
+        background: var(--danger);
+      }
+      .toast-info {
+        background: var(--info);
+      }
+
+      /* Utility Classes */
+      .hidden {
+        display: none;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .mb-4 {
+        margin-bottom: var(--spacing-lg);
+      }
+      .mt-4 {
+        margin-top: var(--spacing-lg);
+      }
+      .flex {
+        display: flex;
+      }
+      .flex-between {
+        justify-content: space-between;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .gap-2 {
+        gap: var(--spacing-sm);
+      }
+      .gap-4 {
+        gap: var(--spacing-lg);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="header-title">
+          <div class="header-icon">
+            <i class="fas fa-radiation"></i>
+          </div>
+          <div>
+            <h1>Radiometric Engine</h1>
+            <p class="header-subtitle">
+              Real-time Thermographic Sun Simulation & Anomaly Detection
+            </p>
+          </div>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span class="text-sm text-secondary">Live</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Visualization Panel -->
+      <div class="visualization-panel">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="card-icon fas fa-eye"></i>
+              Live Radiometric Visualization
+            </h2>
+          </div>
+          <div class="heatmap-container" id="heatmap-container">
+            <div class="heatmap-loading" id="heatmap-loading">
+              <div class="spinner"></div>
+              <p class="text-secondary">Initializing thermal imaging...</p>
+            </div>
+            <img
+              id="heatmap-image"
+              class="heatmap-image hidden"
+              alt="Thermal Image"
+            />
+          </div>
+
+          <!-- Time Display -->
+          <div class="time-display">
+            <h3>Simulated Time of Day</h3>
+            <div class="time-value" id="simulated-time">--:--:--</div>
+          </div>
+        </div>
+
+        <!-- Temperature Chart -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="card-icon fas fa-chart-line"></i>
+              Daily Temperature Pattern
+            </h2>
+          </div>
+          <div class="chart-container">
+            <canvas id="temperature-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- System Statistics -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="card-icon fas fa-tachometer-alt"></i>
+              System Statistics
+            </h2>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value stat-temp" id="min-temp">--</div>
+              <div class="stat-label">Min Temp (K)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value stat-temp-high" id="max-temp">--</div>
+              <div class="stat-label">Max Temp (K)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value stat-temp-avg" id="mean-temp">--</div>
+              <div class="stat-label">Mean Temp (K)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value stat-factor" id="time-factor">--</div>
+              <div class="stat-label">Time Factor</div>
+            </div>
+          </div>
+
+          <!-- Performance Metrics -->
+          <div class="stats-grid mt-4">
+            <div class="stat-card">
+              <div class="stat-value" style="color: var(--success)" id="fps">
+                --
+              </div>
+              <div class="stat-label">FPS</div>
+            </div>
+            <div class="stat-card">
+              <div
+                class="stat-value"
+                style="color: var(--info)"
+                id="frames-generated"
+              >
+                --
+              </div>
+              <div class="stat-label">Frames</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Anomaly Controls -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="card-icon fas fa-fire"></i>
+              Solar Anomaly Controls
+            </h2>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="anomaly-type">Anomaly Type</label>
+            <select id="anomaly-type" class="form-select">
+              <option value="">🎲 Random Selection</option>
+              <option value="sunspot">🌑 Sunspot (Temperature Drop)</option>
+              <option value="flare">☀️ Solar Flare (Temperature Rise)</option>
+              <option value="prominence">
+                🔥 Solar Prominence (Temperature Rise)
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Intensity Control
+              <span class="range-value" id="intensity-value">Auto</span>
+            </label>
+            <div class="range-container">
+              <input
+                type="range"
+                id="anomaly-intensity"
+                class="range-slider"
+                min="0.1"
+                max="2.0"
+                step="0.1"
+              />
+            </div>
+            <button
+              class="btn btn-secondary btn-small"
+              onclick="resetIntensity()"
+            >
+              Reset to Auto
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Size Control
+              <span class="range-value" id="size-value">Auto</span>
+            </label>
+            <div class="range-container">
+              <input
+                type="range"
+                id="anomaly-size"
+                class="range-slider"
+                min="1"
+                max="30"
+                step="1"
+              />
+            </div>
+            <button class="btn btn-secondary btn-small" onclick="resetSize()">
+              Reset to Auto
+            </button>
+          </div>
+
+          <div class="flex gap-2">
+            <button
+              class="btn btn-danger btn-full"
+              onclick="forceAnomalyAdvanced()"
+            >
+              <i class="fas fa-bolt"></i>
+              Force Solar Anomaly
+            </button>
+          </div>
+
+          <button
+            class="btn btn-secondary btn-full mt-4"
+            onclick="getAnomalyTypes()"
+          >
+            <i class="fas fa-info-circle"></i>
+            Anomaly Information
+          </button>
+        </div>
+
+        <!-- Anomaly Status -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="card-icon fas fa-exclamation-triangle"></i>
+              Anomaly Detection
+            </h2>
+          </div>
+
+          <div id="anomaly-alert-container"></div>
+
+          <div class="anomaly-status">
+            <div class="anomaly-type">
+              <div class="anomaly-count" id="sunspot-count">0</div>
+              <div class="anomaly-label">Sunspots</div>
+            </div>
+            <div class="anomaly-type">
+              <div class="anomaly-count" id="flare-count">0</div>
+              <div class="anomaly-label">Solar Flares</div>
+            </div>
+            <div class="anomaly-type">
+              <div class="anomaly-count" id="prominence-count">0</div>
+              <div class="anomaly-label">Prominences</div>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div
+                class="stat-value"
+                style="color: var(--warning)"
+                id="total-anomalies"
+              >
+                0
+              </div>
+              <div class="stat-label">Total Anomalies</div>
+            </div>
+            <div class="stat-card">
+              <div
+                class="stat-value"
+                style="color: var(--danger)"
+                id="critical-anomalies"
+              >
+                0
+              </div>
+              <div class="stat-label">Critical</div>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-secondary btn-full mt-4"
+            onclick="clearAnomalies()"
+          >
+            <i class="fas fa-trash"></i>
+            Clear Anomaly History
+          </button>
+        </div>
+
+        <!-- System Controls -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="card-icon fas fa-cogs"></i>
+              System Controls
+            </h2>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Anomaly Probability: <span id="rate-value">1%</span>
+            </label>
+            <input
+              type="range"
+              id="anomaly-rate"
+              class="range-slider"
+              min="0"
+              max="10"
+              value="1"
+              oninput="updateAnomalyRate(this.value)"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Time Speed: <span id="speed-value">1x</span>
+            </label>
+            <input
+              type="range"
+              id="time-speed"
+              class="range-slider"
+              min="1"
+              max="100"
+              value="1"
+              oninput="updateTimeSpeed(this.value)"
+            />
+          </div>
+
+          <button class="btn btn-primary btn-full" onclick="resetTime()">
+            <i class="fas fa-clock"></i>
+            Reset Time
+          </button>
+        </div>
+
+        <!-- Baseline Data -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="card-icon fas fa-database"></i>
+              Baseline Data Collection
+            </h2>
+          </div>
+
+          <div class="flex items-center gap-2 mb-4">
+            <div class="status-dot" id="baseline-status"></div>
+            <span id="baseline-status-text">Not collecting</span>
+          </div>
+
+          <div class="stats-grid mb-4">
+            <div class="stat-card">
+              <div
+                class="stat-value"
+                style="color: var(--info)"
+                id="data-points"
+              >
+                0
+              </div>
+              <div class="stat-label">Data Points</div>
+            </div>
+            <div class="stat-card">
+              <div
+                class="stat-value"
+                style="color: var(--success)"
+                id="coverage"
+              >
+                0%
+              </div>
+              <div class="stat-label">Coverage</div>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-success btn-full"
+            onclick="startBaselineCollection()"
+          >
+            <i class="fas fa-play"></i>
+            Start Collection
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="loading-content">
+        <div class="spinner"></div>
+        <p class="text-lg mt-4">Processing...</p>
+      </div>
+    </div>
+
+    <script>
+      // Modern JavaScript with better UX
+      class RadiometricDashboard {
+        constructor() {
+          this.socket = io();
+          this.temperatureChart = null;
+          this.isConnected = false;
+          this.init();
+        }
+
+        init() {
+          this.setupSocketHandlers();
+          this.setupEventHandlers();
+          this.initializeChart();
+          this.loadInitialData();
+        }
+
+        setupSocketHandlers() {
+          this.socket.on("connect", () => {
+            this.isConnected = true;
+            this.showToast("Connected to server", "success");
+            this.updateConnectionStatus(true);
+          });
+
+          this.socket.on("disconnect", () => {
+            this.isConnected = false;
+            this.showToast("Disconnected from server", "error");
+            this.updateConnectionStatus(false);
+          });
+
+          this.socket.on("new_frame", (data) => {
+            this.updateVisualization(data);
+            this.updateStats(data.stats);
+            this.updateAnomalies(data.anomaly_detection);
+            this.updateTemperatureChart(data.temperature_graph);
+          });
+        }
+
+        setupEventHandlers() {
+          // Range sliders
+          document
+            .getElementById("anomaly-intensity")
+            .addEventListener("input", (e) => {
+              document.getElementById("intensity-value").textContent =
+                e.target.value;
+            });
+
+          document
+            .getElementById("anomaly-size")
+            .addEventListener("input", (e) => {
+              document.getElementById("size-value").textContent =
+                e.target.value;
+            });
+
+          // Keyboard shortcuts
+          document.addEventListener("keydown", (e) => {
+            if (e.ctrlKey && e.key === "f") {
+              e.preventDefault();
+              this.forceAnomalyAdvanced();
+            }
+          });
+        }
+
+        updateVisualization(data) {
+          const loadingEl = document.getElementById("heatmap-loading");
+          const imageEl = document.getElementById("heatmap-image");
+
+          if (data.image) {
+            imageEl.src = data.image;
+            imageEl.classList.remove("hidden");
+            loadingEl.classList.add("hidden");
+          }
+
+          // Update simulated time
+          if (data.stats.simulated_time) {
+            document.getElementById("simulated-time").textContent =
+              data.stats.simulated_time.time_string;
+          }
+        }
+
+        updateStats(stats) {
+          const elements = {
+            "min-temp": stats.min_temp?.toFixed(1) || "--",
+            "max-temp": stats.max_temp?.toFixed(1) || "--",
+            "mean-temp": stats.mean_temp?.toFixed(1) || "--",
+            "time-factor": stats.time_factor?.toFixed(2) || "--",
+            fps: stats.fps?.toFixed(1) || "--",
+            "frames-generated": stats.frame_count || "--",
+          };
+
+          Object.entries(elements).forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+          });
+        }
+
+        updateAnomalies(anomalyData) {
+          const alertContainer = document.getElementById(
+            "anomaly-alert-container"
+          );
+
+          // Clear existing alerts
+          alertContainer.innerHTML = "";
+
+          // Show recent critical anomalies
+          if (anomalyData.recent_anomalies) {
+            const criticalAnomalies = anomalyData.recent_anomalies
+              .filter((a) => a.severity === "CRITICAL")
+              .slice(0, 3);
+
+            criticalAnomalies.forEach((anomaly) => {
+              const alertEl = document.createElement("div");
+              alertEl.className = "alert alert-danger";
+              alertEl.innerHTML = `
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div>
+                                    <strong>CRITICAL ${
+                                      anomaly.type
+                                    }</strong><br>
+                                    Position: (${anomaly.position[0]}, ${
+                anomaly.position[1]
+              })<br>
+                                    Confidence: ${(
+                                      anomaly.confidence * 100
+                                    ).toFixed(1)}%
+                                </div>
+                            </div>
+                        `;
+              alertContainer.appendChild(alertEl);
+            });
+          }
+
+          // Update counters
+          const summary = anomalyData.summary || {};
+          document.getElementById("total-anomalies").textContent =
+            summary.total_count || 0;
+          document.getElementById("critical-anomalies").textContent =
+            summary.critical_count || 0;
+
+          // Update type-specific counts
+          const typeCounts = summary.by_type || {};
+          document.getElementById("sunspot-count").textContent =
+            typeCounts.sunspot || 0;
+          document.getElementById("flare-count").textContent =
+            typeCounts.flare || 0;
+          document.getElementById("prominence-count").textContent =
+            typeCounts.prominence || 0;
+        }
+
+        initializeChart() {
+          const ctx = document
+            .getElementById("temperature-chart")
+            .getContext("2d");
+          this.temperatureChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              datasets: [
+                {
+                  label: "Mean Temperature",
+                  data: [], // Will contain {x: time_of_day, y: temperature} objects
+                  borderColor: "#ef4444",
+                  backgroundColor: "rgba(239, 68, 68, 0.1)",
+                  borderWidth: 2,
+                  tension: 0,
+                  fill: false,
+                  spanGaps: false,
+                  pointRadius: 4,
+                  pointHoverRadius: 6,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  labels: { color: "#f8fafc" },
+                },
+                tooltip: {
+                  mode: "index",
+                  intersect: false,
+                  titleColor: "#f8fafc",
+                  bodyColor: "#f8fafc",
+                  backgroundColor: "rgba(0,0,0,0.8)",
+                },
+              },
+              scales: {
+                x: {
+                  type: "linear",
+                  position: "bottom",
+                  title: {
+                    display: true,
+                    text: "Time of Day",
+                    color: "#cbd5e1",
+                  },
+                  grid: { color: "rgba(203, 213, 225, 0.1)" },
+                  ticks: {
+                    color: "#94a3b8",
+                    callback: function (value, index, values) {
+                      const hour = Math.floor(value);
+                      const min = Math.round((value - hour) * 60);
+                      return `${hour.toString().padStart(2, "0")}:${min
+                        .toString()
+                        .padStart(2, "0")}`;
+                    },
+                    stepSize: 2,
+                  },
+                  min: 0,
+                  max: 24,
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Temperature (K)",
+                    color: "#cbd5e1",
+                  },
+                  grid: { color: "rgba(203, 213, 225, 0.1)" },
+                  ticks: { color: "#94a3b8" },
+                },
+              },
+              elements: {
+                point: {
+                  radius: 3,
+                  hoverRadius: 6,
+                },
+              },
+            },
+          });
+        }
+
+        updateTemperatureChart(data) {
+          if (!data || !this.temperatureChart) return;
+
+          // Handle the actual temperature graph data structure from the backend
+          if (data.daily_data) {
+            // Use x,y coordinate format for sparse data
+            const dataPoints = data.daily_data.map((point) => ({
+              x: point.time_of_day,
+              y: point.temperature,
+            }));
+
+            this.temperatureChart.data.datasets[0].data = dataPoints;
+
+            // Update Y-axis range if we have temperature range data
+            if (data.temperature_range) {
+              const [minTemp, maxTemp] = data.temperature_range;
+              this.temperatureChart.options.scales.y.min = minTemp;
+              this.temperatureChart.options.scales.y.max = maxTemp;
+            }
+
+            // Force chart update with animation
+            this.temperatureChart.update('active');
+          }
+          // Fallback for simple times/temperatures arrays
+          else if (data.times && data.temperatures) {
+            const dataPoints = data.times.map((time, index) => ({
+              x: parseFloat(time),
+              y: data.temperatures[index],
+            }));
+
+            this.temperatureChart.data.datasets[0].data = dataPoints;
+            this.temperatureChart.update('active');
+          }
+        }
+
+        updateConnectionStatus(connected) {
+          const statusDot = document.querySelector(".status-dot");
+          const statusText = document.querySelector(".status-indicator span");
+
+          if (connected) {
+            statusDot.style.background = "var(--success)";
+            statusText.textContent = "Live";
+          } else {
+            statusDot.style.background = "var(--danger)";
+            statusText.textContent = "Disconnected";
+          }
+        }
+
+        showToast(message, type = "info") {
+          const toast = document.createElement("div");
+          toast.className = `toast toast-${type}`;
+          toast.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-${
+                          type === "success"
+                            ? "check"
+                            : type === "error"
+                            ? "times"
+                            : "info"
+                        }"></i>
+                        ${message}
+                    </div>
+                `;
+
+          document.body.appendChild(toast);
+
+          // Show toast
+          setTimeout(() => toast.classList.add("show"), 100);
+
+          // Hide toast
+          setTimeout(() => {
+            toast.classList.remove("show");
+            setTimeout(() => toast.remove(), 300);
+          }, 3000);
+        }
+
+        showLoading(show = true) {
+          const overlay = document.getElementById("loading-overlay");
+          if (show) {
+            overlay.classList.remove("hidden");
+          } else {
+            overlay.classList.add("hidden");
+          }
+        }
+
+        async loadInitialData() {
+          try {
+            const response = await fetch("/api/stats");
+            const data = await response.json();
+            // Handle initial data
+          } catch (error) {
+            console.error("Failed to load initial data:", error);
+          }
+        }
+
+        // API Methods
+        async forceAnomalyAdvanced() {
+          const type = document.getElementById("anomaly-type").value || null;
+          const intensity =
+            document.getElementById("anomaly-intensity").value || null;
+          const size = document.getElementById("anomaly-size").value || null;
+
+          const payload = {};
+          if (type) payload.type = type;
+          if (intensity) payload.intensity = parseFloat(intensity);
+          if (size) payload.size = parseFloat(size);
+
+          try {
+            this.showLoading(true);
+            const response = await fetch("/api/force_anomaly", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+              this.showToast(`Anomaly forced: ${data.anomaly_type}`, "success");
+            } else {
+              this.showToast(`Error: ${data.message}`, "error");
+            }
+          } catch (error) {
+            this.showToast("Failed to force anomaly", "error");
+          } finally {
+            this.showLoading(false);
+          }
+        }
+
+        async getAnomalyTypes() {
+          try {
+            const response = await fetch("/api/anomaly_types");
+            const data = await response.json();
+
+            if (data.status === "success") {
+              let info = "Available Solar Anomaly Types:\\n\\n";
+              data.anomaly_types.forEach((type) => {
+                info += `${type.name} (${type.type}):\\n`;
+                info += `  • ${type.description}\\n`;
+                info += `  • ${type.effect}\\n`;
+                info += `  • Probability: ${type.probability}\\n\\n`;
+              });
+              alert(info);
+            }
+          } catch (error) {
+            this.showToast("Failed to get anomaly types", "error");
+          }
+        }
+
+        async clearAnomalies() {
+          try {
+            const response = await fetch("/api/anomalies/clear", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+              this.showToast("Anomaly history cleared", "success");
+            } else {
+              this.showToast(`Error: ${data.message}`, "error");
+            }
+          } catch (error) {
+            this.showToast("Failed to clear anomalies", "error");
+          }
+        }
+
+        async startBaselineCollection() {
+          try {
+            const response = await fetch("/api/baseline/start", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                description: "Dashboard baseline collection",
+              }),
+            });
+
+            const data = await response.json();
+
+            if (data.status === "started") {
+              this.showToast("Baseline collection started", "success");
+              this.updateBaselineStatus(true);
+            } else {
+              this.showToast(`Error: ${data.message}`, "error");
+            }
+          } catch (error) {
+            this.showToast("Failed to start baseline collection", "error");
+          }
+        }
+
+        updateBaselineStatus(collecting) {
+          const statusDot = document.getElementById("baseline-status");
+          const statusText = document.getElementById("baseline-status-text");
+
+          if (collecting) {
+            statusDot.style.background = "var(--success)";
+            statusText.textContent = "Collecting";
+          } else {
+            statusDot.style.background = "var(--text-muted)";
+            statusText.textContent = "Not collecting";
+          }
+        }
+      }
+
+      // Global functions for backward compatibility
+      function updateAnomalyRate(value) {
+        const rate = value / 100.0;
+        document.getElementById("rate-value").textContent = value + "%";
+
+        fetch("/api/set_anomaly_rate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rate }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              dashboard.showToast("Anomaly rate updated", "success");
+            }
+          });
+      }
+
+      function updateTimeSpeed(value) {
+        document.getElementById("speed-value").textContent = value + "x";
+
+        fetch("/api/set_time_speed", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ speed: parseInt(value) }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              dashboard.showToast("Time speed updated", "success");
+            }
+          });
+      }
+
+      function resetTime() {
+        fetch("/api/reset_time", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              dashboard.showToast("Time reset successfully", "success");
+            }
+          });
+      }
+
+      function resetIntensity() {
+        const slider = document.getElementById("anomaly-intensity");
+        slider.value = "";
+        document.getElementById("intensity-value").textContent = "Auto";
+      }
+
+      function resetSize() {
+        const slider = document.getElementById("anomaly-size");
+        slider.value = "";
+        document.getElementById("size-value").textContent = "Auto";
+      }
+
+      // Expose functions
+      window.forceAnomalyAdvanced = () => dashboard.forceAnomalyAdvanced();
+      window.getAnomalyTypes = () => dashboard.getAnomalyTypes();
+      window.clearAnomalies = () => dashboard.clearAnomalies();
+      window.startBaselineCollection = () =>
+        dashboard.startBaselineCollection();
+
+      // Initialize dashboard when page loads
+      let dashboard;
+      document.addEventListener("DOMContentLoaded", () => {
+        dashboard = new RadiometricDashboard();
+      });
+    </script>
+  </body>
+</html>

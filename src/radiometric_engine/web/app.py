@@ -242,6 +242,11 @@ def _register_routes(app: Flask) -> None:
     @app.route('/')
     def index():
         """Main dashboard page."""
+        return render_template('dashboard_new.html')
+    
+    @app.route('/old')
+    def old_dashboard():
+        """Legacy dashboard page."""
         return render_template('dashboard.html')
     
     @app.route('/api/stats')
