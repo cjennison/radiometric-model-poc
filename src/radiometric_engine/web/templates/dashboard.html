@@ -89,12 +89,10 @@
         max-width: 100%;
         max-height: 600px;
         border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        transition: opacity 0.3s ease-in-out;
       }
 
       #heatmap-image.updating {
-        opacity: 0.7;
+        opacity: 1;
       }
 
       .loading {
@@ -258,13 +256,6 @@
         color: white;
       }
 
-      .timestamp {
-        text-align: center;
-        margin-top: 10px;
-        font-size: 0.9em;
-        opacity: 0.7;
-      }
-
       .simulation-time {
         text-align: center;
         margin-top: 15px;
@@ -288,12 +279,6 @@
         color: #f39c12;
         margin-bottom: 5px;
         font-family: "Courier New", monospace;
-      }
-
-      .sim-time-description {
-        font-size: 1.1em;
-        color: #3498db;
-        font-weight: 600;
       }
 
       .temperature-graph-panel {
@@ -332,7 +317,7 @@
       }
 
       .baseline-status.collecting {
-        border-left-color: #4CAF50;
+        border-left-color: #4caf50;
         background: rgba(76, 175, 80, 0.1);
       }
 
@@ -342,7 +327,7 @@
       }
 
       .baseline-start {
-        background: linear-gradient(135deg, #4CAF50, #45a049);
+        background: linear-gradient(135deg, #4caf50, #45a049);
         border: none;
       }
 
@@ -404,13 +389,23 @@
       }
 
       @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 10px rgba(231, 76, 60, 0.5); }
-        50% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.8); }
+        0%,
+        100% {
+          box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+        50% {
+          box-shadow: 0 0 20px rgba(231, 76, 60, 0.8);
+        }
       }
 
       @keyframes critical-flash {
-        0%, 100% { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-        50% { background: linear-gradient(135deg, #ff0000, #e74c3c); }
+        0%,
+        100% {
+          background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        50% {
+          background: linear-gradient(135deg, #ff0000, #e74c3c);
+        }
       }
 
       .stat-row {
@@ -425,7 +420,7 @@
       }
 
       .stat-value {
-        color: #4CAF50;
+        color: #4caf50;
         font-weight: bold;
       }
 
@@ -463,9 +458,7 @@
         <div class="simulation-time" id="simulation-time">
           <div class="sim-time-label">Simulated Time of Day</div>
           <div class="sim-time-value" id="sim-time-display">--:--</div>
-          <div class="sim-time-description" id="sim-time-description">--</div>
         </div>
-        <div class="timestamp" id="timestamp"></div>
       </div>
 
       <div class="control-panel">
@@ -547,23 +540,32 @@
           </div>
 
           <h3 class="panel-title">Baseline Data Collection</h3>
-          
+
           <div class="control-group">
             <div class="baseline-status" id="baseline-status">
               <span class="status-indicator" id="baseline-indicator">⚪</span>
               <span id="baseline-status-text">Not collecting</span>
             </div>
           </div>
-          
+
           <div class="control-group">
-            <button class="btn baseline-start" id="baseline-start-btn" onclick="startBaseline()">
+            <button
+              class="btn baseline-start"
+              id="baseline-start-btn"
+              onclick="startBaseline()"
+            >
               📊 Start Baseline Collection
             </button>
-            <button class="btn baseline-stop" id="baseline-stop-btn" onclick="stopBaseline()" style="display: none;">
+            <button
+              class="btn baseline-stop"
+              id="baseline-stop-btn"
+              onclick="stopBaseline()"
+              style="display: none"
+            >
               ⏹️ Stop Collection
             </button>
           </div>
-          
+
           <div class="control-group">
             <div class="baseline-stats" id="baseline-stats">
               <div class="stat-row">
@@ -606,18 +608,20 @@
               </div>
             </div>
           </div>
-          
+
           <div class="control-group">
             <button class="btn danger" onclick="clearAnomalies()">
               🗑️ Clear Anomaly History
             </button>
           </div>
-          
+
           <div class="control-group">
-            <div class="anomaly-alert" id="anomaly-alert" style="display: none;">
+            <div class="anomaly-alert" id="anomaly-alert" style="display: none">
               <div class="alert-header">
                 <span class="alert-icon">⚠️</span>
-                <span class="alert-title" id="alert-title">Anomaly Detected</span>
+                <span class="alert-title" id="alert-title"
+                  >Anomaly Detected</span
+                >
               </div>
               <div class="alert-details" id="alert-details">
                 <!-- Anomaly details will be populated here -->
@@ -715,22 +719,27 @@
       socket.on("new_frame", function (data) {
         updateVisualization(data);
         updateStats(data.stats);
-        updateTimestamp(data.timestamp);
         updateAnomalies(data.anomalies);
         updateTemperatureGraph(data.temperature_graph);
-        
+
         // Update anomaly detection display
         if (data.anomaly_detection) {
           updateAnomalyDisplay(data.anomaly_detection.summary);
-          
+
           // Check for new high/critical anomalies
-          if (data.anomaly_detection.recent_anomalies && data.anomaly_detection.recent_anomalies.length > 0) {
-            const latestAnomaly = data.anomaly_detection.recent_anomalies[data.anomaly_detection.recent_anomalies.length - 1];
-            if (['HIGH', 'CRITICAL'].includes(latestAnomaly.severity)) {
+          if (
+            data.anomaly_detection.recent_anomalies &&
+            data.anomaly_detection.recent_anomalies.length > 0
+          ) {
+            const latestAnomaly =
+              data.anomaly_detection.recent_anomalies[
+                data.anomaly_detection.recent_anomalies.length - 1
+              ];
+            if (["HIGH", "CRITICAL"].includes(latestAnomaly.severity)) {
               // Only show alert if this is a new anomaly (within last 2 seconds)
               const anomalyTime = new Date(latestAnomaly.timestamp);
               const now = new Date();
-              if ((now - anomalyTime) < 2000) {
+              if (now - anomalyTime < 2000) {
                 showAnomalyAlert(latestAnomaly);
               }
             }
@@ -792,8 +801,6 @@
             stats.simulated_time.time_string;
           document.getElementById("sim-time-display").textContent =
             stats.simulated_time.time_string;
-          document.getElementById("sim-time-description").textContent =
-            stats.simulated_time.description;
         }
       }
 
@@ -812,13 +819,6 @@
         ).toFixed(1);
         document.getElementById("consumers").textContent =
           stats.consumers_count || 0;
-      }
-
-      function updateTimestamp(timestamp) {
-        const date = new Date(timestamp);
-        document.getElementById(
-          "timestamp"
-        ).textContent = `Last updated: ${date.toLocaleTimeString()}`;
       }
 
       function forceAnomaly() {
@@ -1145,28 +1145,34 @@
       let currentBaselineSessionId = null;
 
       function startBaseline() {
-        fetch('/api/baseline/start', {
-          method: 'POST',
+        fetch("/api/baseline/start", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            description: 'Web interface baseline collection'
+            description: "Web interface baseline collection",
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "started") {
+              currentBaselineSessionId = data.session_id;
+              updateBaselineUI(true);
+              console.log(
+                "Baseline collection started, session ID:",
+                data.session_id
+              );
+            } else {
+              console.error(
+                "Failed to start baseline collection:",
+                data.message
+              );
+            }
           })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === 'started') {
-            currentBaselineSessionId = data.session_id;
-            updateBaselineUI(true);
-            console.log('Baseline collection started, session ID:', data.session_id);
-          } else {
-            console.error('Failed to start baseline collection:', data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error starting baseline collection:', error);
-        });
+          .catch((error) => {
+            console.error("Error starting baseline collection:", error);
+          });
       }
 
       function stopBaseline() {
@@ -1175,78 +1181,83 @@
           requestBody.session_id = currentBaselineSessionId;
         }
 
-        fetch('/api/baseline/stop', {
-          method: 'POST',
+        fetch("/api/baseline/stop", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestBody)
+          body: JSON.stringify(requestBody),
         })
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === 'stopped') {
-            currentBaselineSessionId = null;
-            updateBaselineUI(false);
-            console.log('Baseline collection stopped');
-            // Refresh baseline stats
-            requestBaselineStats();
-          } else {
-            console.error('Failed to stop baseline collection:', data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error stopping baseline collection:', error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "stopped") {
+              currentBaselineSessionId = null;
+              updateBaselineUI(false);
+              console.log("Baseline collection stopped");
+              // Refresh baseline stats
+              requestBaselineStats();
+            } else {
+              console.error(
+                "Failed to stop baseline collection:",
+                data.message
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("Error stopping baseline collection:", error);
+          });
       }
 
       function updateBaselineUI(isCollecting) {
-        const statusElement = document.getElementById('baseline-status');
-        const indicatorElement = document.getElementById('baseline-indicator');
-        const statusTextElement = document.getElementById('baseline-status-text');
-        const startBtn = document.getElementById('baseline-start-btn');
-        const stopBtn = document.getElementById('baseline-stop-btn');
+        const statusElement = document.getElementById("baseline-status");
+        const indicatorElement = document.getElementById("baseline-indicator");
+        const statusTextElement = document.getElementById(
+          "baseline-status-text"
+        );
+        const startBtn = document.getElementById("baseline-start-btn");
+        const stopBtn = document.getElementById("baseline-stop-btn");
 
         if (isCollecting) {
-          statusElement.classList.add('collecting');
-          indicatorElement.textContent = '🟢';
-          statusTextElement.textContent = 'Collecting baseline data...';
-          startBtn.style.display = 'none';
-          stopBtn.style.display = 'inline-block';
+          statusElement.classList.add("collecting");
+          indicatorElement.textContent = "🟢";
+          statusTextElement.textContent = "Collecting baseline data...";
+          startBtn.style.display = "none";
+          stopBtn.style.display = "inline-block";
         } else {
-          statusElement.classList.remove('collecting');
-          indicatorElement.textContent = '⚪';
-          statusTextElement.textContent = 'Not collecting';
-          startBtn.style.display = 'inline-block';
-          stopBtn.style.display = 'none';
+          statusElement.classList.remove("collecting");
+          indicatorElement.textContent = "⚪";
+          statusTextElement.textContent = "Not collecting";
+          startBtn.style.display = "inline-block";
+          stopBtn.style.display = "none";
         }
       }
 
       function requestBaselineStats() {
-        fetch('/api/baseline/stats')
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'success') {
+        fetch("/api/baseline/stats")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
               updateBaselineStats(data.stats);
               // Update collection status if provided
               if (data.is_collecting !== undefined) {
                 updateBaselineUI(data.is_collecting);
               }
             } else {
-              console.error('Error fetching baseline stats:', data.message);
+              console.error("Error fetching baseline stats:", data.message);
             }
           })
-          .catch(error => {
-            console.error('Error fetching baseline stats:', error);
+          .catch((error) => {
+            console.error("Error fetching baseline stats:", error);
           });
       }
 
       function updateBaselineStats(stats) {
-        const statsContainer = document.getElementById('baseline-stats');
-        
+        const statsContainer = document.getElementById("baseline-stats");
+
         // Calculate some derived metrics
         const totalDays = Math.floor(stats.populated_buckets / 288); // 288 buckets per day
         const coveragePercent = stats.completion_percentage || 0;
-        
+
         statsContainer.innerHTML = `
           <div class="stat-row">
             <span class="stat-label">Total Days:</span>
@@ -1258,7 +1269,9 @@
           </div>
           <div class="stat-row">
             <span class="stat-label">Time Buckets:</span>
-            <span class="stat-value">${stats.populated_buckets || 0}/${stats.total_buckets || 0}</span>
+            <span class="stat-value">${stats.populated_buckets || 0}/${
+          stats.total_buckets || 0
+        }</span>
           </div>
           <div class="stat-row">
             <span class="stat-label">Coverage:</span>
@@ -1272,7 +1285,7 @@
       }
 
       // Initialize baseline stats on page load
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         requestBaselineStats();
       });
 
@@ -1284,75 +1297,83 @@
 
       // Anomaly Detection Functions
       function clearAnomalies() {
-        fetch('/api/anomalies/clear', {
-          method: 'POST',
+        fetch("/api/anomalies/clear", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-          }
+            "Content-Type": "application/json",
+          },
         })
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === 'success') {
-            console.log('Anomaly history cleared');
-            updateAnomalyDisplay({
-              total_anomalies: 0,
-              by_severity: {},
-              by_type: {},
-              latest_anomaly: null
-            });
-            hideAnomalyAlert();
-          } else {
-            console.error('Failed to clear anomalies:', data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error clearing anomalies:', error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              console.log("Anomaly history cleared");
+              updateAnomalyDisplay({
+                total_anomalies: 0,
+                by_severity: {},
+                by_type: {},
+                latest_anomaly: null,
+              });
+              hideAnomalyAlert();
+            } else {
+              console.error("Failed to clear anomalies:", data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error clearing anomalies:", error);
+          });
       }
 
       function requestAnomalyData() {
-        fetch('/api/anomalies')
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === 'success') {
-            updateAnomalyDisplay(data.summary);
-            // Show alert for latest high/critical anomaly
-            if (data.summary.latest_anomaly && 
-                ['HIGH', 'CRITICAL'].includes(data.summary.latest_anomaly.severity)) {
-              showAnomalyAlert(data.summary.latest_anomaly);
+        fetch("/api/anomalies")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              updateAnomalyDisplay(data.summary);
+              // Show alert for latest high/critical anomaly
+              if (
+                data.summary.latest_anomaly &&
+                ["HIGH", "CRITICAL"].includes(
+                  data.summary.latest_anomaly.severity
+                )
+              ) {
+                showAnomalyAlert(data.summary.latest_anomaly);
+              }
+            } else {
+              console.error("Failed to get anomaly data:", data.message);
             }
-          } else {
-            console.error('Failed to get anomaly data:', data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error getting anomaly data:', error);
-        });
+          })
+          .catch((error) => {
+            console.error("Error getting anomaly data:", error);
+          });
       }
 
       function updateAnomalyDisplay(summary) {
-        document.getElementById('total-anomalies').textContent = summary.total_anomalies || 0;
-        
-        const highCount = (summary.by_severity?.HIGH || 0) + (summary.by_severity?.CRITICAL || 0);
-        document.getElementById('critical-anomalies').textContent = highCount;
-        
+        document.getElementById("total-anomalies").textContent =
+          summary.total_anomalies || 0;
+
+        const highCount =
+          (summary.by_severity?.HIGH || 0) +
+          (summary.by_severity?.CRITICAL || 0);
+        document.getElementById("critical-anomalies").textContent = highCount;
+
         if (summary.latest_anomaly) {
           const timestamp = new Date(summary.latest_anomaly.timestamp);
           const timeStr = timestamp.toLocaleTimeString();
-          document.getElementById('last-anomaly').textContent = 
-            `${summary.latest_anomaly.type} at ${timeStr}`;
+          document.getElementById(
+            "last-anomaly"
+          ).textContent = `${summary.latest_anomaly.type} at ${timeStr}`;
         } else {
-          document.getElementById('last-anomaly').textContent = 'None';
+          document.getElementById("last-anomaly").textContent = "None";
         }
       }
 
       function showAnomalyAlert(anomaly) {
-        const alertElement = document.getElementById('anomaly-alert');
-        const titleElement = document.getElementById('alert-title');
-        const detailsElement = document.getElementById('alert-details');
+        const alertElement = document.getElementById("anomaly-alert");
+        const titleElement = document.getElementById("alert-title");
+        const detailsElement = document.getElementById("alert-details");
 
         titleElement.textContent = `${anomaly.severity} ${anomaly.type} Detected`;
-        
+
         detailsElement.innerHTML = `
           <div>Position: (${anomaly.position[0]}, ${anomaly.position[1]})</div>
           <div>Confidence: ${(anomaly.confidence * 100).toFixed(1)}%</div>
@@ -1361,16 +1382,16 @@
         `;
 
         // Add critical class for high severity anomalies
-        if (anomaly.severity === 'CRITICAL') {
-          alertElement.classList.add('critical');
+        if (anomaly.severity === "CRITICAL") {
+          alertElement.classList.add("critical");
         } else {
-          alertElement.classList.remove('critical');
+          alertElement.classList.remove("critical");
         }
 
-        alertElement.style.display = 'block';
+        alertElement.style.display = "block";
 
         // Auto-hide after 10 seconds for non-critical anomalies
-        if (anomaly.severity !== 'CRITICAL') {
+        if (anomaly.severity !== "CRITICAL") {
           setTimeout(() => {
             hideAnomalyAlert();
           }, 10000);
@@ -1378,13 +1399,13 @@
       }
 
       function hideAnomalyAlert() {
-        const alertElement = document.getElementById('anomaly-alert');
-        alertElement.style.display = 'none';
-        alertElement.classList.remove('critical');
+        const alertElement = document.getElementById("anomaly-alert");
+        alertElement.style.display = "none";
+        alertElement.classList.remove("critical");
       }
 
       // Initialize anomaly data on page load and refresh every 5 seconds
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         requestAnomalyData();
       });
       setInterval(requestAnomalyData, 5000);
