@@ -1679,3 +1679,1211 @@
 2025-11-04 10:38:09,884 - __main__ - INFO - Radiometric Engine stopped
 2025-11-04 10:38:09,885 - werkzeug - INFO -  * Restarting with stat
 2025-11-04 10:38:10,346 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 10:40:32,168 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 10:40:32,176 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 10:40:32,177 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 10:40:32,177 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 10:40:32,177 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 10:40:32,687 - __main__ - INFO - Starting web interface
+2025-11-04 10:40:32,754 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 10:40:32,755 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 10:40:32,755 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 10:40:32,770 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:5000
+2025-11-04 10:40:32,770 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-11-04 10:40:32,770 - werkzeug - INFO -  * Restarting with stat
+2025-11-04 10:40:33,209 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 10:40:33,215 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 10:40:33,215 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 10:40:33,215 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 10:40:33,215 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 10:40:33,710 - __main__ - INFO - Starting web interface
+2025-11-04 10:40:33,776 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 10:40:33,778 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 10:40:33,778 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 10:40:33,784 - werkzeug - WARNING -  * Debugger is active!
+2025-11-04 10:40:33,797 - werkzeug - INFO -  * Debugger PIN: 138-699-103
+2025-11-04 10:40:34,167 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (74, 74) with size 9.6x6.0
+2025-11-04 10:40:34,870 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (62, 105) with radius 12.3
+2025-11-04 10:40:35,153 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:35] "GET / HTTP/1.1" 200 -
+2025-11-04 10:40:35,516 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:35] "GET /socket.io/?EIO=4&transport=polling&t=PfFXlAt HTTP/1.1" 200 -
+2025-11-04 10:40:35,523 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:35] "POST /socket.io/?EIO=4&transport=polling&t=PfFXlC_&sid=NXy9_KY7-snQHv6_AAAA HTTP/1.1" 200 -
+2025-11-04 10:40:35,524 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:35] "GET /socket.io/?EIO=4&transport=polling&t=PfFXlC_.0&sid=NXy9_KY7-snQHv6_AAAA HTTP/1.1" 200 -
+2025-11-04 10:40:35,529 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:35] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-11-04 10:40:35,536 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:35] "GET /socket.io/?EIO=4&transport=polling&t=PfFXlD8&sid=NXy9_KY7-snQHv6_AAAA HTTP/1.1" 200 -
+2025-11-04 10:40:35,609 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (52, 98) with radius 13.0
+2025-11-04 10:40:42,775 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (42, 90) with radius 14.0
+2025-11-04 10:40:44,547 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (83, 116) with size 13.9x5.0
+2025-11-04 10:40:48,218 - src.radiometric_engine.services.data_stream - INFO - Next frame will contain a forced solar anomaly
+2025-11-04 10:40:48,218 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:48] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 10:40:48,279 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (71, 88) with size 15.1x6.8
+2025-11-04 10:40:49,334 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (61, 87) with radius 11.9
+2025-11-04 10:40:49,588 - src.radiometric_engine.services.data_stream - INFO - Next frame will contain a forced solar anomaly
+2025-11-04 10:40:49,589 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:49] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 10:40:49,592 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (75, 76) with size 11.0x7.5
+2025-11-04 10:40:51,080 - src.radiometric_engine.services.data_stream - INFO - Next frame will contain a forced solar anomaly
+2025-11-04 10:40:51,081 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:51] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 10:40:51,120 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (34, 86) with radius 7.1
+2025-11-04 10:40:51,421 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (59, 25) with size 9.8x6.2
+2025-11-04 10:40:52,091 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.162s (target: 0.100s)
+2025-11-04 10:40:52,693 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 10:40:52,694 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.020
+2025-11-04 10:40:52,694 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,695 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,719 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.030
+2025-11-04 10:40:52,720 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,737 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.040
+2025-11-04 10:40:52,738 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,753 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.050
+2025-11-04 10:40:52,753 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,788 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.060
+2025-11-04 10:40:52,788 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,937 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.070
+2025-11-04 10:40:52,937 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,938 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.080
+2025-11-04 10:40:52,938 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,942 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.090
+2025-11-04 10:40:52,943 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:52,985 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.100
+2025-11-04 10:40:52,986 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:40:52] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 10:40:53,160 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (91, 76) with radius 7.3
+2025-11-04 10:40:53,677 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (80, 53) with radius 14.9
+2025-11-04 10:40:53,978 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (56, 77) with radius 5.2
+2025-11-04 10:40:54,279 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (78, 75) with size 15.7x5.4
+2025-11-04 10:40:54,781 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (56, 83) with radius 6.9
+2025-11-04 10:40:57,130 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (73, 86) with radius 11.2
+2025-11-04 10:40:57,231 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (60, 69) with radius 12.7
+2025-11-04 10:40:57,336 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (25, 67) with size 19.6x6.3
+2025-11-04 10:40:58,339 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (77, 42) with radius 8.9
+2025-11-04 10:41:00,316 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (73, 68) with size 19.5x4.5
+2025-11-04 10:41:01,227 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (48, 31) with size 15.4x3.3
+2025-11-04 10:41:03,028 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (39, 75) with radius 11.5
+2025-11-04 10:41:03,127 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (67, 62) with radius 10.1
+2025-11-04 10:41:03,333 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (68, 91) with radius 12.4
+2025-11-04 10:41:03,925 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.158s (target: 0.100s)
+2025-11-04 10:41:04,985 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (68, 38) with size 12.3x5.4
+2025-11-04 10:41:07,103 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 74) with radius 6.5
+2025-11-04 10:41:07,921 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (71, 65) with radius 8.8
+2025-11-04 10:41:09,775 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (34, 108) with size 14.4x6.5
+2025-11-04 10:41:11,985 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (57, 96) with size 8.3x7.4
+2025-11-04 10:41:12,086 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (68, 73) with radius 14.2
+2025-11-04 10:41:12,306 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.163s (target: 0.100s)
+2025-11-04 10:41:12,357 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.172s (target: 0.100s)
+2025-11-04 10:41:15,603 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (91, 36) with radius 6.1
+2025-11-04 10:41:16,870 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (80, 57) with radius 6.3
+2025-11-04 10:41:17,873 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (66, 104) with radius 8.6
+2025-11-04 10:41:18,175 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (80, 70) with size 13.5x3.7
+2025-11-04 10:41:19,085 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (123, 60) with size 10.4x3.2
+2025-11-04 10:41:20,082 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (37, 49) with size 14.0x3.2
+2025-11-04 10:41:20,683 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (101, 71) with radius 11.1
+2025-11-04 10:41:22,690 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (61, 60) with size 16.7x6.4
+2025-11-04 10:41:23,492 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (83, 30) with size 8.1x5.1
+2025-11-04 10:41:23,693 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (84, 109) with radius 14.1
+2025-11-04 10:41:24,500 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (99, 98) with size 10.2x5.4
+2025-11-04 10:41:25,102 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (97, 103) with size 11.9x3.7
+2025-11-04 10:41:26,004 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (85, 84) with radius 5.3
+2025-11-04 10:41:27,308 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (93, 45) with radius 9.0
+2025-11-04 10:41:28,011 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (78, 46) with size 12.3x4.9
+2025-11-04 10:41:29,035 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (94, 87) with radius 10.4
+2025-11-04 10:41:30,963 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (82, 96) with radius 6.7
+2025-11-04 10:41:31,163 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (95, 52) with radius 7.1
+2025-11-04 10:41:35,099 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (67, 51) with radius 5.1
+2025-11-04 10:41:37,652 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (62, 59) with radius 13.9
+2025-11-04 10:41:38,273 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (85, 85) with size 12.6x7.0
+2025-11-04 10:41:39,479 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (43, 80) with radius 5.7
+2025-11-04 10:41:39,989 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (107, 55) with radius 11.8
+2025-11-04 10:41:40,405 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (96, 88) with radius 10.4
+2025-11-04 10:41:40,615 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (109, 82) with size 11.2x6.1
+2025-11-04 10:41:41,116 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (96, 65) with radius 9.1
+2025-11-04 10:41:42,229 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (85, 67) with radius 6.1
+2025-11-04 10:41:42,328 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (107, 85) with radius 9.2
+2025-11-04 10:41:42,428 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (91, 73) with radius 11.6
+2025-11-04 10:41:42,629 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (108, 64) with radius 6.3
+2025-11-04 10:41:43,033 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (107, 40) with size 14.7x5.3
+2025-11-04 10:41:43,542 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (44, 93) with size 15.0x4.3
+2025-11-04 10:41:44,253 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (76, 111) with radius 13.8
+2025-11-04 10:41:45,785 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (98, 67) with radius 12.5
+2025-11-04 10:41:45,809 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (75, 75) with radius 11.5
+2025-11-04 10:41:46,287 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (71, 80) with radius 9.7
+2025-11-04 10:41:46,888 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (87, 53) with radius 11.8
+2025-11-04 10:41:49,132 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (48, 100) with radius 15.0
+2025-11-04 10:41:49,998 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (43, 52) with radius 10.8
+2025-11-04 10:41:50,037 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (106, 58) with size 15.6x3.8
+2025-11-04 10:41:52,846 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.162s (target: 0.100s)
+2025-11-04 10:41:52,848 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (59, 83) with radius 14.6
+2025-11-04 10:41:52,947 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (89, 92) with radius 12.1
+2025-11-04 10:41:53,148 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (114, 88) with radius 11.5
+2025-11-04 10:41:53,850 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (84, 76) with radius 7.7
+2025-11-04 10:41:54,556 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (51, 91) with size 9.2x5.0
+2025-11-04 10:41:57,110 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (24, 75) with size 14.8x5.0
+2025-11-04 10:41:58,418 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (87, 69) with radius 5.5
+2025-11-04 10:41:58,518 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (33, 95) with size 15.0x7.1
+2025-11-04 10:41:58,618 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (66, 71) with radius 5.8
+2025-11-04 10:41:59,019 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (79, 78) with size 8.8x4.4
+2025-11-04 10:41:59,420 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (78, 76) with radius 14.1
+2025-11-04 10:42:00,021 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (67, 71) with radius 11.3
+2025-11-04 10:42:01,225 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (49, 83) with radius 7.5
+2025-11-04 10:42:01,927 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (77, 74) with radius 7.4
+2025-11-04 10:42:02,128 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (111, 61) with radius 11.9
+2025-11-04 10:42:03,346 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (85, 60) with size 17.4x7.0
+2025-11-04 10:42:03,431 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (82, 77) with size 15.9x3.9
+2025-11-04 10:42:04,433 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (97, 76) with size 9.0x6.4
+2025-11-04 10:42:05,336 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (50, 79) with radius 11.4
+2025-11-04 10:42:05,846 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (75, 74) with radius 8.2
+2025-11-04 10:42:06,851 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (95, 98) with radius 9.1
+2025-11-04 10:42:06,952 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (38, 84) with radius 12.4
+2025-11-04 10:42:07,052 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (53, 77) with radius 9.2
+2025-11-04 10:42:07,253 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (78, 55) with size 16.8x7.2
+2025-11-04 10:42:09,164 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (99, 76) with radius 13.3
+2025-11-04 10:42:11,993 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 75) with radius 13.8
+2025-11-04 10:42:12,093 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (108, 75) with radius 6.4
+2025-11-04 10:42:12,495 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (73, 45) with size 19.4x3.4
+2025-11-04 10:42:13,101 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (67, 42) with radius 14.5
+2025-11-04 10:42:15,342 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (59, 41) with size 11.1x5.8
+2025-11-04 10:42:16,369 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (71, 73) with radius 7.1
+2025-11-04 10:42:16,522 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.154s (target: 0.100s)
+2025-11-04 10:42:18,147 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (114, 81) with radius 11.9
+2025-11-04 10:42:21,788 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (72, 79) with size 8.5x4.1
+2025-11-04 10:42:22,490 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (79, 66) with radius 6.7
+2025-11-04 10:42:26,037 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (82, 57) with radius 6.9
+2025-11-04 10:42:26,841 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (72, 77) with radius 8.1
+2025-11-04 10:42:28,081 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (81, 105) with radius 6.8
+2025-11-04 10:42:28,247 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (74, 78) with size 14.3x7.0
+2025-11-04 10:42:28,652 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (73, 84) with size 8.2x7.4
+2025-11-04 10:42:29,656 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (65, 64) with size 14.8x5.9
+2025-11-04 10:42:29,856 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (72, 78) with radius 10.1
+2025-11-04 10:42:30,761 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 75) with radius 5.4
+2025-11-04 10:42:32,503 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (108, 93) with size 19.5x7.6
+2025-11-04 10:42:33,106 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (70, 90) with size 10.3x6.8
+2025-11-04 10:42:33,590 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (82, 57) with radius 9.0
+2025-11-04 10:42:34,632 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 74) with radius 13.6
+2025-11-04 10:42:34,957 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (99, 47) with size 17.0x3.6
+2025-11-04 10:42:35,361 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (83, 81) with radius 8.4
+2025-11-04 10:42:37,277 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (56, 44) with size 13.1x7.6
+2025-11-04 10:42:37,778 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (41, 81) with radius 8.3
+2025-11-04 10:42:39,289 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (70, 77) with radius 11.2
+2025-11-04 10:42:41,001 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (114, 49) with radius 14.9
+2025-11-04 10:42:41,907 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (98, 52) with radius 8.8
+2025-11-04 10:42:43,615 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (107, 82) with radius 14.7
+2025-11-04 10:42:44,521 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (87, 50) with radius 6.1
+2025-11-04 10:42:45,429 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (45, 64) with size 9.0x7.9
+2025-11-04 10:42:46,032 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (72, 73) with radius 13.0
+2025-11-04 10:42:46,734 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (79, 115) with radius 13.9
+2025-11-04 10:42:48,442 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (81, 75) with size 8.5x3.2
+2025-11-04 10:42:48,743 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (88, 125) with size 8.8x6.4
+2025-11-04 10:42:49,045 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (112, 46) with radius 11.9
+2025-11-04 10:42:49,107 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (50, 91) with radius 9.3
+2025-11-04 10:42:49,145 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (70, 79) with radius 10.6
+2025-11-04 10:42:49,847 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (78, 55) with radius 8.3
+2025-11-04 10:42:51,454 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (44, 95) with radius 7.2
+2025-11-04 10:42:52,564 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (91, 65) with radius 9.5
+2025-11-04 10:42:52,865 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (94, 96) with radius 12.7
+2025-11-04 10:42:55,071 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (69, 72) with size 8.6x4.0
+2025-11-04 10:42:55,573 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (96, 52) with radius 9.5
+2025-11-04 10:42:55,974 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 76) with radius 8.2
+2025-11-04 10:42:57,180 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (62, 70) with size 8.5x6.8
+2025-11-04 10:42:58,759 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (73, 73) with radius 6.9
+2025-11-04 10:42:59,805 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (59, 75) with size 14.6x6.9
+2025-11-04 10:43:01,630 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.163s (target: 0.100s)
+2025-11-04 10:43:05,027 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (82, 83) with radius 12.0
+2025-11-04 10:43:05,128 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (78, 65) with radius 11.5
+2025-11-04 10:43:06,565 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (103, 51) with size 12.3x5.5
+2025-11-04 10:43:07,669 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (83, 107) with radius 12.9
+2025-11-04 10:43:07,970 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (48, 37) with radius 6.5
+2025-11-04 10:43:08,171 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (47, 69) with radius 10.2
+2025-11-04 10:43:08,773 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (68, 38) with radius 9.0
+2025-11-04 10:43:09,275 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (38, 80) with radius 8.0
+2025-11-04 10:43:11,280 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (77, 77) with size 14.6x3.7
+2025-11-04 10:43:11,582 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (108, 104) with radius 9.6
+2025-11-04 10:43:11,883 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (84, 91) with radius 14.1
+2025-11-04 10:43:14,296 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (106, 48) with size 15.7x6.8
+2025-11-04 10:43:15,426 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (78, 66) with radius 14.3
+2025-11-04 10:43:15,832 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (47, 40) with size 18.7x3.1
+2025-11-04 10:43:16,246 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (72, 72) with radius 8.9
+2025-11-04 10:43:17,079 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (77, 75) with size 13.2x4.2
+2025-11-04 10:43:19,198 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (75, 46) with radius 8.9
+2025-11-04 10:43:20,601 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (89, 113) with radius 13.2
+2025-11-04 10:43:21,904 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (84, 101) with radius 9.1
+2025-11-04 10:43:22,205 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (78, 86) with radius 12.2
+2025-11-04 10:43:23,308 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 77) with radius 8.8
+2025-11-04 10:43:23,509 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (59, 105) with radius 14.7
+2025-11-04 10:43:25,317 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (80, 77) with size 15.2x3.6
+2025-11-04 10:43:25,518 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 82) with radius 7.6
+2025-11-04 10:43:27,625 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (105, 99) with radius 13.0
+2025-11-04 10:43:27,825 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (69, 72) with size 15.8x7.5
+2025-11-04 10:43:28,728 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (57, 31) with size 9.5x5.8
+2025-11-04 10:43:29,730 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (51, 69) with radius 13.1
+2025-11-04 10:43:30,632 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (62, 78) with radius 12.7
+2025-11-04 10:43:31,836 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (83, 69) with radius 15.0
+2025-11-04 10:43:38,976 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (73, 73) with radius 5.7
+2025-11-04 10:43:40,784 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (77, 104) with radius 5.1
+2025-11-04 10:43:42,691 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (42, 54) with radius 6.2
+2025-11-04 10:43:43,393 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (72, 63) with radius 7.9
+2025-11-04 10:43:45,603 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (108, 72) with size 16.4x4.6
+2025-11-04 10:43:47,009 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (62, 23) with size 17.6x6.0
+2025-11-04 10:43:47,510 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (42, 89) with radius 7.0
+2025-11-04 10:43:50,319 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (74, 73) with size 18.9x3.8
+2025-11-04 10:43:52,024 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (68, 62) with radius 8.3
+2025-11-04 10:43:53,231 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 74) with radius 14.3
+2025-11-04 10:43:53,632 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (70, 93) with radius 6.0
+2025-11-04 10:43:54,037 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 75) with radius 11.8
+2025-11-04 10:43:54,738 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (71, 59) with radius 10.8
+2025-11-04 10:43:54,838 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (70, 47) with radius 11.1
+2025-11-04 10:43:55,642 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (73, 50) with radius 8.6
+2025-11-04 10:43:55,844 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (75, 63) with radius 10.7
+2025-11-04 10:43:55,945 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (77, 74) with radius 14.0
+2025-11-04 10:43:57,852 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (73, 69) with radius 7.7
+2025-11-04 10:44:00,260 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (49, 80) with radius 7.2
+2025-11-04 10:44:01,652 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (67, 69) with radius 8.2
+2025-11-04 10:44:03,368 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (88, 64) with size 15.6x7.5
+2025-11-04 10:44:03,969 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (55, 64) with radius 13.6
+2025-11-04 10:44:04,872 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (115, 70) with radius 7.2
+2025-11-04 10:44:08,879 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (96, 39) with size 17.5x4.9
+2025-11-04 10:44:11,234 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (75, 74) with size 14.6x5.2
+2025-11-04 10:44:12,641 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 66) with radius 6.7
+2025-11-04 10:44:13,750 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (72, 88) with size 14.5x6.2
+2025-11-04 10:44:14,961 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (75, 74) with radius 13.9
+2025-11-04 10:44:15,678 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (76, 75) with radius 13.8
+2025-11-04 10:44:15,986 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (45, 80) with radius 12.8
+2025-11-04 10:44:16,196 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.154s (target: 0.100s)
+2025-11-04 10:44:16,366 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.181s (target: 0.100s)
+2025-11-04 10:44:16,890 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.153s (target: 0.100s)
+2025-11-04 10:44:17,312 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (73, 74) with radius 9.9
+2025-11-04 10:44:18,242 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (75, 75) with radius 7.2
+2025-11-04 10:44:18,546 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (43, 76) with radius 10.0
+2025-11-04 10:44:19,487 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (86, 61) with size 17.6x7.1
+2025-11-04 10:44:19,587 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (62, 72) with size 18.3x3.4
+2025-11-04 10:44:20,289 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (108, 91) with radius 13.1
+2025-11-04 10:44:20,928 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.160s (target: 0.100s)
+2025-11-04 10:44:21,077 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.154s (target: 0.100s)
+2025-11-04 10:44:21,385 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 75) with radius 5.4
+2025-11-04 10:44:21,585 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (87, 70) with radius 9.2
+2025-11-04 10:44:25,500 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (39, 68) with radius 10.3
+2025-11-04 10:44:27,107 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (94, 101) with size 16.8x7.3
+2025-11-04 10:44:27,557 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (80, 41) with radius 9.5
+2025-11-04 10:44:28,110 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (110, 63) with radius 9.9
+2025-11-04 10:44:28,260 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (48, 72) with size 18.0x4.1
+2025-11-04 10:44:28,612 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (53, 37) with radius 13.3
+2025-11-04 10:44:28,813 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (75, 70) with radius 8.1
+2025-11-04 10:44:30,037 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (47, 90) with radius 14.0
+2025-11-04 10:44:31,341 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (77, 83) with radius 7.4
+2025-11-04 10:44:34,551 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (38, 104) with radius 8.8
+2025-11-04 10:44:36,256 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (45, 101) with radius 11.4
+2025-11-04 10:44:36,488 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (80, 89) with size 14.6x4.1
+2025-11-04 10:44:40,224 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (115, 107) with size 16.1x6.9
+2025-11-04 10:44:41,030 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (71, 92) with size 18.7x7.8
+2025-11-04 10:44:43,839 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (96, 53) with radius 14.7
+2025-11-04 10:44:44,645 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 76) with radius 8.4
+2025-11-04 10:44:46,355 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (103, 48) with radius 9.4
+2025-11-04 10:44:47,979 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (70, 31) with radius 13.7
+2025-11-04 10:44:50,417 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (47, 39) with radius 6.6
+2025-11-04 10:44:52,030 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (94, 59) with size 11.4x3.4
+2025-11-04 10:44:55,640 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (35, 60) with radius 7.3
+2025-11-04 10:44:57,748 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (98, 81) with radius 11.5
+2025-11-04 10:44:58,651 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (68, 68) with size 11.7x5.7
+2025-11-04 10:44:58,951 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (83, 55) with radius 10.8
+2025-11-04 10:44:59,591 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (94, 65) with radius 8.3
+2025-11-04 10:45:00,698 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (85, 81) with radius 14.2
+2025-11-04 10:45:03,204 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (74, 120) with radius 10.8
+2025-11-04 10:45:04,006 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (41, 113) with size 17.0x3.6
+2025-11-04 10:45:04,507 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (69, 74) with size 19.2x7.1
+2025-11-04 10:45:05,918 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (78, 73) with radius 10.2
+2025-11-04 10:45:06,618 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (65, 86) with radius 11.0
+2025-11-04 10:45:08,123 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (97, 36) with radius 12.9
+2025-11-04 10:45:09,134 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (106, 45) with radius 11.7
+2025-11-04 10:45:09,235 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (74, 71) with size 10.6x7.4
+2025-11-04 10:45:09,436 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (73, 100) with radius 14.7
+2025-11-04 10:45:09,737 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (32, 82) with radius 7.9
+2025-11-04 10:45:10,445 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (82, 68) with radius 13.9
+2025-11-04 10:45:10,545 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (80, 56) with radius 5.7
+2025-11-04 10:45:11,050 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (45, 68) with size 9.1x7.4
+2025-11-04 10:45:11,150 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (73, 68) with radius 5.8
+2025-11-04 10:45:11,652 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (62, 47) with size 13.8x6.0
+2025-11-04 10:45:12,353 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (83, 43) with radius 7.0
+2025-11-04 10:45:13,055 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (81, 86) with radius 8.6
+2025-11-04 10:45:15,406 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (108, 42) with radius 5.7
+2025-11-04 10:45:17,054 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (109, 91) with radius 10.5
+2025-11-04 10:45:17,555 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (61, 125) with size 14.5x7.4
+2025-11-04 10:45:18,458 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (50, 94) with radius 8.2
+2025-11-04 10:45:18,958 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (68, 74) with size 10.2x6.1
+2025-11-04 10:45:19,760 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (81, 83) with radius 5.0
+2025-11-04 10:45:23,372 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (59, 65) with radius 12.1
+2025-11-04 10:45:23,472 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (75, 74) with radius 10.2
+2025-11-04 10:45:23,672 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (74, 77) with size 11.4x6.4
+2025-11-04 10:45:24,988 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (69, 88) with size 14.0x7.8
+2025-11-04 10:45:26,804 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (84, 58) with size 14.4x4.8
+2025-11-04 10:45:27,406 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (76, 95) with size 10.7x4.7
+2025-11-04 10:45:28,008 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (101, 86) with radius 11.6
+2025-11-04 10:45:28,714 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (41, 87) with size 10.7x3.4
+2025-11-04 10:45:28,823 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (70, 29) with radius 10.7
+2025-11-04 10:45:31,245 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (69, 77) with radius 10.2
+2025-11-04 10:45:31,860 - werkzeug - INFO -  * Detected change in 'C:\\Users\\cjenn\\src\\kiiro\\radiometric-model-poc\\src\\radiometric_engine\\web\\app.py', reloading
+2025-11-04 10:45:31,861 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 10:45:31,945 - src.radiometric_engine.services.data_stream - INFO - Streaming loop finished
+2025-11-04 10:45:31,946 - src.radiometric_engine.services.data_stream - INFO - Stopped streaming
+2025-11-04 10:45:31,946 - __main__ - INFO - Radiometric Engine stopped
+2025-11-04 10:45:32,088 - werkzeug - INFO -  * Restarting with stat
+2025-11-04 10:45:32,508 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 10:45:32,515 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 10:45:32,515 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 10:45:32,516 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 10:45:32,516 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 10:45:33,009 - __main__ - INFO - Starting web interface
+2025-11-04 10:45:33,073 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 10:45:33,074 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 10:45:33,074 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 10:45:33,081 - werkzeug - WARNING -  * Debugger is active!
+2025-11-04 10:45:33,092 - werkzeug - INFO -  * Debugger PIN: 138-699-103
+2025-11-04 10:45:33,446 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (55, 100) with radius 13.5
+2025-11-04 10:45:33,603 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:45:33] "GET /socket.io/?EIO=4&transport=polling&t=PfFYttE HTTP/1.1" 200 -
+2025-11-04 10:45:33,614 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:45:33] "POST /socket.io/?EIO=4&transport=polling&t=PfFYt-b&sid=qNvH_HWDNNroklf2AAAA HTTP/1.1" 200 -
+2025-11-04 10:45:33,615 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:45:33] "GET /socket.io/?EIO=4&transport=polling&t=PfFYt-c&sid=qNvH_HWDNNroklf2AAAA HTTP/1.1" 200 -
+2025-11-04 10:45:33,625 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:45:33] "GET /socket.io/?EIO=4&transport=polling&t=PfFYt-p&sid=qNvH_HWDNNroklf2AAAA HTTP/1.1" 200 -
+2025-11-04 10:45:47,810 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (72, 109) with radius 14.5
+2025-11-04 10:45:52,692 - werkzeug - INFO -  * Detected change in 'C:\\Users\\cjenn\\src\\kiiro\\radiometric-model-poc\\src\\radiometric_engine\\web\\app.py', reloading
+2025-11-04 10:45:52,693 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 10:45:52,740 - src.radiometric_engine.services.data_stream - INFO - Streaming loop finished
+2025-11-04 10:45:52,740 - src.radiometric_engine.services.data_stream - INFO - Stopped streaming
+2025-11-04 10:45:52,740 - __main__ - INFO - Radiometric Engine stopped
+2025-11-04 10:45:52,880 - werkzeug - INFO -  * Restarting with stat
+2025-11-04 10:45:53,304 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 10:45:53,310 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 10:45:53,310 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 10:45:53,310 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 10:45:53,310 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 10:45:53,829 - __main__ - INFO - Starting web interface
+2025-11-04 10:45:53,895 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 10:45:53,897 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 10:45:53,897 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 10:45:53,904 - werkzeug - WARNING -  * Debugger is active!
+2025-11-04 10:45:53,915 - werkzeug - INFO -  * Debugger PIN: 138-699-103
+2025-11-04 10:45:54,485 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:45:54] "GET /socket.io/?EIO=4&transport=polling&t=PfFYytu HTTP/1.1" 200 -
+2025-11-04 10:45:54,491 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:45:54] "POST /socket.io/?EIO=4&transport=polling&t=PfFYz4t&sid=EE3wUU7e3ReiyiUaAAAA HTTP/1.1" 200 -
+2025-11-04 10:45:54,492 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:45:54] "GET /socket.io/?EIO=4&transport=polling&t=PfFYz4t.0&sid=EE3wUU7e3ReiyiUaAAAA HTTP/1.1" 200 -
+2025-11-04 10:45:54,499 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:45:54] "GET /socket.io/?EIO=4&transport=polling&t=PfFYz4_&sid=EE3wUU7e3ReiyiUaAAAA HTTP/1.1" 200 -
+2025-11-04 10:45:57,473 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (63, 90) with size 12.2x3.7
+2025-11-04 10:45:58,375 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (49, 63) with radius 8.7
+2025-11-04 10:46:08,953 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (102, 39) with radius 14.3
+2025-11-04 10:46:10,282 - werkzeug - INFO -  * Detected change in 'C:\\Users\\cjenn\\src\\kiiro\\radiometric-model-poc\\src\\radiometric_engine\\web\\app.py', reloading
+2025-11-04 10:46:10,282 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 10:46:10,357 - src.radiometric_engine.services.data_stream - INFO - Streaming loop finished
+2025-11-04 10:46:10,357 - src.radiometric_engine.services.data_stream - INFO - Stopped streaming
+2025-11-04 10:46:10,357 - __main__ - INFO - Radiometric Engine stopped
+2025-11-04 10:46:10,478 - werkzeug - INFO -  * Restarting with stat
+2025-11-04 10:46:10,872 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 10:46:10,878 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 10:46:10,879 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 10:46:10,879 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 10:46:10,879 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 10:46:11,423 - __main__ - INFO - Starting web interface
+2025-11-04 10:46:11,489 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 10:46:11,490 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 10:46:11,490 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 10:46:11,497 - werkzeug - WARNING -  * Debugger is active!
+2025-11-04 10:46:11,508 - werkzeug - INFO -  * Debugger PIN: 138-699-103
+2025-11-04 10:46:12,019 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:46:12] "GET /socket.io/?EIO=4&transport=polling&t=PfFZ17Y HTTP/1.1" 200 -
+2025-11-04 10:46:12,031 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:46:12] "POST /socket.io/?EIO=4&transport=polling&t=PfFZ1Mv&sid=e8VHVKrXIA9sic_gAAAA HTTP/1.1" 200 -
+2025-11-04 10:46:12,031 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:46:12] "GET /socket.io/?EIO=4&transport=polling&t=PfFZ1Mv.0&sid=e8VHVKrXIA9sic_gAAAA HTTP/1.1" 200 -
+2025-11-04 10:46:12,047 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:46:12] "POST /socket.io/?EIO=4&transport=polling&t=PfFZ1N3&sid=e8VHVKrXIA9sic_gAAAA HTTP/1.1" 200 -
+2025-11-04 10:46:12,048 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 10:46:12] "GET /socket.io/?EIO=4&transport=polling&t=PfFZ1N3.0&sid=e8VHVKrXIA9sic_gAAAA HTTP/1.1" 200 -
+2025-11-04 10:46:22,906 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (79, 60) with radius 11.0
+2025-11-04 10:46:24,718 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (108, 49) with size 18.5x5.4
+2025-11-04 10:46:29,586 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (99, 89) with radius 8.8
+2025-11-04 10:46:30,135 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (119, 68) with radius 7.1
+2025-11-04 10:46:33,999 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (94, 69) with size 17.7x6.2
+2025-11-04 10:46:34,300 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (88, 100) with size 13.5x6.9
+2025-11-04 10:46:34,501 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (73, 81) with size 9.7x4.8
+2025-11-04 10:46:37,859 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (66, 64) with size 10.9x5.5
+2025-11-04 10:46:38,862 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (107, 43) with radius 13.4
+2025-11-04 10:46:45,164 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (103, 86) with size 9.5x5.1
+2025-11-04 10:46:47,873 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (86, 99) with radius 6.0
+2025-11-04 10:46:57,014 - src.radiometric_engine.services.sun_simulator - INFO - Generated solar flare at (31, 81) with size 14.5x7.4
+2025-11-04 10:47:08,761 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (85, 73) with radius 13.3
+2025-11-04 10:47:13,676 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (81, 66) with radius 8.3
+2025-11-04 10:47:16,363 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.162s (target: 0.100s)
+2025-11-04 10:47:19,891 - src.radiometric_engine.services.sun_simulator - INFO - Generated sunspot at (110, 75) with radius 5.3
+2025-11-04 10:47:31,621 - werkzeug - INFO -  * Detected change in 'C:\\Users\\cjenn\\src\\kiiro\\radiometric-model-poc\\src\\radiometric_engine\\web\\app.py', reloading
+2025-11-04 10:47:31,622 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 10:47:31,660 - src.radiometric_engine.services.data_stream - INFO - Streaming loop finished
+2025-11-04 10:47:31,660 - src.radiometric_engine.services.data_stream - INFO - Stopped streaming
+2025-11-04 10:47:31,660 - __main__ - INFO - Radiometric Engine stopped
+2025-11-04 10:47:31,785 - werkzeug - INFO -  * Restarting with stat
+2025-11-04 10:47:32,185 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 10:47:32,192 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 10:47:32,192 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 10:47:32,192 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 10:47:32,192 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 10:47:32,692 - __main__ - ERROR - Application error: name 'WebVisualizationManager' is not defined
+Traceback (most recent call last):
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 250, in main
+    engine.start_visualization(web_mode=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 67, in start_visualization
+    self._start_web_interface()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 104, in _start_web_interface
+    from .web import create_app
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\web\__init__.py", line 3, in <module>
+    from .app import create_app
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\web\app.py", line 29, in <module>
+    web_visualizer: Optional[WebVisualizationManager] = None
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'WebVisualizationManager' is not defined
+2025-11-04 10:47:32,800 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 10:47:32,829 - src.radiometric_engine.services.data_stream - INFO - Streaming loop finished
+2025-11-04 10:47:32,829 - src.radiometric_engine.services.data_stream - INFO - Stopped streaming
+2025-11-04 10:47:32,829 - __main__ - INFO - Radiometric Engine stopped
+2025-11-04 10:58:45,260 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 10:58:45,272 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 10:58:45,272 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 10:58:45,272 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 10:58:45,272 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 10:58:45,783 - __main__ - INFO - Starting web interface
+2025-11-04 10:58:45,821 - __main__ - ERROR - Application error: name 'WebVisualizationManager' is not defined
+Traceback (most recent call last):
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 250, in main
+    engine.start_visualization(web_mode=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 67, in start_visualization
+    self._start_web_interface()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 109, in _start_web_interface
+    app = create_app(self.data_stream)
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\web\app.py", line 116, in create_app
+    web_visualizer = WebVisualizationManager(figsize=(8, 8))
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'WebVisualizationManager' is not defined
+2025-11-04 11:00:40,876 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 11:00:40,882 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 11:00:40,883 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 11:00:40,883 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 11:00:40,883 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 11:00:41,378 - __main__ - ERROR - Application error: cannot import name 'WebVisualizationManager' from 'src.radiometric_engine.services.visualization' (C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\services\visualization.py)
+Traceback (most recent call last):
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 250, in main
+    engine.start_visualization(web_mode=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 67, in start_visualization
+    self._start_web_interface()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\main.py", line 104, in _start_web_interface
+    from .web import create_app
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\web\__init__.py", line 3, in <module>
+    from .app import create_app
+  File "C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\web\app.py", line 23, in <module>
+    from ..services.visualization import WebVisualizationManager
+ImportError: cannot import name 'WebVisualizationManager' from 'src.radiometric_engine.services.visualization' (C:\Users\cjenn\src\kiiro\radiometric-model-poc\src\radiometric_engine\services\visualization.py)
+2025-11-04 11:01:34,351 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 11:01:34,358 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 11:01:34,358 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 11:01:34,358 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 11:01:34,359 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 11:01:34,850 - __main__ - INFO - Starting web interface
+2025-11-04 11:01:34,873 - src.radiometric_engine.services.visualization - INFO - Heatmap visualizer initialized: (8, 8), colormap=hot, update_interval=100ms
+2025-11-04 11:01:34,873 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 11:01:34,874 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 11:01:34,874 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 11:01:34,876 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:34,889 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:5000
+2025-11-04 11:01:34,890 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-11-04 11:01:34,890 - werkzeug - INFO -  * Restarting with stat
+2025-11-04 11:01:34,976 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,076 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,176 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,276 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,317 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 11:01:35,323 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 11:01:35,324 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 11:01:35,324 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 11:01:35,324 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 11:01:35,376 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,477 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,577 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,677 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,778 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,822 - __main__ - INFO - Starting web interface
+2025-11-04 11:01:35,846 - src.radiometric_engine.services.visualization - INFO - Heatmap visualizer initialized: (8, 8), colormap=hot, update_interval=100ms
+2025-11-04 11:01:35,846 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 11:01:35,849 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 11:01:35,849 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 11:01:35,850 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,856 - werkzeug - WARNING -  * Debugger is active!
+2025-11-04 11:01:35,870 - werkzeug - INFO -  * Debugger PIN: 138-699-103
+2025-11-04 11:01:35,878 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,951 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:35,978 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,051 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,078 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,151 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,178 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,251 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,279 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,351 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,379 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,452 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,479 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,552 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,579 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,652 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,681 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,753 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,780 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,853 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,881 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,908 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:36] "GET /socket.io/?EIO=4&transport=polling&t=PfFcZA7 HTTP/1.1" 200 -
+2025-11-04 11:01:36,918 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,919 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:36] "POST /socket.io/?EIO=4&transport=polling&t=PfFcZAE&sid=y8k7JfpY1hBcK0n1AAAA HTTP/1.1" 200 -
+2025-11-04 11:01:36,919 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:36] "GET /socket.io/?EIO=4&transport=polling&t=PfFcZAF&sid=y8k7JfpY1hBcK0n1AAAA HTTP/1.1" 200 -
+2025-11-04 11:01:36,938 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:36] "GET /socket.io/?EIO=4&transport=polling&t=PfFcZAX.0&sid=y8k7JfpY1hBcK0n1AAAA HTTP/1.1" 200 -
+2025-11-04 11:01:36,938 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:36] "POST /socket.io/?EIO=4&transport=polling&t=PfFcZAX&sid=y8k7JfpY1hBcK0n1AAAA HTTP/1.1" 200 -
+2025-11-04 11:01:36,962 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:36,981 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,064 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,082 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,160 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,182 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,258 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,282 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,356 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,382 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,456 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,482 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,556 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,582 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,620 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:37] "GET /socket.io/?EIO=4&transport=websocket&sid=y8k7JfpY1hBcK0n1AAAA HTTP/1.1" 200 -
+2025-11-04 11:01:37,634 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:37] "GET / HTTP/1.1" 200 -
+2025-11-04 11:01:37,657 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,683 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,757 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,783 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,857 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,883 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,957 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:37,984 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,041 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:38] "GET /socket.io/?EIO=4&transport=polling&t=PfFcZPz HTTP/1.1" 200 -
+2025-11-04 11:01:38,057 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,057 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:38] "POST /socket.io/?EIO=4&transport=polling&t=PfFcZRz&sid=x3IlFfcSZzO9eMxbAAAC HTTP/1.1" 200 -
+2025-11-04 11:01:38,058 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:38] "GET /socket.io/?EIO=4&transport=polling&t=PfFcZRz.0&sid=x3IlFfcSZzO9eMxbAAAC HTTP/1.1" 200 -
+2025-11-04 11:01:38,059 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,064 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:01:38] "GET /socket.io/?EIO=4&transport=polling&t=PfFcZSC&sid=x3IlFfcSZzO9eMxbAAAC HTTP/1.1" 200 -
+2025-11-04 11:01:38,084 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,158 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,184 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,258 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,285 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,358 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,384 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,458 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,485 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,559 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,585 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,659 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,685 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,759 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,785 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,860 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,886 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,960 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:38,986 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,060 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,086 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,160 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,187 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,260 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,287 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,361 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,388 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,461 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,488 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,561 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,588 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,662 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,688 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,762 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,789 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,862 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,889 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,963 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:39,990 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,063 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,090 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,164 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,191 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,264 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,291 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,364 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,392 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,464 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,492 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,564 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,592 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,665 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,692 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,766 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,792 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,866 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,893 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,966 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:40,993 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,067 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,093 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,167 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,193 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,268 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,293 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,367 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,393 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,468 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,494 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,568 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,594 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,669 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,694 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,769 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,794 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,869 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,895 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,969 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:41,995 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,070 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,095 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,170 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,196 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,270 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,296 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,371 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,396 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,470 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,497 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,571 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,597 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,672 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,698 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,772 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,798 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,872 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,898 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,972 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:42,998 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,073 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,098 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,172 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,199 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,272 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,299 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,373 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,400 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,473 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,500 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,573 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,600 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,673 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,700 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,774 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,801 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,874 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,902 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:43,974 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,002 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,074 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,102 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,175 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,203 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,275 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,302 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,375 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,403 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,476 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,503 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,575 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,604 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,676 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,704 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,776 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,804 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,876 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,904 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:44,976 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,005 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,077 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,105 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,177 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,205 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,277 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,305 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,378 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,406 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,478 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,506 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,578 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,606 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,678 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,707 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,778 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,806 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,878 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,907 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:45,979 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,007 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,079 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,108 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,179 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,208 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,279 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,308 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,379 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,409 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,480 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,509 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,580 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,609 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,680 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,710 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,782 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,811 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,881 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,910 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:46,982 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,011 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,082 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,111 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,173 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:47,173 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 11:01:47,182 - src.radiometric_engine.services.data_stream - INFO - Streaming loop finished
+2025-11-04 11:01:47,182 - src.radiometric_engine.services.data_stream - INFO - Stopped streaming
+2025-11-04 11:01:47,182 - __main__ - INFO - Radiometric Engine stopped
+2025-11-04 11:01:47,212 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,312 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,412 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (101, 68) (size=15.7, intensity=0.44, duration=11 frames)
+2025-11-04 11:01:47,413 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,513 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,613 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,713 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,813 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:47,914 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,014 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,054 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:48,115 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,215 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,277 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:48,315 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,415 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,516 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:01:48,516 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,616 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,716 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,817 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:48,917 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,018 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,077 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:49,118 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,218 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,237 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:49,319 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,399 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:49,420 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,519 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,565 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:49,620 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,693 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:49,720 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,821 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:49,856 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:49,921 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,013 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:50,022 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,122 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,149 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:50,223 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,309 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:50,323 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,423 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,523 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,624 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,724 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,824 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:50,925 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,025 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,126 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,227 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,326 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,426 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,527 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,627 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,727 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,827 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:51,928 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,028 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,129 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,229 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,330 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,430 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,530 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,630 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,731 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,831 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:52,932 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,032 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,133 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,233 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,326 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:53,333 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,434 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,534 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,634 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,734 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,835 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:53,936 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,035 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,135 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,236 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,336 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,436 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,537 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,637 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,737 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,837 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:54,938 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,038 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,139 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,239 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,339 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,439 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,540 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,641 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,741 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,841 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:55,942 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,042 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (66, 93) (size=11.0, intensity=1.38, duration=7 frames)
+2025-11-04 11:01:56,043 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,142 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,243 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,343 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,443 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,544 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,644 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,744 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:01:56,744 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,844 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:56,945 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,045 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,145 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,246 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,346 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,447 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,511 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:01:57,547 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,647 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,748 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,848 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:57,948 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,048 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,148 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,249 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,349 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,450 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,550 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,650 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,750 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,851 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:58,951 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,051 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,152 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,252 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,352 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,452 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,553 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,653 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,753 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,854 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:01:59,954 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,054 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,154 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,255 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,355 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,455 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,556 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,656 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,756 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,857 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:00,957 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,057 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,158 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,258 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,358 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,458 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,559 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,659 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,760 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,860 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:01,961 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,061 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,161 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,261 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,362 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,462 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,563 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,663 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,764 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,864 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:02,964 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,064 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,164 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,265 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,365 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,465 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,566 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,666 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,766 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,866 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:03,967 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,067 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,167 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,267 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,367 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,468 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,568 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,668 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,768 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,869 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:04,969 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,069 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,170 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,270 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,370 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,470 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,570 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,670 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,771 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,871 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:05,971 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:06,071 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:06,172 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:06,272 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:06,373 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:06,473 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:06,573 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:06,673 - src.radiometric_engine.services.visualization - ERROR - Error creating web image: 'NoneType' object has no attribute 'imshow'
+2025-11-04 11:02:06,691 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:02:06,691 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 11:02:58,141 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 11:02:58,147 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 11:02:58,147 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 11:02:58,147 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 11:02:58,147 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 11:02:58,650 - __main__ - INFO - Starting web interface
+2025-11-04 11:02:58,678 - src.radiometric_engine.services.visualization - INFO - Heatmap visualizer initialized: (8, 8), colormap=hot, update_interval=100ms
+2025-11-04 11:02:58,690 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 11:02:58,692 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 11:02:58,692 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 11:02:58,780 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:5000
+2025-11-04 11:02:58,781 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-11-04 11:02:58,781 - werkzeug - INFO -  * Restarting with stat
+2025-11-04 11:02:58,876 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.183s (target: 0.100s)
+2025-11-04 11:02:59,026 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.150s (target: 0.100s)
+2025-11-04 11:02:59,374 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 11:02:59,381 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 11:02:59,381 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 11:02:59,382 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 11:02:59,382 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 11:02:59,877 - __main__ - INFO - Starting web interface
+2025-11-04 11:02:59,901 - src.radiometric_engine.services.visualization - INFO - Heatmap visualizer initialized: (8, 8), colormap=hot, update_interval=100ms
+2025-11-04 11:02:59,907 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 11:02:59,908 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 11:02:59,908 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 11:02:59,928 - werkzeug - WARNING -  * Debugger is active!
+2025-11-04 11:02:59,943 - werkzeug - INFO -  * Debugger PIN: 138-699-103
+2025-11-04 11:03:01,200 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:01] "GET / HTTP/1.1" 200 -
+2025-11-04 11:03:01,575 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.184s (target: 0.100s)
+2025-11-04 11:03:01,601 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.194s (target: 0.100s)
+2025-11-04 11:03:01,722 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:01] "GET /socket.io/?EIO=4&transport=polling&t=PfFctpa HTTP/1.1" 200 -
+2025-11-04 11:03:01,736 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.157s (target: 0.100s)
+2025-11-04 11:03:01,743 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:01] "GET /socket.io/?EIO=4&transport=polling&t=PfFcttV&sid=p5Y9X3jKbIYl-p_PAAAA HTTP/1.1" 200 -
+2025-11-04 11:03:01,906 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:01] "POST /socket.io/?EIO=4&transport=polling&t=PfFcttU&sid=p5Y9X3jKbIYl-p_PAAAA HTTP/1.1" 200 -
+2025-11-04 11:03:01,959 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.222s (target: 0.100s)
+2025-11-04 11:03:05,219 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (79, 33) (size=12.4, intensity=0.52, duration=6 frames)
+2025-11-04 11:03:05,830 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:08,246 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (96, 78) (size=17.8, intensity=0.40, duration=30 frames)
+2025-11-04 11:03:11,647 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:15,809 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (90, 69) (size=5.8, intensity=1.55, duration=9 frames)
+2025-11-04 11:03:16,625 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (87, 97) (size=16.4, intensity=0.35, duration=9 frames)
+2025-11-04 11:03:16,859 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.160s (target: 0.100s)
+2025-11-04 11:03:16,860 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:16,935 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.161s (target: 0.100s)
+2025-11-04 11:03:17,801 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:30,637 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.159s (target: 0.100s)
+2025-11-04 11:03:33,841 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:33] "GET /?id=0a7323c3-12b6-444f-afbf-bb432857e14c&vscodeBrowserReqId=1762272213521 HTTP/1.1" 200 -
+2025-11-04 11:03:34,092 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:34] "GET /socket.io/?EIO=4&transport=polling&t=PfFc_kw HTTP/1.1" 200 -
+2025-11-04 11:03:34,327 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:34] "POST /socket.io/?EIO=4&transport=polling&t=PfFc_nE&sid=o5EKkDPKLK49BI9LAAAC HTTP/1.1" 200 -
+2025-11-04 11:03:34,403 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:34] "GET /socket.io/?EIO=4&transport=polling&t=PfFc_nF&sid=o5EKkDPKLK49BI9LAAAC HTTP/1.1" 200 -
+2025-11-04 11:03:34,415 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:34] "GET /socket.io/?EIO=4&transport=polling&t=PfFc_sD&sid=o5EKkDPKLK49BI9LAAAC HTTP/1.1" 200 -
+2025-11-04 11:03:45,127 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (81, 81) (size=7.2, intensity=1.40, duration=16 frames)
+2025-11-04 11:03:46,731 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:50,748 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (65, 84) (size=18.0, intensity=0.33, duration=47 frames)
+2025-11-04 11:03:52,247 - src.radiometric_engine.services.sun_simulator - INFO - Created new prominence at (97, 75) (size=18.2, intensity=1.21, duration=28 frames)
+2025-11-04 11:03:54,160 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (38, 66) (size=14.6, intensity=1.76, duration=36 frames)
+2025-11-04 11:03:55,056 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:55,235 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (72, 29) (size=9.4, intensity=0.53, duration=12 frames)
+2025-11-04 11:03:55,235 - src.radiometric_engine.services.sun_simulator - INFO - Forced creation of new solar anomaly
+2025-11-04 11:03:55,236 - src.radiometric_engine.services.data_stream - INFO - Forced creation of solar anomaly
+2025-11-04 11:03:55,236 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:55] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 11:03:55,475 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:56,378 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:57,750 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (67, 117) (size=10.0, intensity=0.32, duration=35 frames)
+2025-11-04 11:03:57,751 - src.radiometric_engine.services.sun_simulator - INFO - Forced creation of new solar anomaly
+2025-11-04 11:03:57,751 - src.radiometric_engine.services.data_stream - INFO - Forced creation of solar anomaly
+2025-11-04 11:03:57,751 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:57] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 11:03:57,781 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:03:59,297 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (102, 68) (size=11.2, intensity=1.68, duration=12 frames)
+2025-11-04 11:03:59,297 - src.radiometric_engine.services.sun_simulator - INFO - Forced creation of new solar anomaly
+2025-11-04 11:03:59,297 - src.radiometric_engine.services.data_stream - INFO - Forced creation of solar anomaly
+2025-11-04 11:03:59,298 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:03:59] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 11:04:00,679 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:01,474 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:02,621 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (75, 77) (size=11.8, intensity=1.63, duration=17 frames)
+2025-11-04 11:04:02,622 - src.radiometric_engine.services.sun_simulator - INFO - Forced creation of new solar anomaly
+2025-11-04 11:04:02,622 - src.radiometric_engine.services.data_stream - INFO - Forced creation of solar anomaly
+2025-11-04 11:04:02,623 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:02] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 11:04:04,383 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:06,937 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.158s (target: 0.100s)
+2025-11-04 11:04:07,645 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.090
+2025-11-04 11:04:07,646 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:07] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:07,682 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.080
+2025-11-04 11:04:07,683 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:07] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:07,747 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.070
+2025-11-04 11:04:07,747 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:07] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:07,814 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.060
+2025-11-04 11:04:07,815 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:07] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:07,870 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.050
+2025-11-04 11:04:07,871 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:07] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:07,971 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.040
+2025-11-04 11:04:07,972 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:07] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:08,099 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.030
+2025-11-04 11:04:08,100 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:08] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:08,298 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.040
+2025-11-04 11:04:08,299 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:08] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:08,316 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.050
+2025-11-04 11:04:08,317 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:08] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:08,395 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.060
+2025-11-04 11:04:08,395 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:08] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:08,396 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.070
+2025-11-04 11:04:08,397 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:08] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:08,398 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.080
+2025-11-04 11:04:08,398 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:08] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:08,435 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.090
+2025-11-04 11:04:08,436 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:08] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:08,502 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.100
+2025-11-04 11:04:08,503 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:08] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:10,045 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (69, 78) (size=13.4, intensity=1.30, duration=14 frames)
+2025-11-04 11:04:11,704 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:12,738 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (96, 68) (size=6.7, intensity=1.56, duration=28 frames)
+2025-11-04 11:04:14,750 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (43, 52) (size=11.4, intensity=1.37, duration=38 frames)
+2025-11-04 11:04:15,836 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:19,399 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:19,610 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (78, 78) (size=16.9, intensity=0.64, duration=28 frames)
+2025-11-04 11:04:22,577 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:22,808 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (78, 79) (size=19.6, intensity=0.48, duration=36 frames)
+2025-11-04 11:04:26,586 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:28,588 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (46, 75) (size=16.2, intensity=0.47, duration=16 frames)
+2025-11-04 11:04:30,445 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:30,949 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.156s (target: 0.100s)
+2025-11-04 11:04:31,955 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (82, 88) (size=11.2, intensity=1.44, duration=20 frames)
+2025-11-04 11:04:32,763 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (79, 57) (size=19.2, intensity=0.55, duration=29 frames)
+2025-11-04 11:04:34,047 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:34,250 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (82, 82) (size=14.2, intensity=1.68, duration=44 frames)
+2025-11-04 11:04:34,638 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.090
+2025-11-04 11:04:34,645 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:34] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:34,678 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.080
+2025-11-04 11:04:34,679 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:34] "POST /api/set_anomaly_rate HTTP/1.1" 200 -
+2025-11-04 11:04:35,062 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (95, 108) (size=19.4, intensity=0.42, duration=11 frames)
+2025-11-04 11:04:35,063 - src.radiometric_engine.services.sun_simulator - INFO - Forced creation of new solar anomaly
+2025-11-04 11:04:35,064 - src.radiometric_engine.services.data_stream - INFO - Forced creation of solar anomaly
+2025-11-04 11:04:35,068 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:35] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 11:04:35,986 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:36,186 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:36,989 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (78, 34) (size=14.4, intensity=1.55, duration=48 frames)
+2025-11-04 11:04:38,820 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:39,897 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (80, 29) (size=19.5, intensity=0.61, duration=28 frames)
+2025-11-04 11:04:41,803 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:42,706 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:43,143 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (76, 70) (size=9.5, intensity=1.48, duration=7 frames)
+2025-11-04 11:04:43,207 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (75, 122) (size=7.0, intensity=1.35, duration=36 frames)
+2025-11-04 11:04:43,846 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:45,900 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (65, 70) (size=11.9, intensity=1.42, duration=35 frames)
+2025-11-04 11:04:45,900 - src.radiometric_engine.services.sun_simulator - INFO - Forced creation of new solar anomaly
+2025-11-04 11:04:45,901 - src.radiometric_engine.services.data_stream - INFO - Forced creation of solar anomaly
+2025-11-04 11:04:45,901 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:45] "POST /api/force_anomaly HTTP/1.1" 200 -
+2025-11-04 11:04:46,717 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (75, 71) (size=8.9, intensity=0.37, duration=33 frames)
+2025-11-04 11:04:46,817 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:46,903 - werkzeug - INFO -  * Detected change in 'C:\\Users\\cjenn\\src\\kiiro\\radiometric-model-poc\\src\\radiometric_engine\\services\\visualization.py', reloading
+2025-11-04 11:04:46,904 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 11:04:46,917 - src.radiometric_engine.services.data_stream - INFO - Streaming loop finished
+2025-11-04 11:04:46,918 - src.radiometric_engine.services.data_stream - INFO - Stopped streaming
+2025-11-04 11:04:46,918 - __main__ - INFO - Radiometric Engine stopped
+2025-11-04 11:04:47,072 - werkzeug - INFO -  * Restarting with stat
+2025-11-04 11:04:47,514 - __main__ - INFO - Initializing Radiometric Engine
+2025-11-04 11:04:47,520 - src.radiometric_engine.services.sun_simulator - INFO - Sun simulator initialized: 150x150 grid, sun radius=60, base temp=5778.0K
+2025-11-04 11:04:47,520 - src.radiometric_engine.services.data_stream - INFO - Data stream engine initialized: 10.0Hz, queue size=100
+2025-11-04 11:04:47,521 - __main__ - INFO - Radiometric Engine initialized successfully
+2025-11-04 11:04:47,521 - src.radiometric_engine.services.data_stream - INFO - Anomaly probability set to 0.010
+2025-11-04 11:04:47,997 - __main__ - INFO - Starting web interface
+2025-11-04 11:04:48,022 - src.radiometric_engine.services.visualization - INFO - Heatmap visualizer initialized: (8, 8), colormap=hot, update_interval=100ms
+2025-11-04 11:04:48,065 - src.radiometric_engine.services.visualization - INFO - Display setup complete
+2025-11-04 11:04:48,065 - src.radiometric_engine.services.data_stream - INFO - Added frame consumer. Total consumers: 1
+2025-11-04 11:04:48,066 - src.radiometric_engine.services.data_stream - INFO - Starting streaming loop with 0.100s interval
+2025-11-04 11:04:48,066 - src.radiometric_engine.services.data_stream - INFO - Started streaming at 10.0Hz
+2025-11-04 11:04:48,077 - werkzeug - WARNING -  * Debugger is active!
+2025-11-04 11:04:48,091 - werkzeug - INFO -  * Debugger PIN: 138-699-103
+2025-11-04 11:04:49,065 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:49] "GET /socket.io/?EIO=4&transport=polling&t=PfFdHoq HTTP/1.1" 200 -
+2025-11-04 11:04:49,065 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:49] "GET /socket.io/?EIO=4&transport=polling&t=PfFdHyE HTTP/1.1" 200 -
+2025-11-04 11:04:49,079 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:49] "GET /socket.io/?EIO=4&transport=polling&t=PfFdI4k&sid=q04X8t3Ge_Gqpqm6AAAA HTTP/1.1" 200 -
+2025-11-04 11:04:49,142 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:49] "POST /socket.io/?EIO=4&transport=polling&t=PfFdI4j&sid=q04X8t3Ge_Gqpqm6AAAA HTTP/1.1" 200 -
+2025-11-04 11:04:49,250 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:49] "POST /socket.io/?EIO=4&transport=polling&t=PfFdI4i&sid=rCUnLniBJrsB0Nd9AAAB HTTP/1.1" 200 -
+2025-11-04 11:04:49,274 - src.radiometric_engine.services.data_stream - WARNING - Frame generation taking too long: 0.187s (target: 0.100s)
+2025-11-04 11:04:49,380 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:49] "GET /socket.io/?EIO=4&transport=polling&t=PfFdI4j&sid=rCUnLniBJrsB0Nd9AAAB HTTP/1.1" 200 -
+2025-11-04 11:04:49,384 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:49] "POST /socket.io/?EIO=4&transport=polling&t=PfFdI9c&sid=rCUnLniBJrsB0Nd9AAAB HTTP/1.1" 200 -
+2025-11-04 11:04:49,690 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:04:49] "GET /socket.io/?EIO=4&transport=polling&t=PfFdI9d&sid=rCUnLniBJrsB0Nd9AAAB HTTP/1.1" 200 -
+2025-11-04 11:04:50,683 - src.radiometric_engine.services.sun_simulator - INFO - Created new flare at (69, 85) (size=7.2, intensity=1.41, duration=47 frames)
+2025-11-04 11:04:52,990 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (67, 70) (size=18.2, intensity=0.42, duration=44 frames)
+2025-11-04 11:04:55,397 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:04:57,402 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:05:00,344 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:05:00] "GET /socket.io/?EIO=4&transport=websocket&sid=q04X8t3Ge_Gqpqm6AAAA HTTP/1.1" 200 -
+2025-11-04 11:05:00,351 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:05:00] "GET / HTTP/1.1" 200 -
+2025-11-04 11:05:00,735 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:05:00] "GET /socket.io/?EIO=4&transport=polling&t=PfFdKva HTTP/1.1" 200 -
+2025-11-04 11:05:00,802 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:05:00] "GET /socket.io/?EIO=4&transport=polling&t=PfFdKxq&sid=rNJzMle8ZthdFUrXAAAE HTTP/1.1" 200 -
+2025-11-04 11:05:00,856 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:05:00] "POST /socket.io/?EIO=4&transport=polling&t=PfFdKxp&sid=rNJzMle8ZthdFUrXAAAE HTTP/1.1" 200 -
+2025-11-04 11:05:00,881 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:00,886 - __main__ - INFO - Stopping Radiometric Engine
+2025-11-04 11:05:00,912 - src.radiometric_engine.services.data_stream - INFO - Streaming loop finished
+2025-11-04 11:05:00,912 - src.radiometric_engine.services.data_stream - INFO - Stopped streaming
+2025-11-04 11:05:00,912 - __main__ - INFO - Radiometric Engine stopped
+2025-11-04 11:05:05,093 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:05,345 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (27, 76) (size=11.3, intensity=0.38, duration=44 frames)
+2025-11-04 11:05:05,485 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:08,357 - src.radiometric_engine.services.sun_simulator - INFO - Created new sunspot at (50, 76) (size=9.3, intensity=0.38, duration=40 frames)
+2025-11-04 11:05:09,761 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:05:10,029 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:10,398 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:10,629 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:10,789 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:10,949 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:11,109 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:12,368 - src.radiometric_engine.services.sun_simulator - INFO - Removed 1 expired solar anomalies
+2025-11-04 11:05:14,909 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:15,134 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:15,293 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:15,430 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:21,093 - werkzeug - INFO - 127.0.0.1 - - [04/Nov/2025 11:05:21] "GET /socket.io/?EIO=4&transport=websocket&sid=rCUnLniBJrsB0Nd9AAAB HTTP/1.1" 200 -
+2025-11-04 11:05:22,629 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:22,805 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:22,965 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:23,125 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:29,693 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:29,877 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:30,006 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:30,165 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:30,325 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:30,493 - __main__ - INFO - Received signal 2, shutting down...
+2025-11-04 11:05:30,686 - __main__ - INFO - Received signal 2, shutting down...

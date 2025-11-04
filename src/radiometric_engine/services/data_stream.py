@@ -91,9 +91,14 @@ class DataStreamEngine:
             logger.info(f"Removed frame consumer. Total consumers: {len(self._frame_consumers)}")
     
     def force_anomaly(self) -> None:
-        """Force the next frame to contain a solar anomaly (sunspot or flare)."""
-        self._force_next_anomaly = True
-        logger.info("Next frame will contain a forced solar anomaly")
+        """Force the immediate creation of a solar anomaly."""
+        if hasattr(self.simulator, 'force_anomaly_creation'):
+            self.simulator.force_anomaly_creation()
+            logger.info("Forced creation of solar anomaly")
+        else:
+            # Fallback for older simulator versions
+            self._force_next_anomaly = True
+            logger.info("Next frame will contain a forced solar anomaly")
     
     def set_anomaly_probability(self, probability: float) -> None:
         """

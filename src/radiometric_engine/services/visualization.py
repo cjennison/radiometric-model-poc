@@ -374,3 +374,97 @@ class AnimatedHeatmapVisualizer(HeatmapVisualizer):
                 self.update_frame(latest_frame)
         
         return [self.im] if self.im else []
+
+
+class WebVisualizationManager(HeatmapVisualizer):
+    """
+    Web-optimized visualization manager for radiometric data.
+    
+    This class extends HeatmapVisualizer to provide web-specific functionality
+    including image generation for web browsers and update throttling.
+    """
+    
+    def __init__(self, figsize: Tuple[float, float] = (8, 8), **kwargs):
+        """
+        Initialize the web visualization manager.
+        
+        Args:
+            figsize: Figure size in inches (width, height)
+            **kwargs: Additional arguments passed to HeatmapVisualizer
+        """
+        super().__init__(figsize=figsize, **kwargs)
+        
+        # Web-specific attributes
+        self._frame_count = 0
+        self._update_frequency = 1  # Update every N frames
+        
+        # Ensure proper visualization setup
+        if not hasattr(self, 'fig') or self.fig is None:
+            self.setup_display()  # Use parent's setup method for proper aspect ratio
+        
+        # Configure for web usage
+        plt.style.use('dark_background')
+        
+    def set_update_frequency(self, every_n_frames: int) -> None:
+        """
+        Set how often to update the visualization.
+        
+        Args:
+            every_n_frames: Update every N frames to reduce CPU usage
+        """
+        self._update_frequency = max(1, every_n_frames)
+        logger.info(f"Web visualization update frequency set to every {self._update_frequency} frames")
+    
+    def create_image(self, frame: RadiometricFrame) -> Optional[str]:
+        """
+        Create a base64-encoded image from a radiometric frame.
+        
+        This method is optimized for web use with throttling to prevent
+        excessive CPU usage on rapid frame updates.
+        
+        Args:
+            frame: Radiometric frame to visualize
+            
+        Returns:
+            Base64-encoded image string, or None if throttled
+        """
+        import io
+        import base64
+        
+        # Increment frame counter
+        self._frame_count += 1
+        
+        # Check if we should skip this frame for throttling
+        if self._frame_count % self._update_frequency != 0:
+            return None
+        
+        try:
+            # Update the visualization
+            self.update_frame(frame)
+            
+            # Generate image for web
+            if self.fig and self.ax:
+                # Save to memory buffer as PNG
+                img_buffer = io.BytesIO()
+                self.fig.savefig(
+                    img_buffer, 
+                    format='png', 
+                    bbox_inches='tight',
+                    facecolor='black',
+                    edgecolor='none',
+                    dpi=100,  # Reasonable web DPI
+                    pad_inches=0.1
+                )
+                img_buffer.seek(0)
+                
+                # Encode as base64 for web transmission
+                img_base64 = base64.b64encode(img_buffer.getvalue()).decode('utf-8')
+                img_buffer.close()
+                
+                return f"data:image/png;base64,{img_base64}"
+                
+        except Exception as e:
+            logger.error(f"Error creating web image: {e}")
+            return None
+        
+        return None

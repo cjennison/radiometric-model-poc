@@ -8,6 +8,7 @@ with interactive controls and statistics display.
 import io
 import base64
 import json
+import math
 from datetime import datetime
 from typing import Optional
 
@@ -19,14 +20,99 @@ from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO, emit
 
 from ..services import DataStreamEngine
-from ..services.web_visualization import WebVisualizationManager
+from ..services.visualization import WebVisualizationManager
 from ..models import RadiometricFrame
 
 # Global variables for web app state
 data_stream: Optional[DataStreamEngine] = None
 socketio: Optional[SocketIO] = None
 latest_frame: Optional[RadiometricFrame] = None
-web_visualizer: Optional[WebVisualizationManager] = None
+
+
+def _calculate_simulated_time(time_factor: float) -> dict:
+    """
+    Calculate simulated time of day from the time factor.
+    
+    The time factor varies sinusoidally: factor = 1.0 + 0.2 * cos(2π * (hour - 6) / 24)
+    We need to reverse this to find the simulated hour.
+    
+    Args:
+        time_factor: Current time factor (0.8 to 1.2)
+        
+    Returns:
+        Dictionary with simulated time information
+    """
+    # Reverse the cosine function: cos(angle) = (factor - 1.0) / 0.2
+    cos_value = (time_factor - 1.0) / 0.2
+    
+    # Clamp to valid cosine range [-1, 1]
+    cos_value = max(-1.0, min(1.0, cos_value))
+    
+    # Get angle from arccos (returns 0 to π)
+    angle = math.acos(abs(cos_value))
+    
+    # Convert back to hour: angle = 2π * (hour - 6) / 24
+    # hour = (angle * 24) / (2π) + 6
+    hour_offset = (angle * 24) / (2 * math.pi)
+    
+    # Determine if we're in AM or PM based on time factor trend
+    # For simplicity, assume we're always in the increasing part of the day
+    if cos_value >= 0:  # Morning to noon
+        simulated_hour = 12 - hour_offset  # Peak at noon (12:00)
+    else:  # Noon to evening
+        simulated_hour = 12 + hour_offset
+    
+    # Ensure hour is in valid range [0, 24)
+    simulated_hour = simulated_hour % 24
+    
+    # Extract hour and minute
+    hour = int(simulated_hour)
+    minute = int((simulated_hour - hour) * 60)
+    
+    # Create time description
+    if hour < 6:
+        description = "Early Morning"
+    elif hour < 12:
+        description = "Morning"
+    elif hour == 12:
+        description = "Noon"
+    elif hour < 18:
+        description = "Afternoon"
+    elif hour < 21:
+        description = "Evening"
+    else:
+        description = "Night"
+    
+    return {
+        'hour': hour,
+        'minute': minute,
+        'time_string': f"{hour:02d}:{minute:02d}",
+        'description': description,
+        'time_factor': time_factor
+    }
+
+
+def _make_json_safe(obj):
+    """
+    Convert objects to JSON-serializable format.
+    
+    Args:
+        obj: Object to convert
+        
+    Returns:
+        JSON-serializable version of the object
+    """
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    elif isinstance(obj, dict):
+        return {key: _make_json_safe(value) for key, value in obj.items()}
+    elif isinstance(obj, (list, tuple)):
+        return [_make_json_safe(item) for item in obj]
+    elif hasattr(obj, '__dict__'):
+        # Convert objects with attributes to dictionaries
+        return _make_json_safe(obj.__dict__)
+    else:
+        return obj
 
 
 def create_app(stream_engine: DataStreamEngine) -> Flask:
@@ -80,6 +166,14 @@ def _handle_new_frame(frame: RadiometricFrame) -> None:
         
         # Only emit if we have a new image (not throttled)
         if image_data:
+            # Calculate simulated time of day from time factor
+            time_factor = frame.metadata.get('time_factor', 1.0) if frame.metadata else 1.0
+            simulated_time = _calculate_simulated_time(time_factor)
+            
+            # Get anomaly statistics from metadata
+            anomaly_stats = frame.metadata.get('active_anomalies', {}) if frame.metadata else {}
+            frame_count = frame.metadata.get('frame_count', 0) if frame.metadata else 0
+            
             # Prepare frame data for web client
             frame_data = {
                 'timestamp': frame.timestamp.isoformat(),
@@ -88,8 +182,11 @@ def _handle_new_frame(frame: RadiometricFrame) -> None:
                     'min_temp': float(np.min(frame.data)),
                     'max_temp': float(np.max(frame.data)),
                     'mean_temp': float(np.mean(frame.data)),
-                    'time_factor': frame.metadata.get('time_factor', 1.0) if frame.metadata else 1.0,
-                }
+                    'time_factor': time_factor,
+                    'simulated_time': simulated_time,
+                    'frame_count': frame_count,
+                },
+                'anomalies': anomaly_stats
             }
             
             # Emit to all connected clients
@@ -209,4 +306,8 @@ def _register_socketio_events() -> None:
     def handle_stats_request():
         """Handle request for engine statistics."""
         stats = data_stream.get_stats() if data_stream else {}
-        emit('stats_update', stats)
+        
+        # Convert datetime objects to ISO format strings for JSON serialization
+        json_safe_stats = _make_json_safe(stats)
+        
+        emit('stats_update', json_safe_stats)

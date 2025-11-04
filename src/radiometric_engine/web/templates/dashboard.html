@@ -242,6 +242,37 @@
             opacity: 0.7;
         }
         
+        .simulation-time {
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .sim-time-label {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+        
+        .sim-time-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #f39c12;
+            margin-bottom: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .sim-time-description {
+            font-size: 1.1em;
+            color: #3498db;
+            font-weight: 600;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -273,6 +304,11 @@
             <div id="heatmap-container">
                 <div class="loading">Waiting for data stream...</div>
             </div>
+            <div class="simulation-time" id="simulation-time">
+                <div class="sim-time-label">Simulated Time of Day</div>
+                <div class="sim-time-value" id="sim-time-display">--:--</div>
+                <div class="sim-time-description" id="sim-time-description">--</div>
+            </div>
             <div class="timestamp" id="timestamp"></div>
         </div>
         
@@ -294,6 +330,10 @@
                 <div class="stat-item time">
                     <div class="stat-value" id="time-factor">--</div>
                     <div class="stat-label">Time Factor</div>
+                </div>
+                <div class="stat-item time">
+                    <div class="stat-value" id="simulated-time">--</div>
+                    <div class="stat-label">Simulated Time</div>
                 </div>
                 <div class="stat-item performance">
                     <div class="stat-value" id="fps">--</div>
@@ -344,6 +384,33 @@
                     <div class="stat-label">Consumers</div>
                 </div>
             </div>
+            
+            <h3 class="panel-title">Solar Anomalies</h3>
+            <div class="stats-grid">
+                <div class="stat-item temp">
+                    <div class="stat-value" id="total-anomalies">--</div>
+                    <div class="stat-label">Active Anomalies</div>
+                </div>
+                <div class="stat-item temp">
+                    <div class="stat-value" id="sunspots">--</div>
+                    <div class="stat-label">Sunspots</div>
+                </div>
+                <div class="stat-item temp">
+                    <div class="stat-value" id="flares">--</div>
+                    <div class="stat-label">Solar Flares</div>
+                </div>
+                <div class="stat-item temp">
+                    <div class="stat-value" id="prominences">--</div>
+                    <div class="stat-label">Prominences</div>
+                </div>
+            </div>
+            
+            <div id="anomaly-details" style="margin-top: 15px;">
+                <h4 style="color: #ecf0f1; margin-bottom: 10px;">Anomaly Details</h4>
+                <div id="anomaly-list" style="max-height: 200px; overflow-y: auto; background: #1a1a1a; padding: 10px; border-radius: 5px;">
+                    <div style="color: #7f8c8d; font-style: italic;">No active anomalies</div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -367,6 +434,7 @@
             updateVisualization(data);
             updateStats(data.stats);
             updateTimestamp(data.timestamp);
+            updateAnomalies(data.anomalies);
         });
         
         // Handle statistics updates
@@ -406,6 +474,18 @@
             document.getElementById('max-temp').textContent = stats.max_temp.toFixed(1);
             document.getElementById('mean-temp').textContent = stats.mean_temp.toFixed(1);
             document.getElementById('time-factor').textContent = stats.time_factor.toFixed(2);
+            
+            // Update frame count if available
+            if (stats.frame_count !== undefined) {
+                document.getElementById('frames-generated').textContent = stats.frame_count;
+            }
+            
+            // Update simulated time display
+            if (stats.simulated_time) {
+                document.getElementById('simulated-time').textContent = stats.simulated_time.time_string;
+                document.getElementById('sim-time-display').textContent = stats.simulated_time.time_string;
+                document.getElementById('sim-time-description').textContent = stats.simulated_time.description;
+            }
         }
         
         function updateSystemStats(stats) {
@@ -463,6 +543,62 @@
             .catch(error => {
                 console.error('Error setting anomaly rate:', error);
             });
+        }
+        
+        function updateAnomalies(anomalies) {
+            // Update anomaly counts
+            const totalCount = anomalies?.total_count || 0;
+            const byType = anomalies?.by_type || {};
+            
+            document.getElementById('total-anomalies').textContent = totalCount;
+            document.getElementById('sunspots').textContent = byType.sunspot || 0;
+            document.getElementById('flares').textContent = byType.flare || 0;
+            document.getElementById('prominences').textContent = byType.prominence || 0;
+            
+            // Update anomaly details list
+            const anomalyList = document.getElementById('anomaly-list');
+            
+            if (!anomalies || !anomalies.anomalies || anomalies.anomalies.length === 0) {
+                anomalyList.innerHTML = '<div style="color: #7f8c8d; font-style: italic;">No active anomalies</div>';
+                return;
+            }
+            
+            let detailsHTML = '';
+            anomalies.anomalies.forEach((anomaly, index) => {
+                const typeIcon = {
+                    'sunspot': '⚫',
+                    'flare': '🔥',
+                    'prominence': '🌟'
+                };
+                
+                const progressPercent = Math.round(anomaly.age_progress * 100);
+                const intensity = anomaly.intensity.toFixed(2);
+                const remaining = anomaly.remaining_frames;
+                
+                detailsHTML += `
+                    <div style="margin-bottom: 8px; padding: 8px; background: #2c3e50; border-radius: 4px; border-left: 3px solid ${anomaly.type === 'sunspot' ? '#34495e' : anomaly.type === 'flare' ? '#e74c3c' : '#f39c12'};">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: bold; color: #ecf0f1;">
+                                ${typeIcon[anomaly.type] || '🌞'} ${anomaly.type.charAt(0).toUpperCase() + anomaly.type.slice(1)}
+                            </span>
+                            <span style="color: #95a5a6; font-size: 0.9em;">
+                                ${remaining} frames left
+                            </span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #bdc3c7; margin-top: 4px;">
+                            Position: (${anomaly.position[0]}, ${anomaly.position[1]}) | 
+                            Intensity: ${intensity} | 
+                            Size: ${anomaly.size}px | 
+                            Progress: ${progressPercent}%
+                        </div>
+                        <div style="background: #34495e; height: 4px; border-radius: 2px; margin-top: 6px; overflow: hidden;">
+                            <div style="background: ${anomaly.type === 'sunspot' ? '#95a5a6' : anomaly.type === 'flare' ? '#e74c3c' : '#f39c12'}; height: 100%; width: ${progressPercent}%; transition: width 0.5s ease;"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            anomalyList.innerHTML = detailsHTML;
         }
         
         function requestStats() {
