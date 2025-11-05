@@ -1,8 +1,5 @@
 """
 Real-time data streaming engine for radiometric data.
-
-This module provides a streaming engine that continuously generates and broadcasts
-radiometric data frames in real-time for visualization and analysis.
 """
 
 import asyncio
@@ -24,12 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class DataStreamEngine:
-    """
-    Real-time streaming engine for radiometric data.
-    
-    This engine continuously generates radiometric frames and distributes them
-    to registered consumers (visualizers, anomaly detectors, etc.).
-    """
+    """Real-time streaming engine for radiometric data."""
     
     def __init__(
         self,
@@ -37,51 +29,32 @@ class DataStreamEngine:
         max_queue_size: int = 100,
         simulator: Optional[SunSimulator] = None,
     ) -> None:
-        """
-        Initialize the data streaming engine.
-        
-        Args:
-            update_frequency_hz: Frames per second to generate
-            max_queue_size: Maximum number of frames to queue
-            simulator: Optional custom simulator (uses SunSimulator by default)
-        """
         self.update_frequency_hz = update_frequency_hz or settings.update_frequency_hz
         self.max_queue_size = max_queue_size
         self.simulator = simulator or SunSimulator()
         
-        # Time simulation parameters
-        self._time_speed = 144  # Default: 1 day in 10 minutes (24*60/10 = 144x)
+        # Time simulation: 1 day in 10 minutes (144x speed)
+        self._time_speed = 144
         current_time = time.time()
         
-        # Start simulation at 6:00 AM of current date
+        # Start simulation at 6:00 AM
         from datetime import datetime, time as time_obj
         current_date = datetime.fromtimestamp(current_time).date()
         self._simulation_start_time = datetime.combine(current_date, time_obj(6, 0, 0))
         self._real_start_time = current_time
         
-        # Temperature tracking for daily pattern visualization
         self.temperature_tracker = TemperatureTracker(sample_interval_minutes=1.0)
-        
-        # Baseline data management for anomaly detection
         self.baseline_manager = BaselineDataManager(bucket_minutes=5)
+        self.anomaly_detector = AnomalyDetectionEngine(baseline_db_path="baseline_data.db")
         
-        # Anomaly detection engine - initialized after baseline_manager
-        self.anomaly_detector = AnomalyDetectionEngine(
-            baseline_db_path="baseline_data.db"
-        )
-        
-        # Optional web visualizer for saving anomaly images
         self._web_visualizer = None
-        
-        # Storage for detected anomalies
         self._recent_anomalies: List[DetectedAnomaly] = []
-        self._max_anomaly_history = 100  # Keep last 100 anomalies
+        self._max_anomaly_history = 100
         
-        # Anomaly image saving cooldown
+        # Cooldown to prevent multiple image saves during anomaly development
         self._last_image_save_time = 0
-        self._image_save_cooldown_seconds = 1  # Configurable cooldown period
+        self._image_save_cooldown_seconds = 1
         
-        # Streaming state
         self._is_streaming = False
         self._stream_thread: Optional[threading.Thread] = None
         self._frame_consumers: List[Callable[[RadiometricFrame], None]] = []
@@ -93,47 +66,23 @@ class DataStreamEngine:
             "start_time": None,
         }
         
-        # Anomaly simulation controls
         self._anomaly_probability = 0.01
         self._force_next_anomaly = False
-        
-        logger.info(
-            f"Data stream engine initialized: {self.update_frequency_hz}Hz, "
-            f"queue size={max_queue_size}"
-        )
     
     def set_web_visualizer(self, web_visualizer) -> None:
-        """
-        Set the web visualizer for saving anomaly images.
-        
-        Args:
-            web_visualizer: WebVisualizationManager instance
-        """
+        """Set the web visualizer for saving anomaly images."""
         self._web_visualizer = web_visualizer
-        logger.info("Web visualizer set for anomaly image saving")
     
     def add_consumer(self, consumer: Callable[[RadiometricFrame], None]) -> None:
-        """
-        Add a consumer function that will receive each frame.
-        
-        Args:
-            consumer: Function that takes a RadiometricFrame as input
-        """
+        """Add a consumer function that will receive each frame."""
         self._frame_consumers.append(consumer)
         self._stats["consumers_count"] = len(self._frame_consumers)
-        logger.info(f"Added frame consumer. Total consumers: {len(self._frame_consumers)}")
     
     def remove_consumer(self, consumer: Callable[[RadiometricFrame], None]) -> None:
-        """
-        Remove a frame consumer.
-        
-        Args:
-            consumer: Consumer function to remove
-        """
+        """Remove a frame consumer."""
         if consumer in self._frame_consumers:
             self._frame_consumers.remove(consumer)
             self._stats["consumers_count"] = len(self._frame_consumers)
-            logger.info(f"Removed frame consumer. Total consumers: {len(self._frame_consumers)}")
     
     def force_anomaly(self, anomaly_type: str = None, intensity: float = None, size: float = None) -> None:
         """
@@ -163,7 +112,6 @@ class DataStreamEngine:
             raise ValueError("Probability must be between 0.0 and 1.0")
         
         self._anomaly_probability = probability
-        logger.info(f"Anomaly probability set to {probability:.3f}")
     
     def start_streaming(self) -> None:
         """Start the real-time data streaming."""
@@ -197,8 +145,6 @@ class DataStreamEngine:
         # Wait for streaming thread to finish
         if self._stream_thread and self._stream_thread.is_alive():
             self._stream_thread.join(timeout=2.0)
-        
-        logger.info("Stopped streaming")
     
     def get_stats(self) -> dict:
         """
@@ -243,8 +189,6 @@ class DataStreamEngine:
     def _streaming_loop(self) -> None:
         """Main streaming loop that generates and distributes frames."""
         frame_interval = 1.0 / self.update_frequency_hz
-        
-        logger.info(f"Starting streaming loop with {frame_interval:.3f}s interval")
         
         while self._is_streaming:
             loop_start = time.time()
@@ -297,8 +241,6 @@ class DataStreamEngine:
                                     logger.info(f"Anomaly image saved: {saved_path} (cooldown: {time_since_last_save:.1f}s)")
                             except Exception as e:
                                 logger.error(f"Failed to save anomaly image: {e}")
-                        else:
-                            logger.debug(f"Anomaly image save skipped (cooldown: {time_since_last_save:.1f}s < {self._image_save_cooldown_seconds}s)")
                     
                     # Log critical anomalies
                     for anomaly in detected_anomalies:
@@ -340,8 +282,6 @@ class DataStreamEngine:
             except Exception as e:
                 logger.error(f"Error in streaming loop: {e}", exc_info=True)
                 time.sleep(0.1)  # Brief pause on error
-        
-        logger.info("Streaming loop finished")
     
     def _distribute_frame(self, frame: RadiometricFrame) -> None:
         """
@@ -491,12 +431,7 @@ class DataStreamEngine:
         return self._recent_anomalies[-max_count:]
     
     def get_anomaly_summary(self) -> dict:
-        """
-        Get summary statistics for detected anomalies.
-        
-        Returns:
-            Dictionary with anomaly statistics
-        """
+        """Get summary statistics for detected anomalies."""
         if not self._recent_anomalies:
             return {
                 'total_anomalies': 0,
@@ -543,24 +478,11 @@ class DataStreamEngine:
         logger.info("Anomaly history cleared")
     
     def set_image_save_cooldown(self, cooldown_seconds: float) -> None:
-        """
-        Set the cooldown period between anomaly image saves.
-        
-        This prevents multiple images from being saved for the same anomaly
-        as it develops/spreads over multiple frames.
-        
-        Args:
-            cooldown_seconds: Minimum time between image saves in seconds
-        """
+        """Set cooldown period between anomaly image saves to prevent duplicates."""
         self._image_save_cooldown_seconds = max(0.0, cooldown_seconds)
-        logger.info(f"Anomaly image save cooldown set to {self._image_save_cooldown_seconds:.1f} seconds")
     
     def get_image_save_cooldown(self) -> float:
-        """
-        Get the current image save cooldown period.
-        
-        Returns:
-            Current cooldown period in seconds
+        """Get the current image save cooldown period in seconds."""
         """
         return self._image_save_cooldown_seconds
 

@@ -29,8 +29,9 @@ class Settings:
     flask_port: int = int(os.getenv("FLASK_PORT", "5000"))
     flask_debug: bool = os.getenv("FLASK_DEBUG", "True").lower() == "true"
     
-    # Logging
-    log_level: str = os.getenv("LOG_LEVEL", "INFO")
+    # Logging and production settings
+    log_level: str = os.getenv("LOG_LEVEL", "WARNING")  # Reduced for production
+    production_mode: bool = os.getenv("PRODUCTION_MODE", "True").lower() == "true"
     
     # Database
     database_url: str = os.getenv("DATABASE_URL", "sqlite:///radiometric.db")

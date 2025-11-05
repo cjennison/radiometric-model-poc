@@ -1,8 +1,5 @@
 """
 Visualization service for displaying radiometric data as heatmaps.
-
-This module provides real-time visualization of thermographic data using matplotlib
-with customizable color maps and interactive features.
 """
 
 import logging
@@ -27,12 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class HeatmapVisualizer:
-    """
-    Real-time heatmap visualization for radiometric data.
-    
-    This visualizer creates and updates a matplotlib heatmap display that shows
-    temperature distributions with customizable color schemes and anomaly highlighting.
-    """
+    """Real-time heatmap visualization for radiometric data."""
     
     def __init__(
         self,
@@ -41,21 +33,11 @@ class HeatmapVisualizer:
         temperature_range: Optional[Tuple[float, float]] = None,
         update_interval_ms: int = 100,
     ) -> None:
-        """
-        Initialize the heatmap visualizer.
-        
-        Args:
-            figsize: Figure size (width, height) in inches
-            colormap: Matplotlib colormap name for temperature visualization
-            temperature_range: Optional fixed temperature range (min, max) in Kelvin
-            update_interval_ms: Update interval in milliseconds
-        """
         self.figsize = figsize
         self.colormap = colormap
         self.temperature_range = temperature_range
         self.update_interval_ms = update_interval_ms
         
-        # Visualization state
         self.fig: Optional[plt.Figure] = None
         self.ax: Optional[plt.Axes] = None
         self.im: Optional[plt.matplotlib.image.AxesImage] = None
@@ -63,18 +45,11 @@ class HeatmapVisualizer:
         self.title_text: Optional[plt.Text] = None
         self.stats_text: Optional[plt.Text] = None
         
-        # Data state
         self.current_frame: Optional[RadiometricFrame] = None
         self.anomalies: list[ThermalAnomaly] = []
         self.anomaly_patches: list[plt.matplotlib.patches.Patch] = []
         
-        # Threading for non-blocking updates
         self._update_lock = threading.Lock()
-        
-        logger.info(
-            f"Heatmap visualizer initialized: {figsize}, colormap={colormap}, "
-            f"update_interval={update_interval_ms}ms"
-        )
     
     def setup_display(self) -> None:
         """Initialize the matplotlib display."""
@@ -109,7 +84,6 @@ class HeatmapVisualizer:
         self._create_heatmap(dummy_data)
         
         plt.tight_layout()
-        logger.info("Display setup complete")
     
     def _create_heatmap(self, data: np.ndarray) -> None:
         """
@@ -155,12 +129,7 @@ class HeatmapVisualizer:
         self.ax.grid(True, alpha=0.3, color='white', linewidth=0.5)
     
     def update_frame(self, frame: RadiometricFrame) -> None:
-        """
-        Update the visualization with a new frame.
-        
-        Args:
-            frame: New radiometric frame to display
-        """
+        """Update the visualization with a new frame."""
         with self._update_lock:
             self.current_frame = frame
             

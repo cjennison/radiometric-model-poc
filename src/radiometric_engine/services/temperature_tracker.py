@@ -46,8 +46,6 @@ class TemperatureTracker:
         # Track the current day to detect rollovers
         self._current_day: Optional[int] = None
         self._last_sample_time: Optional[float] = None
-        
-        logger.info(f"Temperature tracker initialized with {sample_interval_minutes:.1f}min sampling interval")
     
     def update(self, simulated_time: datetime, mean_temperature: float) -> bool:
         """
@@ -91,15 +89,12 @@ class TemperatureTracker:
         self._daily_data[time_of_day] = temp_point
         self._last_sample_time = time_of_day
         
-        logger.debug(f"Recorded temperature: {mean_temperature:.2f}K at {time_of_day:.2f}h")
         return True
     
     def _reset_daily_data(self) -> None:
         """Reset the daily temperature data for a new day."""
-        data_points_count = len(self._daily_data)
         self._daily_data.clear()
         self._last_sample_time = None
-        logger.info(f"Reset daily temperature data ({data_points_count} points cleared)")
     
     def get_daily_data(self) -> List[Dict]:
         """
@@ -172,6 +167,5 @@ class TemperatureTracker:
     
     def force_reset(self) -> None:
         """Force a reset of the daily data (useful for testing/debugging)."""
-        logger.info("Forcing temperature tracker reset")
         self._reset_daily_data()
         self._current_day = None

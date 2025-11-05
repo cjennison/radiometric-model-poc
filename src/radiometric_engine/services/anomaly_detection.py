@@ -1,16 +1,8 @@
 """
 Anomaly Detection Engine for Radiometric Data
 
-This module implements real-time anomaly detection by comparing live radiometric data
-against established baseline patterns. It identifies regions where temperature patterns
-deviate significantly from historical norms.
-
-Key Features:
-- Real-time comparison against baseline database
-- 5-minute time bucket matching
-- Regional anomaly clustering (not just single pixels)
-- Configurable statistical thresholds
-- Multiple anomaly detection algorithms
+Implements real-time anomaly detection by comparing live radiometric data
+against established baseline patterns using statistical analysis.
 """
 
 import sys
@@ -43,7 +35,7 @@ class AnomalyType(Enum):
 
 
 class AnomalySeverity(Enum):
-    """Severity levels for detected anomalies."""
+    """Severity levels based on statistical deviation."""
     LOW = "low"          # 2-3 standard deviations
     MEDIUM = "medium"    # 3-4 standard deviations  
     HIGH = "high"        # 4-5 standard deviations
@@ -68,23 +60,14 @@ class DetectedAnomaly:
 
 
 class AnomalyDetectionEngine:
-    """
-    Real-time anomaly detection engine that compares live data against baseline patterns.
-    """
+    """Real-time anomaly detection engine."""
     
     def __init__(self, 
                  baseline_db_path: str = "baseline_data.db",
                  detection_config: Optional[Dict[str, Any]] = None):
-        """
-        Initialize the anomaly detection engine.
-        
-        Args:
-            baseline_db_path: Path to baseline database
-            detection_config: Configuration parameters for detection algorithms
-        """
         self.baseline_manager = BaselineDataManager(bucket_minutes=5, db_path=baseline_db_path)
         
-        # Default detection configuration
+        # Detection configuration with statistical thresholds
         self.config = {
             'std_dev_threshold': 2.5,      # Standard deviations for anomaly threshold
             'cluster_min_size': 5,         # Minimum pixels for regional anomaly
@@ -92,14 +75,12 @@ class AnomalyDetectionEngine:
             'confidence_threshold': 0.7,   # Minimum confidence for reporting
             'temporal_window_minutes': 15, # Window for temporal anomaly detection
             'region_analysis_enabled': True,
-            'single_pixel_detection': False  # Usually too noisy
+            'single_pixel_detection': False
         }
         
-        # Update with user config
         if detection_config:
             self.config.update(detection_config)
         
-        # Detection state
         self.recent_detections: List[DetectedAnomaly] = []
         self.detection_statistics = {
             'total_frames_analyzed': 0,
@@ -107,59 +88,39 @@ class AnomalyDetectionEngine:
             'false_positive_rate': 0.0,
             'last_detection_time': None
         }
-        
-        logger.info(f"Anomaly detection engine initialized with config: {self.config}")
     
     def analyze_frame(self, frame: RadiometricFrame) -> List[DetectedAnomaly]:
-        """
-        Analyze a single frame for anomalies against baseline data.
-        
-        Args:
-            frame: RadiometricFrame to analyze
-            
-        Returns:
-            List of detected anomalies
-        """
+        """Analyze a single frame for anomalies against baseline data."""
         self.detection_statistics['total_frames_analyzed'] += 1
         detected_anomalies = []
         
         try:
-            # Get current time bucket
             bucket_id = self.baseline_manager.get_time_bucket_id(frame.timestamp)
-            logger.info(f"Analyzing frame for bucket {bucket_id} at time {frame.timestamp}")
-            
-            # Get baseline data for this time bucket
             baseline_data = self._get_baseline_for_bucket(bucket_id)
             if not baseline_data:
-                logger.warning(f"No baseline data available for bucket {bucket_id}")
                 return []
             
-            logger.info(f"Found baseline data for {len(baseline_data)} grid points")
-            
-            # Convert frame data to analysis format
             current_temps = frame.data
-            height, width = current_temps.shape
             
-            # 1. Statistical Outlier Detection
+            # Statistical outlier detection
             statistical_anomalies = self._detect_statistical_outliers(
                 current_temps, baseline_data, frame.timestamp
             )
             detected_anomalies.extend(statistical_anomalies)
             
-            # 2. Regional Cluster Detection
+            # Regional cluster detection
             if self.config['region_analysis_enabled']:
                 cluster_anomalies = self._detect_regional_clusters(
                     current_temps, baseline_data, frame.timestamp
                 )
                 detected_anomalies.extend(cluster_anomalies)
             
-            # 3. Temporal Deviation Detection
+            # Temporal deviation detection
             temporal_anomalies = self._detect_temporal_deviations(
                 current_temps, baseline_data, frame.timestamp
             )
             detected_anomalies.extend(temporal_anomalies)
             
-            # Update detection statistics
             if detected_anomalies:
                 self.detection_statistics['anomalies_detected'] += len(detected_anomalies)
                 self.detection_statistics['last_detection_time'] = frame.timestamp
@@ -169,7 +130,6 @@ class AnomalyDetectionEngine:
                 if len(self.recent_detections) > 100:
                     self.recent_detections = self.recent_detections[-100:]
             
-            logger.debug(f"Frame analysis complete: {len(detected_anomalies)} anomalies detected")
             return detected_anomalies
             
         except Exception as e:

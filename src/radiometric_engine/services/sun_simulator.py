@@ -1,8 +1,5 @@
 """
 Sun simulation service for generating realistic radiometric data.
-
-This module simulates a thermographic camera pointed at the sun, generating
-realistic temperature distributions with time-based variations and atmospheric effects.
 """
 
 import logging
@@ -18,21 +15,21 @@ from ..config import settings
 @dataclass
 class PersistentAnomaly:
     """Represents a solar anomaly that persists across multiple frames."""
-    position: Tuple[int, int]  # (row, col) position on grid
-    anomaly_type: str  # 'sunspot', 'flare', 'prominence'
+    position: Tuple[int, int]
+    anomaly_type: str
     intensity: float  # Relative intensity multiplier (0.0 to 2.0)
     size: float  # Radius in pixels
-    total_duration: int  # Total frames this anomaly should persist
-    remaining_frames: int  # Frames remaining for this anomaly
-    creation_time: float  # Timestamp when anomaly was created
+    total_duration: int
+    remaining_frames: int
+    creation_time: float
     
     @property
     def age_factor(self) -> float:
-        """Calculate age-based intensity factor (0.0 to 1.0)."""
+        """Calculate age-based intensity using bell curve lifecycle."""
         if self.total_duration <= 0:
             return 0.0
         progress = 1.0 - (self.remaining_frames / self.total_duration)
-        # Use a bell curve for realistic lifecycle: weak start, peak middle, fade end
+        # Bell curve: weak start, peak middle, fade end
         if progress < 0.5:
             return 2 * progress  # Ramp up
         else:
@@ -63,15 +60,6 @@ class SunSimulator:
         sun_radius: int = None,
         base_temperature: float = None,
     ) -> None:
-        """
-        Initialize the sun simulator.
-        
-        Args:
-            grid_width: Width of the simulation grid in pixels
-            grid_height: Height of the simulation grid in pixels  
-            sun_radius: Radius of the sun disc in pixels
-            base_temperature: Base temperature of the sun in Kelvin
-        """
         self.grid_width = grid_width or settings.grid_width
         self.grid_height = grid_height or settings.grid_height
         self.sun_radius = sun_radius or settings.sun_radius_pixels
@@ -81,7 +69,6 @@ class SunSimulator:
         self.sun_center_x = self.grid_width // 2
         self.sun_center_y = self.grid_height // 2
         
-        # Create coordinate grids for efficient computation
         self._create_coordinate_grids()
         
         # Initialize atmospheric noise state
@@ -90,13 +77,8 @@ class SunSimulator:
         
         # Initialize persistent anomaly tracking
         self.active_anomalies: List[PersistentAnomaly] = []
-        self.last_anomaly_check = 0.0  # Timestamp of last anomaly creation check
+        self.last_anomaly_check = 0.0
         self.frame_count = 0
-        
-        logger.info(
-            f"Sun simulator initialized: {self.grid_width}x{self.grid_height} grid, "
-            f"sun radius={self.sun_radius}, base temp={self.base_temperature}K"
-        )
     
     def _create_coordinate_grids(self) -> None:
         """Create coordinate grids for efficient distance calculations."""

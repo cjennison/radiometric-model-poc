@@ -69,10 +69,7 @@ class BaselineDataManager:
         self._current_session_id: Optional[int] = None
         self._frame_count = 0
         
-        # Initialize database
         self._init_database()
-        
-        logger.info(f"Baseline data manager initialized: {bucket_minutes}min buckets, {self.buckets_per_day} buckets/day")
     
     def _init_database(self) -> None:
         """Initialize the SQLite database schema."""
@@ -122,8 +119,6 @@ class BaselineDataManager:
             
             # Initialize time buckets if they don't exist
             self._initialize_time_buckets()
-        
-        logger.info(f"Database initialized: {self.db_path}")
     
     def _initialize_time_buckets(self) -> None:
         """Initialize all 288 time buckets for a 24-hour period."""
